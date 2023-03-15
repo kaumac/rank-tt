@@ -1,0 +1,8 @@
+{
+  "trailingComma": "none",
+  "semi": false,
+  "singleQuote": true,
+  "endOfLine": "auto",
+  "importOrderSeparation": true,
+  "importOrder": ["<THIRD_PARTY_MODULES>", "^@/(.*)$", "^[./]"]
+}
