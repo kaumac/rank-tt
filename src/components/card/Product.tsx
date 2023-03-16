@@ -110,13 +110,14 @@ export default function Default(props: {
               </Text>
             </Flex>
             <Flex align="center" me={{ base: '8px', lg: '0px', xl: '16px' }}>
-              <Icon
+              {/* <Icon
                 as={MdDateRange}
                 h="18px"
                 w="18px"
                 color="navy.700"
                 me="8px"
-              />
+              /> */}
+              XXXXX
               <Text color="navy.700" fontSize={{ base: 'sm', '2xl': 'md' }}>
                 {date}
               </Text>
