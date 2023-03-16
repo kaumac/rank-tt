@@ -3,8 +3,10 @@
 import {
   Box,
   Button,
+  Divider,
   Flex,
   FormLabel,
+  Heading,
   Icon,
   Select,
   SimpleGrid,
@@ -19,6 +21,8 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import { FaFacebook } from 'react-icons/fa'
+import { FcGoogle } from 'react-icons/fc'
 
 import { Layout } from '@/components/LandingLayout'
 // import Dropzone from '@/theme/components/admin/main/ecommerce/new-product/Dropzone'
@@ -54,15 +58,15 @@ function Page() {
 
   return (
     <Layout>
-      <Flex
-        direction="column"
-        minH="100vh"
-        align="center"
-        pt={{ sm: '125px', lg: '75px' }}
-        position="relative"
-      >
+      <Box maxWidth={600} py={10} zIndex={1}>
+        <Heading as="h2" size="xl" zIndex={1} textAlign="center">
+          Organize suas competições de forma 100% automática!
+        </Heading>
+      </Box>
+
+      <Flex direction="column" minH="100vh" align="center" position="relative">
         <Box
-          h="45vh"
+          h="360px"
           bg="linear-gradient(135deg, #FFCD50 0%, #FFB700 100%)"
           position="absolute"
           w="100%"
@@ -71,10 +75,10 @@ function Page() {
 
         <Tabs
           variant="unstyled"
-          mt={{ base: '60px', md: '165px' }}
           zIndex="0"
           display="flex"
           flexDirection="column"
+          pt={50}
         >
           <TabList
             display="flex"
@@ -119,7 +123,8 @@ function Page() {
                   borderRadius="50%"
                 />
                 <Text
-                  color={activeBullets.account ? 'white' : 'gray.300'}
+                  color="white"
+                  opacity={activeBullets.account ? 1 : 0.8}
                   fontWeight={activeBullets.account ? 'bold' : 'normal'}
                   display={{ sm: 'none', md: 'block' }}
                 >
@@ -130,6 +135,7 @@ function Page() {
             <Tab
               ref={mediaTab}
               w={{ sm: '120px', md: '250px', lg: '300px' }}
+              sx={{ pointerEvents: 'none' }}
               onClick={() =>
                 setActiveBullets({
                   account: true,
@@ -166,17 +172,28 @@ function Page() {
                   mb="8px"
                   borderRadius="50%"
                 />
-                <Text
-                  color={activeBullets.media ? 'white' : 'gray.300'}
-                  fontWeight={activeBullets.media ? 'bold' : 'normal'}
-                  display={{ sm: 'none', md: 'block' }}
+                <Box
+                  w={{ base: 0, md: '60px' }}
+                  h={{ base: 0, md: '24px' }}
+                  display="flex"
+                  justifyContent="center"
                 >
-                  Media
-                </Text>
+                  <Box position="absolute">
+                    <Text
+                      color="white"
+                      opacity={activeBullets.media ? 1 : 0.8}
+                      fontWeight={activeBullets.media ? 'bold' : 'normal'}
+                      display={{ sm: 'none', md: 'block' }}
+                    >
+                      Organização
+                    </Text>
+                  </Box>
+                </Box>
               </Flex>
             </Tab>
             <Tab
               ref={pricingTab}
+              sx={{ pointerEvents: 'none' }}
               w={{ sm: '120px', md: '250px', lg: '300px' }}
               onClick={() =>
                 setActiveBullets({
@@ -203,11 +220,12 @@ function Page() {
                   borderRadius="50%"
                 />
                 <Text
-                  color={activeBullets.pricing ? 'white' : 'gray.300'}
+                  color="white"
+                  opacity={activeBullets.pricing ? 1 : 0.8}
                   fontWeight={activeBullets.pricing ? 'bold' : 'normal'}
                   display={{ sm: 'none', md: 'block' }}
                 >
-                  Pricing
+                  Competição
                 </Text>
               </Flex>
             </Tab>
@@ -219,64 +237,101 @@ function Page() {
               mx="auto"
             >
               <Card p="30px">
-                <Text
+                <Heading
+                  as="h3"
                   color={textColor}
                   fontSize="2xl"
                   fontWeight="700"
-                  mb="20px"
                 >
-                  account Info
+                  Cadastre ou entre com a sua conta
+                </Heading>
+                <Text
+                  color="GrayText"
+                  fontSize="lg"
+                  fontWeight="500"
+                  mt={1}
+                  pr={{ sm: 0, md: '100px', lg: '300px' }}
+                >
+                  Selecione como deseja acessar a plataforma. Caso ainda não
+                  tenha uma conta, criaremos uma pra você.
                 </Text>
-                <Flex direction="column" w="100%">
-                  <SimpleGrid columns={{ base: 1, md: 2 }} gap="20px">
-                    <Stack direction="column" gap="20px">
-                      <InputField
-                        mb="0px"
-                        id="name"
-                        placeholder="eg. Elegant Chair"
-                        label="account Name"
-                      />
-                      <InputField
-                        mb="0px"
-                        id="weight"
-                        placeholder="eg. 20kg"
-                        label="Weight"
-                      />
-                      <InputField
-                        mb="0px"
-                        id="Color"
-                        placeholder="eg. Purple"
-                        label="Color"
-                      />
-                    </Stack>
-                    <Stack direction="column" gap="20px">
-                      <InputField
-                        mb="0px"
-                        id="Collection"
-                        placeholder="eg. Classics"
-                        label="Collection"
-                      />
-                      <TextField
-                        h="146px"
-                        mb="0px"
-                        id="Description"
-                        placeholder="Short description about the account"
-                        label="Description"
-                      />
-                    </Stack>
-                  </SimpleGrid>
-                  <Flex justify="space-between" mt="24px">
-                    <Button
-                      variant="darkBrand"
-                      fontSize="sm"
-                      borderRadius="16px"
-                      w={{ base: '128px', md: '148px' }}
-                      h="46px"
-                      ms="auto"
-                      onClick={() => mediaTab.current.click()}
+
+                <Flex direction="column" w="100%" mt={10}>
+                  <Flex
+                    width="100%"
+                    direction={{
+                      base: 'column',
+                      md: 'row'
+                    }}
+                  >
+                    <Stack
+                      flex="1"
+                      gap="20px"
+                      borderRight={{
+                        md: '1px solid #EEE'
+                      }}
+                      pr={{
+                        md: 10
+                      }}
                     >
-                      Next
-                    </Button>
+                      <Box>
+                        <InputField
+                          mb="0px"
+                          id="name"
+                          placeholder="Exemplo: voce@gmail.com"
+                          label="Email"
+                          type="email"
+                        />
+                        <Button
+                          variant="darkBrand"
+                          fontSize="sm"
+                          borderRadius="16px"
+                          w="100%"
+                          h="46px"
+                          mt={2}
+                        >
+                          Entrar com email
+                        </Button>
+                      </Box>
+                    </Stack>
+                    <Divider orientation="vertical" height="100%" />
+                    <Stack
+                      flex="1"
+                      direction="column"
+                      gap="20px"
+                      ml={{
+                        md: 10
+                      }}
+                    >
+                      <Button
+                        variant="light"
+                        fontSize="sm"
+                        py="15px"
+                        h="50px"
+                        borderRadius="16px"
+                        fontWeight="500"
+                      >
+                        <Icon as={FcGoogle} w="20px" h="20px" me="10px" />
+                        Usar minha conta Google
+                      </Button>
+                      <Button
+                        variant="light"
+                        fontSize="sm"
+                        py="15px"
+                        h="50px"
+                        borderRadius="16px"
+                        fontWeight="500"
+                      >
+                        <Icon
+                          as={FaFacebook}
+                          w="20px"
+                          h="20px"
+                          me="10px"
+                          color="#1877F2"
+                        />
+                        Usar minha conta Facebook
+                      </Button>
+                    </Stack>
                   </Flex>
                 </Flex>
               </Card>
@@ -293,7 +348,7 @@ function Page() {
                   fontWeight="700"
                   mb="20px"
                 >
-                  Media
+                  Organização
                 </Text>
                 {/* <Dropzone
                   content={

@@ -1,4 +1,16 @@
 import { mode } from '@chakra-ui/theme-tools'
+import { Roboto_Flex, Lexend } from 'next/font/google'
+
+const bodyFont = Roboto_Flex({
+  subsets: ['latin'],
+  variable: '--font-roboto',
+  display: 'swap'
+})
+const headingFont = Lexend({
+  subsets: ['latin'],
+  variable: '--font-syne',
+  display: 'swap'
+})
 
 export const globalStyles = {
   colors: {
@@ -80,8 +92,8 @@ export const globalStyles = {
     }
   },
   fonts: {
-    heading: 'var(--font-syne)',
-    body: 'var(--font-roboto)'
+    heading: headingFont.style.fontFamily,
+    body: bodyFont.style.fontFamily
   },
   styles: {
     global: (props: any) => ({
