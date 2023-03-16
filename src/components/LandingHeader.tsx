@@ -109,7 +109,7 @@ const Sidebar = ({ name }: SidebarProps) => {
       </Box>
 
       <Box display={{ base: 'none', md: 'flex' }} bg="gray.50">
-        <DesktopSidebarContents name={name} />
+        <DesktopSidebarContents />
       </Box>
     </chakra.header>
   )
