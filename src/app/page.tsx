@@ -12,14 +12,11 @@ import {
   VStack,
   SimpleGrid
 } from '@chakra-ui/react'
-import { Inter } from 'next/font/google'
 
 import { HeroSection } from '@/components/LandingHeroSection'
 import { Layout } from '@/components/LandingLayout'
 
 import styles from './page.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
 
 const faqs: any[] = [
   {

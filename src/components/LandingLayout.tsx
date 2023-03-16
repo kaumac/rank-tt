@@ -13,7 +13,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
   return (
     <Box bg="gray.50">
       <VStack spacing={10} w="full" align="center">
-        <Header name="Biller" />
+        <Header />
         {children}
       </VStack>
     </Box>

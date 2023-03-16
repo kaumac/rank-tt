@@ -27,7 +27,7 @@ const navLinks = [
   // { name: "Pricing", link: "#pricing" },
 ]
 
-const DesktopSidebarContents = ({ name }: any) => {
+const DesktopSidebarContents = () => {
   return (
     <Container maxW={['full', 'container.lg']} p={0}>
       <Stack
@@ -37,7 +37,7 @@ const DesktopSidebarContents = ({ name }: any) => {
         direction={['column', 'row']}
       >
         <Box display={{ base: 'none', md: 'flex' }}>
-          <Heading fontSize="xl">{name}</Heading>
+          <img src="/rankttlogo.png" width={150} />
         </Box>
         <Spacer />
         <Stack
