@@ -131,13 +131,14 @@ export default function Default(props: {
                 xl: '0px'
               }}
             >
-              <Icon
+              {/* <Icon
                 as={MdDownload}
                 h="18px"
                 w="18px"
                 color="navy.700"
                 me="8px"
-              />
+              /> */}
+              XXXXX
               <Text color="navy.700" fontSize={{ base: 'sm', '2xl': 'md' }}>
                 {downloads}
               </Text>
