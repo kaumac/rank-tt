@@ -1,25 +1,25 @@
 'use client'
+
 // Chakra imports
-import { Badge, Flex, Icon, Text } from '@chakra-ui/react';
-import { Image } from 'components/image/Image';
+import { Badge, Flex, Icon, Text } from '@chakra-ui/react'
+
 // Custom components
-import Card from 'components/card/Card';
+import Card from '@/components/card/Card'
+import { Image } from '@/components/image/Image'
 // Custom icons
-import LinkButton from 'components/link/LinkButton';
-import { IoCheckmarkCircle } from 'react-icons/io5';
-import { MdCancel, MdDateRange, MdDownload } from 'react-icons/md';
+import LinkButton from '@/components/link/LinkButton'
 
 export default function Default(props: {
-  image: string;
-  name: string;
-  status: string;
-  date: string;
-  downloads: string;
-  type: 'PRO' | 'free';
-  edit: string;
-  reviews: string;
+  image: string
+  name: string
+  status: string
+  date: string
+  downloads: string
+  type: 'PRO' | 'free'
+  edit: string
+  reviews: string
 }) {
-  const { image, name, status, date, downloads, type, edit, reviews } = props;
+  const { image, name, status, date, downloads, type, edit, reviews } = props
 
   return (
     <Card p="20px">
@@ -48,7 +48,7 @@ export default function Default(props: {
                 md: '18px',
                 lg: '24px',
                 xl: 'lg',
-                '2xl': '24px',
+                '2xl': '24px'
               }}
               me="14px"
             >
@@ -80,17 +80,17 @@ export default function Default(props: {
               base: 'center',
               md: 'start',
               lg: 'center',
-              xl: 'start',
+              xl: 'start'
             }}
             align={{
               base: 'center',
               md: 'start',
               lg: 'center',
-              xl: 'start',
+              xl: 'start'
             }}
           >
             <Flex align="center" me={{ base: '8px', lg: '16px' }}>
-              <Icon
+              {/* <Icon
                 mt="2px"
                 h="18px"
                 w="18px"
@@ -103,7 +103,8 @@ export default function Default(props: {
                     : MdCancel
                 }
                 me="8px"
-              />
+              /> */}
+              XXXXX
               <Text color="navy.700" fontSize={{ base: 'sm', '2xl': 'md' }}>
                 {status}
               </Text>
@@ -126,7 +127,7 @@ export default function Default(props: {
                 base: '4px',
                 md: '0px',
                 lg: '4px',
-                xl: '0px',
+                xl: '0px'
               }}
             >
               <Icon
@@ -178,5 +179,5 @@ export default function Default(props: {
         </Flex>
       </Flex>
     </Card>
-  );
+  )
 }

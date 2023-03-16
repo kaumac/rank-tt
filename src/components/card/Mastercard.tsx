@@ -1,19 +1,20 @@
 'use client'
+
 // Chakra imports
-import { Flex, Box, Icon, Text, Spacer } from '@chakra-ui/react';
+import { Flex, Box, Icon, Text, Spacer } from '@chakra-ui/react'
+
 // Custom components
-import Card from 'components/card/Card';
+import Card from '@/components/card/Card'
 
 // Assets
-import bgMastercard from '/public/img/dashboards/Debit.png';
-import { RiMastercardFill } from 'react-icons/ri';
+import bgMastercard from '/public/img/dashboards/Debit.png'
 
 export default function Banner(props: {
-  exp: string;
-  cvv: string;
-  number: string;
+  exp: string
+  cvv: string
+  number: string
 }) {
-  const { exp, cvv, number, ...rest } = props;
+  const { exp, cvv, number, ...rest } = props
   return (
     <Card
       backgroundImage={bgMastercard?.src}
@@ -32,7 +33,8 @@ export default function Banner(props: {
           <Text fontSize="2xl" fontWeight="bold">
             Glassy.
           </Text>
-          <Icon as={RiMastercardFill} w="48px" h="auto" color="white" />
+          {/* <Icon as={RiMastercardFill} w="48px" h="auto" color="white" /> */}
+          XXXX
         </Flex>
         <Spacer />
         <Flex direction="column">
@@ -58,5 +60,5 @@ export default function Banner(props: {
         </Flex>
       </Flex>
     </Card>
-  );
+  )
 }

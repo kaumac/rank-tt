@@ -1,4 +1,5 @@
 'use client'
+
 // Chakra imports
 import {
   AspectRatio,
@@ -8,30 +9,30 @@ import {
   Flex,
   Icon,
   Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import Link from 'components/link/Link';
-import { NextAvatar } from 'components/image/Avatar';
-// Custom components
-import Card from 'components/card/Card';
+  useColorModeValue
+} from '@chakra-ui/react'
 // Assets
-import { useState } from 'react';
-import { IoHeart, IoHeartOutline } from 'react-icons/io5';
-import { Image } from 'components/image/Image';
-import LinkButton from 'components/link/LinkButton';
+import { useState } from 'react'
+
+// Custom components
+import Card from '@/components/card/Card'
+import { NextAvatar } from '@/components/image/Avatar'
+import { Image } from '@/components/image/Image'
+import Link from '@/components/link/Link'
+import LinkButton from '@/components/link/LinkButton'
 
 export default function NFT(props: {
-  image: string;
-  name: string;
-  author: string;
-  bidders: string[];
-  download: string;
-  currentbid: string | number;
+  image: string
+  name: string
+  author: string
+  bidders: string[]
+  download: string
+  currentbid: string | number
 }) {
-  const { image, name, author, bidders, download, currentbid } = props;
-  const [like, setLike] = useState(false);
-  const textColor = useColorModeValue('navy.700', 'white');
-  const textColorBid = useColorModeValue('brand.500', 'white');
+  const { image, name, author, bidders, download, currentbid } = props
+  const [like, setLike] = useState(false)
+  const textColor = useColorModeValue('navy.700', 'white')
+  const textColorBid = useColorModeValue('brand.500', 'white')
   return (
     <Card p="20px">
       <Flex direction={{ base: 'column' }} justify="center">
@@ -52,16 +53,17 @@ export default function NFT(props: {
             minW="36px"
             h="36px"
             onClick={() => {
-              setLike(!like);
+              setLike(!like)
             }}
           >
-            <Icon
+            {/* <Icon
               transition="0.2s linear"
               w="20px"
               h="20px"
               as={like ? IoHeart : IoHeartOutline}
               color="brand.500"
-            />
+            /> */}
+            XXXXX
           </Button>
         </Box>
         <Flex flexDirection="column" justify="space-between" h="100%">
@@ -72,7 +74,7 @@ export default function NFT(props: {
               md: 'column',
               lg: 'row',
               xl: 'column',
-              '2xl': 'row',
+              '2xl': 'row'
             }}
             mb="auto"
           >
@@ -85,7 +87,7 @@ export default function NFT(props: {
                   lg: 'lg',
                   xl: 'lg',
                   '2xl': 'md',
-                  '3xl': 'lg',
+                  '3xl': 'lg'
                 }}
                 mb="5px"
                 fontWeight="bold"
@@ -96,7 +98,7 @@ export default function NFT(props: {
               <Text
                 color="secondaryGray.600"
                 fontSize={{
-                  base: 'sm',
+                  base: 'sm'
                 }}
                 fontWeight="400"
                 me="14px"
@@ -113,7 +115,7 @@ export default function NFT(props: {
                 md: '10px',
                 lg: '0px',
                 xl: '10px',
-                '2xl': '0px',
+                '2xl': '0px'
               }}
               fontSize="12px"
             >
@@ -131,14 +133,14 @@ export default function NFT(props: {
               md: 'start',
               lg: 'center',
               xl: 'start',
-              '2xl': 'center',
+              '2xl': 'center'
             }}
             direction={{
               base: 'row',
               md: 'column',
               lg: 'row',
               xl: 'column',
-              '2xl': 'row',
+              '2xl': 'row'
             }}
             mt="25px"
           >
@@ -152,7 +154,7 @@ export default function NFT(props: {
                 md: '10px',
                 lg: '0px',
                 xl: '10px',
-                '2xl': '0px',
+                '2xl': '0px'
               }}
               variant="darkBrand"
               color="white"
@@ -168,5 +170,5 @@ export default function NFT(props: {
         </Flex>
       </Flex>
     </Card>
-  );
+  )
 }

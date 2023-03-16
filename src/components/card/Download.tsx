@@ -1,22 +1,21 @@
 'use client'
+
 // Chakra imports
-import { Badge, Flex, Icon, Text } from '@chakra-ui/react';
+import { Badge, Flex, Icon, Text } from '@chakra-ui/react'
+
 // Custom components
-import Card from 'components/card/Card';
-// Custom icons
-import { IoDocumentText, IoLaptopOutline } from 'react-icons/io5';
-import { MdDateRange } from 'react-icons/md';
-import { Image } from 'components/image/Image';
+import Card from '@/components/card/Card'
+import { Image } from '@/components/image/Image'
 
 export default function Default(props: {
-  image: string;
-  name: string;
-  type: 'PRO' | 'free';
-  date: string;
-  pack: string;
-  version: string;
+  image: string
+  name: string
+  type: 'PRO' | 'free'
+  date: string
+  pack: string
+  version: string
 }) {
-  const { image, name, type, date, pack, version } = props;
+  const { image, name, type, date, pack, version } = props
 
   return (
     <Card p="20px">
@@ -46,7 +45,7 @@ export default function Default(props: {
                 md: 'md',
                 lg: '15px',
                 xl: 'lg',
-                '2xl': '24px',
+                '2xl': '24px'
               }}
               me="10px"
             >
@@ -73,14 +72,15 @@ export default function Default(props: {
           </Flex>
           <Flex flexWrap="wrap" justifyContent="center" alignItems="center">
             <Flex align="center" me={{ base: '8px', lg: '20px' }}>
-              <Icon
+              {/* <Icon
                 mt="2px"
                 h="20px"
                 w="20px"
                 color="navy.700"
                 as={IoDocumentText}
                 me="8px"
-              />
+              /> */}
+              XXXXX
               <Text color="navy.700" fontSize={{ base: 'sm', '2xl': 'md' }}>
                 {pack}
               </Text>
@@ -89,13 +89,14 @@ export default function Default(props: {
               align="center"
               me={{ base: '0px', md: '8px', lg: '0px', xl: '20px' }}
             >
-              <Icon
+              {/* <Icon
                 as={IoLaptopOutline}
                 h="18px"
                 w="18px"
                 color="navy.700"
                 me="8px"
-              />
+              /> */}
+              xxxxx
               <Text color="navy.700" fontSize={{ base: 'sm', '2xl': 'md' }}>
                 {version}
               </Text>
@@ -116,5 +117,5 @@ export default function Default(props: {
         </Flex>
       </Flex>
     </Card>
-  );
+  )
 }
