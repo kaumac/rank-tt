@@ -68,13 +68,13 @@ const DesktopSidebarContents = () => {
     </Container>
   )
 }
-const MobileSidebar = ({ name }: any) => {
+const MobileSidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <>
       <Flex w="full" align="center">
-        <Heading fontSize="xl">{name}</Heading>
+        LPLPLPLP
         <Spacer />
         <IconButton
           aria-label="Search database"
@@ -85,7 +85,7 @@ const MobileSidebar = ({ name }: any) => {
           <DrawerOverlay />
           <DrawerContent bg="gray.50">
             <DrawerCloseButton />
-            <DrawerHeader>{name}</DrawerHeader>
+            <DrawerHeader>LPLPLPLP</DrawerHeader>
 
             <DrawerBody>
               <DesktopSidebarContents />
@@ -97,15 +97,11 @@ const MobileSidebar = ({ name }: any) => {
   )
 }
 
-interface SidebarProps {
-  name: string
-}
-
-const Sidebar = ({ name }: SidebarProps) => {
+const Sidebar = () => {
   return (
     <chakra.header id="header">
       <Box display={{ base: 'flex', md: 'none' }} p={4}>
-        <MobileSidebar name={name} />
+        <MobileSidebar />
       </Box>
 
       <Box display={{ base: 'none', md: 'flex' }} bg="gray.50">
@@ -115,14 +111,10 @@ const Sidebar = ({ name }: SidebarProps) => {
   )
 }
 
-interface HeaderProps {
-  name: string
-}
-
-export const Header = ({ name }: HeaderProps) => {
+export const Header = () => {
   return (
     <Box w="full">
-      <Sidebar name={name} />
+      <Sidebar />
     </Box>
   )
 }
