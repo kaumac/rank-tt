@@ -19,6 +19,7 @@ import {
   Text,
   useColorModeValue
 } from '@chakra-ui/react'
+import { getAuth, sendSignInLinkToEmail } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { FaFacebook } from 'react-icons/fa'
@@ -30,6 +31,8 @@ import Card from '@/components/card/Card'
 import InputField from '@/components/fields/InputField'
 import TagsField from '@/components/fields/TagsField'
 import TextField from '@/components/fields/TextField'
+import LinkButton from '@/components/link/LinkButton'
+import auth from '@/firebase/auth'
 import { useAuthContext } from '@/providers/AuthContextProvider'
 
 function Page() {
@@ -37,6 +40,7 @@ function Page() {
   const router = useRouter()
 
   const textColor = useColorModeValue('secondaryGray.900', 'white')
+  const [email, setEmail] = React.useState('')
   const [activeBullets, setActiveBullets] = useState({
     account: true,
     media: !!user,
@@ -47,6 +51,29 @@ function Page() {
   const mediaTab = React.useRef()
   const pricingTab = React.useRef()
   const brand = useColorModeValue('brand.500', 'brand.400')
+
+  const onSignIn = () => {
+    const actionCodeSettings = {
+      handleCodeInApp: true,
+      url: `${window.location.href}?usedEmail=${email}`
+    }
+
+    sendSignInLinkToEmail(auth, email, actionCodeSettings)
+      .then(() => {
+        alert('foi!')
+        // The link was successfully sent. Inform the user.
+        // Save the email locally so you don't need to ask the user for it again
+        // if they open the link on the same device.
+        window.localStorage.setItem('emailForSignIn', email)
+        // ...
+      })
+      .catch((error) => {
+        console.log(error)
+        const errorCode = error.code
+        const errorMessage = error.message
+        // ...
+      })
+  }
 
   React.useEffect(() => {
     if (!!user) {
@@ -243,7 +270,7 @@ function Page() {
                   fontSize="2xl"
                   fontWeight="700"
                 >
-                  Cadastre ou entre com a sua conta
+                  Cadastre sua conta
                 </Heading>
                 <Text
                   color="GrayText"
@@ -252,8 +279,7 @@ function Page() {
                   mt={1}
                   pr={{ sm: 0, md: '100px', lg: '300px' }}
                 >
-                  Selecione como deseja acessar a plataforma. Caso ainda não
-                  tenha uma conta, criaremos uma pra você.
+                  Selecione como deseja acessar a plataforma
                 </Text>
 
                 <Flex direction="column" w="100%" mt={10}>
@@ -266,7 +292,7 @@ function Page() {
                   >
                     <Stack
                       flex="1"
-                      gap="20px"
+                      gap="10px"
                       borderRight={{
                         md: '1px solid #EEE'
                       }}
@@ -274,34 +300,47 @@ function Page() {
                         md: 10
                       }}
                     >
-                      <Box>
-                        <InputField
-                          mb="0px"
-                          id="name"
-                          placeholder="Exemplo: voce@gmail.com"
-                          label="Email"
-                          type="email"
-                        />
-                        <Button
-                          variant="darkBrand"
-                          fontSize="sm"
-                          borderRadius="16px"
-                          w="100%"
-                          h="46px"
-                          mt={2}
-                        >
-                          Entrar com email
-                        </Button>
-                      </Box>
+                      <InputField
+                        onChange={(e) => setEmail(e.target.value)}
+                        mb="0px"
+                        id="email"
+                        placeholder="Exemplo: voce@gmail.com"
+                        label="Email"
+                        type="email"
+                      />
+                      <InputField
+                        onChange={(e) => setEmail(e.target.value)}
+                        mb="0px"
+                        id="password"
+                        placeholder="Minha senha"
+                        label="Senha"
+                        type="password"
+                      />
+                      <Button
+                        onClick={() => {
+                          onSignIn()
+                        }}
+                        variant="darkBrand"
+                        fontSize="sm"
+                        borderRadius="16px"
+                        w="100%"
+                        h="46px"
+                        mt={2}
+                      >
+                        Cadastrar minha conta
+                      </Button>
+                      <Flex alignItems="center" justifyContent="center">
+                        <LinkButton href="#">Já sou cadastrado</LinkButton>
+                      </Flex>
                     </Stack>
-                    <Divider orientation="vertical" height="100%" />
                     <Stack
                       flex="1"
                       direction="column"
-                      gap="20px"
+                      gap="10px"
                       ml={{
                         md: 10
                       }}
+                      mt={{ base: 10, md: 0 }}
                     >
                       <Button
                         variant="light"

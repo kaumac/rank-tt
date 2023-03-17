@@ -37,7 +37,7 @@ const DesktopSidebarContents = () => {
         direction={['column', 'row']}
       >
         <Box display={{ base: 'none', md: 'flex' }}>
-          <img src="/rankttlogo.png" width={150} />
+          <img src="/ranktt-logo.svg" width={150} />
         </Box>
         <Spacer />
         <Stack
