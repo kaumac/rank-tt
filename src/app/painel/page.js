@@ -4,6 +4,7 @@ import { Button } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
+import CreateOrganization from '@/components/CreateOrganization'
 import { useAuthContext } from '@/providers/AuthContextProvider'
 
 function Page() {
@@ -16,6 +17,7 @@ function Page() {
 
   return (
     <div>
+      <CreateOrganization onCreated={() => {}} />
       <Button
         variant="light"
         fontSize="sm"
