@@ -15,15 +15,15 @@ const headingFont = Lexend({
 export const globalStyles = {
   colors: {
     brand: {
-      100: '#E9E3FF',
-      200: '#422AFB',
-      300: '#422AFB',
-      400: '#7551FF',
-      500: '#422AFB',
-      600: '#3311DB',
-      700: '#02044A',
-      800: '#190793',
-      900: '#11047A'
+      100: '#F0F0F0',
+      200: 'yellow',
+      300: '#000',
+      400: '#FFF',
+      500: '#6837D1',
+      600: '#551FC9',
+      700: 'purple',
+      800: 'violet',
+      900: 'orange'
     },
     brandScheme: {
       100: '#E9E3FF',
@@ -58,6 +58,9 @@ export const globalStyles = {
       800: '#707EAE',
       900: '#1B2559'
     },
+    purple: {
+      600: '#49347B'
+    },
     red: {
       100: '#FEEFEE',
       500: '#EE5D50',
@@ -89,6 +92,14 @@ export const globalStyles = {
     },
     gray: {
       100: '#FAFCFE'
+    },
+    primary: {
+      default: 'red.500',
+      _dark: 'red.400'
+    },
+    secondary: {
+      default: 'red.800',
+      _dark: 'red.700'
     }
   },
   fonts: {

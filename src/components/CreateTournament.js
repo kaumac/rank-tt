@@ -16,30 +16,37 @@ import {
   Heading,
   Text
 } from '@chakra-ui/react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import Link from 'next/link'
 import { useState } from 'react'
 import ConfettiExplosion from 'react-confetti-explosion'
 import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
 
-import useSwitchOrganization from '@/hooks/useSwitchOrganization'
-import useUser from '@/hooks/useUser'
-import createOrganization from '@/setters/createOrganization'
+import useCreateTournament from '@/hooks/useCreateTournament'
 
-export const CreateOrganization = ({ isOpen, onClose }) => {
-  const [user] = useUser()
-  const [createdOrg, setCreatedOrg] = useState()
-  const [switchOrganization] = useSwitchOrganization()
+const schema = yup.object().shape({
+  name: yup
+    .string()
+    .required('O campo "nome" é obrigatório')
+    .min(5, 'O nome deve conter pelo menos 5 caracteres')
+})
+
+export const CreateTournament = ({ isOpen, onClose }) => {
+  const [createdTournament, setCreatedTournament] = useState()
+  const [createTournament] = useCreateTournament()
 
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting }
-  } = useForm()
+  } = useForm({ resolver: yupResolver(schema) })
 
   async function onSubmit(values) {
-    const response = await createOrganization({
+    const response = await createTournament({
       name: values.name
     }).then((docRef) => {
-      setCreatedOrg({
+      setCreatedTournament({
         ...values,
         id: docRef.id
       })
@@ -60,16 +67,20 @@ export const CreateOrganization = ({ isOpen, onClose }) => {
     >
       <ModalOverlay />
       <ModalContent>
-        {!createdOrg ? (
+        {!createdTournament ? (
           <>
-            <ModalHeader>Criar organização</ModalHeader>
+            <ModalHeader>Criar competição</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
+              <Text fontSize={14} mb={6} mr={24}>
+                Essas e outras configurações como data, horário e formato da
+                competição poderão ser alteradas depois nas configurações.
+              </Text>
               <FormControl isInvalid={errors.name}>
-                <FormLabel htmlFor="name">Nome</FormLabel>
+                <FormLabel htmlFor="name">Nome da competição</FormLabel>
                 <Input
                   id="name"
-                  placeholder="Exemplo: Associação Esportiva Recreativa Ateme"
+                  placeholder="Exemplo: Ranking ATEME (Maio/2023)"
                   {...register('name', {
                     required: 'Este campo é obrigatório',
                     minLength: {
@@ -93,7 +104,7 @@ export const CreateOrganization = ({ isOpen, onClose }) => {
                 mr={3}
                 onClick={handleSubmit(onSubmit)}
               >
-                Criar organização
+                Criar competição
               </Button>
             </ModalFooter>
           </>
@@ -109,28 +120,28 @@ export const CreateOrganization = ({ isOpen, onClose }) => {
               <Box position="absolute" top="0">
                 <ConfettiExplosion />
               </Box>
-              <img src="/gifs/thumbs-up.gif" width="100px" />
+              <img src="/gifs/podium.gif" width="100px" />
               <Heading mt={4} size="md">
-                Organização criada!
+                Torneio criado!
               </Heading>
               <Text mt={2} textAlign="center">
-                A organização <strong>{createdOrg.name}</strong> foi criada com
-                sucesso!
-                <br />
-                Clique no botão abaixo para gerenciar essa organização e começar
-                a organizar competições!
+                O torneio <strong>{createdTournament.name}</strong> foi criado
+                com sucesso!
+              </Text>
+
+              <Text mt={4} textAlign="center">
+                Agora você pode continuar a configuração do torneio e definir
+                data, horário, formato dos jogos, etc.
               </Text>
 
               <Button
+                as={Link}
                 colorScheme="cyan"
                 size="lg"
                 mt={6}
-                onClick={() => {
-                  switchOrganization(createdOrg.id)
-                  onClose()
-                }}
+                href={`/painel/torneios/${createdTournament.id}`}
               >
-                Gerenciar organização
+                Continuar configuração
               </Button>
             </Flex>
           </ModalBody>
@@ -140,4 +151,4 @@ export const CreateOrganization = ({ isOpen, onClose }) => {
   )
 }
 
-export default CreateOrganization
+export default CreateTournament

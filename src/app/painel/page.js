@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import CreateOrganization from '@/components/CreateOrganization'
+import DashboardHeader from '@/components/DashboardHeader'
 import { useAuthContext } from '@/providers/AuthContextProvider'
 
 function Page() {
@@ -17,6 +18,7 @@ function Page() {
 
   return (
     <div>
+      <DashboardHeader title="painel" />
       <CreateOrganization onCreated={() => {}} />
       <Button
         variant="light"
