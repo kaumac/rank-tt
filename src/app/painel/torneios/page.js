@@ -29,6 +29,7 @@ function Page() {
           {currentOrganization?.tournaments.map((tournamentId) => {
             return (
               <Box
+                key={tournamentId}
                 onClick={() => {
                   router.push(`/painel/torneios/${tournamentId}`)
                 }}
