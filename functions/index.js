@@ -93,6 +93,8 @@ exports.createTournament = functions.firestore
 
     await newTournamentRef.set({
       name: data.name,
+      players: [],
+      tables: [],
       organizationId: data.organizationId,
       id: context.params.tournamentId,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),

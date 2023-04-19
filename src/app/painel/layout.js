@@ -23,21 +23,14 @@ import {
   BiStoreAlt,
   BiCog,
   BiLogOut,
-  BiSlideshow
+  BiCast
 } from 'react-icons/bi'
 
 import CreateOrganization from '@/components/CreateOrganization'
 import useCurrentOrganization from '@/hooks/useCurrentOrganization'
+import useCurrentUser from '@/hooks/useCurrentUser'
 
-const NavbarIcon = ({
-  route,
-  title,
-  icon
-}: {
-  route: string
-  title: string
-  icon: React.ElementType
-}) => {
+const NavbarIcon = ({ route, title, icon }) => {
   const pathname = usePathname()
   console.log(pathname.split('/'))
   console.log('route', route)
@@ -70,18 +63,20 @@ const NavbarIcon = ({
   )
 }
 
-export default function RootLayout({
-  children
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [currentOrganization, loading, error] = useCurrentOrganization()
+  const [currentUser, loadingCurrentUser, currentUserError] = useCurrentUser()
+  const [
+    currentOrganization,
+    loadingCurrentOrganization,
+    currentOrganizationError
+  ] = useCurrentOrganization()
 
   return (
     <Flex bg="#FFFFFF" boxShadow="md" height="100vh" overflow="hidden">
       <CreateOrganization isOpen={isOpen} onClose={onClose} />
       <Flex
+        boxShadow="1px 0 0 0 rgba(0,0,0,0.05)"
         bg="#F9FBFC"
         width="80px"
         h="100%"
@@ -91,15 +86,15 @@ export default function RootLayout({
         zIndex={999}
       >
         <Flex
-          bg="linear-gradient(140deg, #60C9D8 25%, #14A2B7 75%)"
+          bg="linear-gradient(140deg, #7F55DA 25%, #551FC9 75%)"
           borderRadius="lg"
-          width="60px"
-          height="60px"
+          width="42px"
+          height="42px"
           alignItems="center"
           justifyContent="center"
           mt="8px"
         >
-          <img src="/ranktt-navbar-logo.svg" width="32px" />
+          <img src="/ranktt-navbar-logo.svg" width="24px" />
         </Flex>
 
         <Stack gap="10px">
@@ -109,11 +104,7 @@ export default function RootLayout({
             route="/painel/torneios"
             icon={BiTrophy}
           />
-          <NavbarIcon
-            title="Telões"
-            route="/painel/teloes"
-            icon={BiSlideshow}
-          />
+          <NavbarIcon title="Telões" route="/painel/teloes" icon={BiCast} />
         </Stack>
 
         <Menu isLazy>
@@ -129,6 +120,15 @@ export default function RootLayout({
           </MenuButton>
           <MenuList>
             <MenuGroup title="Organizações">
+              {currentUser?.organizations.map((organizationId) => (
+                <MenuItem
+                  key={organizationId}
+                  icon={<BiStoreAlt />}
+                  onClick={onOpen}
+                >
+                  {organizationId}
+                </MenuItem>
+              ))}
               <MenuItem icon={<BiStoreAlt />} onClick={onOpen}>
                 Criar organização
               </MenuItem>
@@ -144,16 +144,17 @@ export default function RootLayout({
           </MenuList>
         </Menu>
       </Flex>
-      <Box
-        h="100%"
+      <Flex
+        flexDirection="column"
+        h="100vh"
         flex="1"
         overflowY="auto"
+        overflowX="hidden"
         borderRadius="xl"
         position="relative"
-        pt={20}
       >
         {children}
-      </Box>
+      </Flex>
     </Flex>
   )
 }

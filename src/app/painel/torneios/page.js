@@ -23,7 +23,7 @@ function Page() {
   return (
     <>
       <CreateTournament isOpen={isOpen} onClose={onClose} />
-      <DashboardHeader title="Competições" />
+      {/* <DashboardHeader title="Competições" /> */}
       {currentOrganization?.tournaments.length > 0 ? (
         <>
           {currentOrganization?.tournaments.map((tournamentId) => {

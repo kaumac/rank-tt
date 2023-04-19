@@ -1,4 +1,3 @@
-import { HamburgerIcon } from '@chakra-ui/icons'
 import {
   Box,
   chakra,
@@ -20,6 +19,7 @@ import {
   Stack,
   useDisclosure
 } from '@chakra-ui/react'
+import { BiMenu } from 'react-icons/bi'
 
 const navLinks = [
   { name: 'Home', link: '/' },
@@ -78,7 +78,7 @@ const MobileSidebar = () => {
         <Spacer />
         <IconButton
           aria-label="Search database"
-          icon={<HamburgerIcon />}
+          icon={<BiMenu />}
           onClick={onOpen}
         />
         <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="xs">
