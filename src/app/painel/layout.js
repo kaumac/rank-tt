@@ -29,6 +29,27 @@ import {
 import CreateOrganization from '@/components/CreateOrganization'
 import useCurrentOrganization from '@/hooks/useCurrentOrganization'
 import useCurrentUser from '@/hooks/useCurrentUser'
+import useOrganization from '@/hooks/useOrganization'
+import useSwitchOrganization from '@/hooks/useSwitchOrganization'
+
+function OrganizationSwitchLink({ organizationId }) {
+  const [organization, loading, error] = useOrganization(organizationId)
+  const [switchOrganization] = useSwitchOrganization()
+  // const isCurrent = currentOrganization?.id === organization?.id
+
+  return (
+    <MenuItem
+      icon={<BiStoreAlt />}
+      fontSize="sm"
+      fontWeight="normal"
+      onClick={() => {
+        switchOrganization(organizationId)
+      }}
+    >
+      {organization?.name}
+    </MenuItem>
+  )
+}
 
 const NavbarIcon = ({ route, title, icon }) => {
   const pathname = usePathname()
@@ -121,13 +142,10 @@ export default function RootLayout({ children }) {
           <MenuList>
             <MenuGroup title="Organizações">
               {currentUser?.organizations.map((organizationId) => (
-                <MenuItem
+                <OrganizationSwitchLink
                   key={organizationId}
-                  icon={<BiStoreAlt />}
-                  onClick={onOpen}
-                >
-                  {organizationId}
-                </MenuItem>
+                  organizationId={organizationId}
+                />
               ))}
               <MenuItem icon={<BiStoreAlt />} onClick={onOpen}>
                 Criar organização
