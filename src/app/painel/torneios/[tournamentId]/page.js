@@ -45,6 +45,8 @@ const CustomTab = React.forwardRef((props, ref) => {
   )
 })
 
+CustomTab.displayName = 'CustomTab'
+
 function Page({ params }) {
   const [tournamentData, loading, error] = useTournament(params?.tournamentId)
   const router = useRouter()
