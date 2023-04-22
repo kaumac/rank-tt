@@ -8,7 +8,6 @@ import {
   Flex,
   Heading,
   Text,
-  Tab,
   TabList,
   TabPanel,
   TabPanels,
@@ -20,23 +19,16 @@ import {
   Tag,
   TagLabel,
   useMultiStyleConfig,
-  useTab,
-  Center
+  useTab
 } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import {
-  BiBullseye,
-  BiCheck,
-  BiCog,
-  BiExtension,
-  BiSitemap,
-  BiTrophy,
-  BiUser
-} from 'react-icons/bi'
+import { BiCog, BiExtension, BiTrophy, BiUser } from 'react-icons/bi'
 import { MdOutlineTableRestaurant } from 'react-icons/md'
 
 import useTournament from '@/hooks/useTournament'
+
+import SetupTournament from './components/SetupTournament'
 
 const CustomTab = React.forwardRef((props, ref) => {
   const tabProps = useTab({ ...props, ref })
@@ -106,119 +98,7 @@ function Page({ params }) {
         <TabIndicator height="3px" />
         <TabPanels display="flex" flex="1">
           <TabPanel display="flex" flex="1" padding="0">
-            <Flex width="25vw" bg="gray.100" p={8} flexDirection="column">
-              <Box>
-                <Heading mb={4} size="md">
-                  Configurar torneio
-                </Heading>
-                <Text fontWeight={500} color="gray.500">
-                  Vamos configurar as principais características do seu torneio
-                </Text>
-              </Box>
-
-              <Flex flex="1" py={8}>
-                <Box
-                  width="1px"
-                  borderLeft="3px dotted #DFE4EA"
-                  position="sticky"
-                  left="78px"
-                />
-                <Flex
-                  flex="1"
-                  ml="-1px"
-                  zIndex={10}
-                  flexDirection="column"
-                  justifyContent="space-between"
-                >
-                  <Flex
-                    py={3}
-                    borderRadius="lg"
-                    px={6}
-                    bg="gray.100"
-                    alignItems="center"
-                  >
-                    <Center
-                      bg="#E1F9F1"
-                      width="42px"
-                      height="42px"
-                      borderRadius="32px"
-                      mr={4}
-                    >
-                      <Icon boxSize={8} as={BiCheck} color="#71CE99" />
-                    </Center>
-                    <Text fontWeight={500} color="gray.500">
-                      Torneio
-                    </Text>
-                  </Flex>
-                  <Flex
-                    py={3}
-                    borderRadius="lg"
-                    px={6}
-                    bg="#F2F5FF"
-                    boxShadow="sm"
-                    alignItems="center"
-                  >
-                    <Center
-                      bg="#4412B0"
-                      width="42px"
-                      height="42px"
-                      borderRadius="32px"
-                      mr={4}
-                    >
-                      <Icon boxSize={5} as={BiSitemap} color="#FFF" />
-                    </Center>
-                    <Text fontWeight={500} color="gray.700">
-                      Categorias
-                    </Text>
-                  </Flex>
-                  <Flex
-                    py={3}
-                    borderRadius="lg"
-                    px={6}
-                    bg="gray.100"
-                    alignItems="center"
-                  >
-                    <Center
-                      bg="#ECF0F3"
-                      width="42px"
-                      height="42px"
-                      borderRadius="32px"
-                      mr={4}
-                    >
-                      <Icon boxSize={6} as={BiBullseye} color="#8B96A9" />
-                    </Center>
-                    <Text fontWeight={500} color="gray.500">
-                      Jogos
-                    </Text>
-                  </Flex>
-                  <Flex
-                    py={3}
-                    borderRadius="lg"
-                    px={6}
-                    bg="gray.100"
-                    alignItems="center"
-                  >
-                    <Center
-                      bg="#ECF0F3"
-                      width="42px"
-                      height="42px"
-                      borderRadius="32px"
-                      mr={4}
-                    >
-                      <Icon
-                        boxSize={6}
-                        as={MdOutlineTableRestaurant}
-                        color="#8B96A9"
-                      />
-                    </Center>
-                    <Text fontWeight={500} color="gray.500">
-                      Mesas
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
-            <Box flex="1">kodfskofoks</Box>
+            <SetupTournament tournamentData={tournamentData} />
           </TabPanel>
           <TabPanel display="flex" flex="1" p={8}>
             {tournamentData?.players.length > 0 ? (

@@ -95,6 +95,8 @@ exports.createTournament = functions.firestore
       name: data.name,
       players: [],
       tables: [],
+      categories: [],
+      settings: {},
       organizationId: data.organizationId,
       id: context.params.tournamentId,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),

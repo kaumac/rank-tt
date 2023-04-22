@@ -23,8 +23,11 @@ import {
   BiStoreAlt,
   BiCog,
   BiLogOut,
-  BiCast
+  BiCast,
+  BiFullscreen,
+  BiExitFullscreen
 } from 'react-icons/bi'
+import screenfull from 'screenfull'
 
 import CreateOrganization from '@/components/CreateOrganization'
 import useCurrentOrganization from '@/hooks/useCurrentOrganization'
@@ -35,6 +38,7 @@ import useSwitchOrganization from '@/hooks/useSwitchOrganization'
 function OrganizationSwitchLink({ organizationId }) {
   const [organization, loading, error] = useOrganization(organizationId)
   const [switchOrganization] = useSwitchOrganization()
+
   // const isCurrent = currentOrganization?.id === organization?.id
 
   return (
@@ -92,6 +96,11 @@ export default function RootLayout({ children }) {
     loadingCurrentOrganization,
     currentOrganizationError
   ] = useCurrentOrganization()
+  const [isFullscreen, setIsFullscreen] = React.useState(false)
+
+  screenfull.on('change', () => {
+    setIsFullscreen(screenfull.isFullscreen)
+  })
 
   return (
     <Flex bg="#FFFFFF" boxShadow="md" height="100vh" overflow="hidden">
@@ -128,6 +137,7 @@ export default function RootLayout({ children }) {
           <NavbarIcon title="Telões" route="/painel/teloes" icon={BiCast} />
         </Stack>
 
+        <Flex></Flex>
         <Menu isLazy>
           <MenuButton>
             <Flex
@@ -140,6 +150,14 @@ export default function RootLayout({ children }) {
             </Flex>
           </MenuButton>
           <MenuList>
+            <MenuItem
+              icon={isFullscreen ? <BiExitFullscreen /> : <BiFullscreen />}
+              onClick={() => {
+                screenfull.toggle()
+              }}
+            >
+              {isFullscreen ? 'Desativar tela cheia' : 'Modo tela cheia'}
+            </MenuItem>
             <MenuGroup title="Organizações">
               {currentUser?.organizations.map((organizationId) => (
                 <OrganizationSwitchLink

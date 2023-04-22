@@ -31,6 +31,7 @@
     "react-hook-form": "^7.43.9",
     "react-icons": "^4.8.0",
     "react-input-mask": "^2.0.4",
+    "screenfull": "^6.0.2",
     "typescript": "4.9.5",
     "use-local-storage-state": "^18.3.2",
     "yup": "^1.1.1"
