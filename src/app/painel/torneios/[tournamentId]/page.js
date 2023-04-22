@@ -28,6 +28,7 @@ import { MdOutlineTableRestaurant } from 'react-icons/md'
 
 import useTournament from '@/hooks/useTournament'
 
+import PlayersTab from './components/PlayersTab'
 import SetupTournament from './components/SetupTournament'
 
 const CustomTab = React.forwardRef((props, ref) => {
@@ -49,8 +50,9 @@ const CustomTab = React.forwardRef((props, ref) => {
 CustomTab.displayName = 'CustomTab'
 
 function Page({ params }) {
-  const [tournamentData, loading, error] = useTournament(params?.tournamentId)
-  const router = useRouter()
+  const [tournament, loading, error] = useTournament(params?.tournamentId)
+
+  const tournamentData = tournament?.data()
 
   return (
     <>
@@ -98,38 +100,10 @@ function Page({ params }) {
         <TabIndicator height="3px" />
         <TabPanels display="flex" flex="1">
           <TabPanel display="flex" flex="1" padding="0">
-            <SetupTournament tournamentData={tournamentData} />
+            <SetupTournament tournament={tournament} />
           </TabPanel>
-          <TabPanel display="flex" flex="1" p={8}>
-            {tournamentData?.players.length > 0 ? (
-              <p>Atletas!</p>
-            ) : (
-              <Flex
-                flex="1"
-                alignItems="center"
-                justifyContent="center"
-                flexDirection="column
-                "
-              >
-                <img src="/gifs/engagement.gif" width="120px" />
-                <Heading size="md" color="gray.600" mt={4}>
-                  Nenhum atleta cadastrado ainda
-                </Heading>
-                <Text textAlign="center" mb={8} mt={2} color="gray.600">
-                  Você pode cadastrar atletas manualmente ou compartilhar o link{' '}
-                  <br /> da página de inscrição do torneio para que os atletas
-                  se inscrevam.
-                </Text>
-                <Flex>
-                  <Button borderRadius="100px" colorScheme="gray" mr={6}>
-                    Cadastrar atletas
-                  </Button>
-                  <Button borderRadius="100px" colorScheme="brand">
-                    Compartilhar link
-                  </Button>
-                </Flex>
-              </Flex>
-            )}
+          <TabPanel display="flex" flex="1" p={0}>
+            <PlayersTab tournament={tournament} />
           </TabPanel>
           <TabPanel p={8}>
             <p>three!</p>

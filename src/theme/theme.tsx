@@ -5,6 +5,7 @@ import {
   withDefaultColorScheme
 } from '@chakra-ui/react'
 
+import { ButtonComponent } from './additions/button/button'
 import { CardComponent } from './additions/card/card'
 import { badgeStyles } from './components/badge'
 import { buttonStyles } from './components/button'
@@ -28,6 +29,7 @@ export default extendTheme(
   inputStyles, // input styles
   textareaStyles, // textarea styles
   switchStyles, // switch styles
+  ButtonComponent, // card component
   CardComponent, // card component
   withDefaultColorScheme({ colorScheme: 'brand' })
 )

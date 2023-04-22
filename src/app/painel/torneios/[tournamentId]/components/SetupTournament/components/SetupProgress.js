@@ -16,26 +16,29 @@ const ProgressItem = ({
 }) => {
   return (
     <Flex
-      py={3}
+      py={{ sm: 0, md: 2, xl: 3 }}
       borderRadius="lg"
-      px={6}
+      px={{ sm: 2, md: 3, xl: 4 }}
       bg={isActive && !isCompleted ? '#F2F5FF' : 'gray.100'}
       alignItems="center"
     >
       <Center
         bg={isCompleted ? '#E1F9F1' : isActive ? '#4412B0' : '#ECF0F3'}
-        width="42px"
-        height="42px"
+        width={{ sm: '32px', xl: '36px' }}
+        height={{ sm: '32px', xl: '36px' }}
         borderRadius="32px"
         mr={4}
       >
         <Icon
-          boxSize={6}
+          boxSize={{ sm: 4, xl: 5, lg: 6 }}
           as={isCompleted ? BiCheck : progressIcon}
           color={isCompleted ? '#71CE99' : isActive ? '#FFFFFF' : '#8B96A9'}
         />
       </Center>
-      <Text fontWeight={500} color={isActive ? 'gray.700' : 'gray.500'}>
+      <Text
+        fontWeight={500}
+        color={isActive && !isCompleted ? 'gray.700' : 'gray.500'}
+      >
         {progressTitle}
       </Text>
     </Flex>
@@ -54,12 +57,15 @@ export const SetupStatus = ({ completedSteps }) => {
         </Text>
       </Box>
 
-      <Flex flex="1" py={8}>
+      <Flex flex="1" py={{ sm: 4, md: 6, lg: 8 }}>
         <Box
           width="1px"
           borderLeft="3px dotted #DFE4EA"
           position="sticky"
-          left="78px"
+          left={{
+            md: '64px',
+            xl: '68px'
+          }}
         />
         <Flex
           flex="1"

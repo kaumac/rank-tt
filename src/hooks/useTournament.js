@@ -11,7 +11,7 @@ function useTournament(tournamentId) {
     }
   )
 
-  return [value?.data(), loading, error]
+  return [value, loading, error]
 }
 
 export default useTournament
