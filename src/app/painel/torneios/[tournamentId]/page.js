@@ -21,13 +21,13 @@ import {
   useMultiStyleConfig,
   useTab
 } from '@chakra-ui/react'
-import { useRouter } from 'next/navigation'
 import React from 'react'
-import { BiCog, BiExtension, BiTrophy, BiUser } from 'react-icons/bi'
+import { BiCog, BiExtension, BiGroup, BiTrophy, BiUser } from 'react-icons/bi'
 import { MdOutlineTableRestaurant } from 'react-icons/md'
 
 import useTournament from '@/hooks/useTournament'
 
+import GroupsTab from './components/GroupsTab'
 import PlayersTab from './components/PlayersTab'
 import SetupTournament from './components/SetupTournament'
 
@@ -88,14 +88,32 @@ function Page({ params }) {
           boxShadow="0 8px 8px 0 rgba(127,85,218,0.04), 0 2px 1px 0 rgba(127,85,218,0.02)"
           borderColor="#EAEAEA"
           bg="white"
+          zIndex={10}
         >
-          <CustomTab icon={<Icon as={BiTrophy} />}>Geral</CustomTab>
-          <CustomTab icon={<Icon as={BiUser} />}>Atletas</CustomTab>
-          <CustomTab icon={<Icon as={MdOutlineTableRestaurant} />}>
+          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiTrophy} />}>
+            Geral
+          </CustomTab>
+          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiUser} />}>
+            Atletas
+          </CustomTab>
+          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiGroup} />}>
+            Grupos
+          </CustomTab>
+          <CustomTab
+            icon={
+              <Icon boxSize={{ sm: 4, xl: 5 }} as={MdOutlineTableRestaurant} />
+            }
+          >
             Mesas
           </CustomTab>
-          <CustomTab icon={<Icon as={BiExtension} />}>Utilidades</CustomTab>
-          <CustomTab icon={<Icon as={BiCog} />}>Configurações</CustomTab>
+          <CustomTab
+            icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiExtension} />}
+          >
+            Utilidades
+          </CustomTab>
+          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiCog} />}>
+            Configurações
+          </CustomTab>
         </TabList>
         <TabIndicator height="3px" />
         <TabPanels display="flex" flex="1">
@@ -104,6 +122,9 @@ function Page({ params }) {
           </TabPanel>
           <TabPanel display="flex" flex="1" p={0}>
             <PlayersTab tournament={tournament} />
+          </TabPanel>
+          <TabPanel display="flex" flex="1" p={0}>
+            <GroupsTab tournament={tournament} />
           </TabPanel>
           <TabPanel p={8}>
             <p>three!</p>

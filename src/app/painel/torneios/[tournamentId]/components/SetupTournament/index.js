@@ -20,6 +20,7 @@ export const SetupTournament = ({ tournament }) => {
   const tournamentData = tournament?.data()
 
   const setTournamentFormat = (format) => {
+    console.log('fsdfs')
     updateDoc(tournament.ref, {
       settings: {
         tournamentFormat: format
@@ -53,9 +54,10 @@ export const SetupTournament = ({ tournament }) => {
         {!completedSteps.tournamentFormat && (
           <SelectTournamentFormat onSelect={setTournamentFormat} />
         )}
-        {!completedSteps.tournamentCategories && (
-          <AddCategories tournamentRef={tournament?.ref} />
-        )}
+        {!completedSteps.tournamentCategories &&
+          !!completedSteps.tournamentFormat && (
+            <AddCategories tournamentRef={tournament?.ref} />
+          )}
       </Center>
     </Flex>
   )

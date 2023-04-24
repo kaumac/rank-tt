@@ -29,16 +29,17 @@ export const SelectTournamentFormat = ({ onSelect }) => {
             </Heading>
           </Flex>
         </Card>
-        <Card px={8} py={4} cursor="pointer">
+        <Card
+          px={8}
+          py={4}
+          cursor="pointer"
+          onClick={() => {
+            onSelect(TOURNAMENT_FORMAT.CATEGORIES_AND_SUBCATEGORIES)
+          }}
+        >
           <Flex alignItems="center">
             <Radio size="lg" colorScheme="orange" isChecked={false} mr={4} />
-            <Heading
-              size="sm"
-              color="gray.600"
-              onClick={() => {
-                onSelect(TOURNAMENT_FORMAT.CATEGORIES_AND_SUBCATEGORIES)
-              }}
-            >
+            <Heading size="sm" color="gray.600">
               Organizar por categoria e sub-categoria
             </Heading>
           </Flex>
