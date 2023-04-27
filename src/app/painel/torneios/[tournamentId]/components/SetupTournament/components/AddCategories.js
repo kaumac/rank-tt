@@ -57,18 +57,12 @@ export const SelectTournamentFormat = ({ tournamentRef }) => {
     setCategories(newCategories)
   }
 
-  const saveCategories = () => {
-    console.log(categories)
-
-    updateDoc(tournamentRef, {
+  const saveCategories = async () => {
+    const savedCategories = await updateDoc(tournamentRef, {
       categories: categories
     })
-      .then((response) => {
-        console.log('response', response)
-      })
-      .catch((error) => {
-        console.log('error', error)
-      })
+
+    return savedCategories
   }
 
   return (

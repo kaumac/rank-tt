@@ -3,38 +3,35 @@ import {
   Text,
   Flex,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-  Textarea,
-  FormControl,
-  FormLabel,
-  Select,
   Box,
   TableContainer,
   Table,
-  TableCaption,
   Thead,
   Tr,
   Th,
   Tbody,
-  Td,
-  Tfoot
+  Td
 } from '@chakra-ui/react'
+import { collection } from 'firebase/firestore'
+
+import useTournamentPlayers from '@/hooks/useTournamentPlayers'
 
 import ImportPlayersButton from './components/ImportPlayersButton'
 
 export const PlayersTab = ({ tournament }) => {
+  const [
+    tournamentPlayers,
+    tournamentPlayersLoading,
+    tournamentPlayersError,
+    tournamentPlayersSnapshot
+  ] = useTournamentPlayers(tournament?.id)
   const tournamentData = tournament?.data()
+
+  console.log('tournamentPlayers', tournamentPlayers)
 
   return (
     <>
-      {tournamentData?.players.length > 0 ? (
+      {tournamentPlayers && tournamentPlayers.length > 0 ? (
         <Box flex="1" p={8}>
           <ImportPlayersButton
             categories={tournamentData?.categories}
@@ -42,7 +39,6 @@ export const PlayersTab = ({ tournament }) => {
           />
           <TableContainer mt={8} width="100%">
             <Table variant="simple">
-              {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
               <Thead>
                 <Tr>
                   <Th>Nome</Th>
@@ -55,8 +51,8 @@ export const PlayersTab = ({ tournament }) => {
                 </Tr>
               </Thead>
               <Tbody>
-                {tournamentData.players.map((player) => (
-                  <Tr key={player.id}>
+                {tournamentPlayers.map((player) => (
+                  <Tr key={`player-list-item-${player.id}`}>
                     <Td>{player.name}</Td>
                     <Td>
                       <Text

@@ -19,19 +19,14 @@ import SetupProgress from './components/SetupProgress'
 export const SetupTournament = ({ tournament }) => {
   const tournamentData = tournament?.data()
 
-  const setTournamentFormat = (format) => {
-    console.log('fsdfs')
-    updateDoc(tournament.ref, {
+  const setTournamentFormat = async (format) => {
+    const updatedTournament = await updateDoc(tournament.ref, {
       settings: {
         tournamentFormat: format
       }
     })
-      .then((response) => {
-        console.log('response', response)
-      })
-      .catch((error) => {
-        console.log('error', error)
-      })
+
+    return updatedTournament
   }
 
   const completedSteps = {
