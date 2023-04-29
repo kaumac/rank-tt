@@ -35,7 +35,7 @@ export const PlayersTab = ({ tournament }) => {
 
   return (
     <Box flex="1" flexDirection="column">
-      <CreateGroupButton tournament={tournament} />
+      {/* <CreateGroupButton tournament={tournament} />
       {tournamentData?.categories.map((category) => (
         <Box flex="1" p={8}>
           <Heading size="sm">{category.name}</Heading>
@@ -45,7 +45,7 @@ export const PlayersTab = ({ tournament }) => {
             )}
           />
         </Box>
-      ))}
+      ))} */}
     </Box>
   )
 }

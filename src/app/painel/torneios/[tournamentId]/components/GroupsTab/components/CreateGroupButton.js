@@ -134,7 +134,7 @@ export const CreateGroupButton = ({ tournament }) => {
                             (newGroupPlayer) => newGroupPlayer.name === 'Bye'
                           )
                           .map((player) => (
-                            <Tr>
+                            <Tr key={`add-player-list-${player?.id}`}>
                               <Td>{player.name}</Td>
                               <Td>
                                 <Button
