@@ -31,7 +31,6 @@ const createTournament = functions.firestore
 
     await newTournamentRef.set({
       name: data.name,
-      players: [],
       groups: [],
       tables: [],
       settings: {},

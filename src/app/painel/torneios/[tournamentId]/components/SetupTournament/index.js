@@ -11,12 +11,15 @@ import { doc } from 'firebase/firestore'
 
 import { TOURNAMENT_FORMAT } from '@/constants'
 import { db, updateDoc } from '@/firebase'
+import useTournament, { useTournamentCategories } from '@/hooks/useTournament'
 
 import AddCategories from './components/AddCategories'
 import SelectTournamentFormat from './components/SelectTournamentFormat'
 import SetupProgress from './components/SetupProgress'
 
 export const SetupTournament = ({ tournament }) => {
+  const [categoriesSnapshot, categories, categoriesLoading, categoriesError] =
+    useTournamentCategories(tournament?.id)
   const tournamentData = tournament?.data()
 
   const setTournamentFormat = async (format) => {
@@ -34,7 +37,7 @@ export const SetupTournament = ({ tournament }) => {
     tournamentCategories:
       tournamentData?.settings?.tournamentFormat ===
         TOURNAMENT_FORMAT.NO_CATEGORIES ||
-      tournamentData?.categories.length > 0,
+      (categories && categories.length > 0),
     tournamentGroups:
       Object.keys(tournamentData?.settings?.groups || {}).length > 0,
     tournamentGames:

@@ -12,18 +12,17 @@ import {
   Tbody,
   Td
 } from '@chakra-ui/react'
-import { collection } from 'firebase/firestore'
 
-import useTournamentPlayers from '@/hooks/useTournamentPlayers'
+import { useTournamentPlayers } from '@/hooks/useTournament'
 
 import ImportPlayersButton from './components/ImportPlayersButton'
 
 export const PlayersTab = ({ tournament }) => {
   const [
+    tournamentPlayersSnapshot,
     tournamentPlayers,
     tournamentPlayersLoading,
-    tournamentPlayersError,
-    tournamentPlayersSnapshot
+    tournamentPlayersError
   ] = useTournamentPlayers(tournament?.id)
   const tournamentData = tournament?.data()
 
