@@ -1,10 +1,5 @@
 import {
-  Heading,
   Text,
-  Flex,
-  Stack,
-  Card,
-  Radio,
   useDisclosure,
   Button,
   Modal,
@@ -25,13 +20,34 @@ import {
   Th,
   Tbody,
   Box,
-  Td
+  Td,
+  Icon,
+  Tag
 } from '@chakra-ui/react'
-import { arrayUnion, collection } from 'firebase/firestore'
+import { collection } from 'firebase/firestore'
 import { useState } from 'react'
+import { BiCheck, BiError } from 'react-icons/bi'
 import { format } from 'telefone'
 
-import { pushDoc } from '@/firebase'
+import { pushDoc, updateDoc } from '@/firebase'
+
+const importStatusLabelMap = {
+  ready: {
+    label: 'Pronto para importar',
+    icon: BiCheck,
+    color: 'gray'
+  },
+  imported: {
+    label: 'Importado',
+    icon: BiCheck,
+    color: 'green'
+  },
+  error: {
+    label: 'Erro',
+    icon: BiError,
+    color: 'red'
+  }
+}
 
 export const ImportPlayersButton = ({ categories, tournamentRef }) => {
   const [playersToImportInput, setPlayersToImportInput] = useState('')
@@ -51,7 +67,8 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
       let playerData = player.split(',')
       return {
         name: playerData[0],
-        phoneNumber: (playerData[1] || '').replace(/[^A-Z0-9]/gi, '_')
+        phoneNumber: (playerData[1] || '').replace(/[^A-Z0-9]/gi, '_'),
+        category: selectedCategory
       }
     })
 
@@ -62,20 +79,23 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
     const playersCollectionRef = collection(tournamentRef, 'players')
 
     playersToImport.forEach(async (player, playerIndex) => {
-      console.log(player, playerIndex)
-      const playerDocRef = await pushDoc(playersCollectionRef, player)
+      pushDoc(playersCollectionRef, player).then((importedPlayerDocRef) => {
+        updateDoc(importedPlayerDocRef, { id: importedPlayerDocRef.id }).then(
+          () => {
+            const newPlayersToImport = [...playersToImport]
+            newPlayersToImport[playerIndex] = {
+              ...player,
+              status: 'imported'
+            }
+            setPlayersToImport(newPlayersToImport)
 
-      console.log(playerDocRef)
-      // const newPlayersToImport = [...playersToImport]
-      // newPlayersToImport[playerIndex] = {
-      //   ...player,
-      //   status: 'imported'
-      // }
-      // setPlayersToImport(newPlayersToImport)
-      // return playerDocRef
+            console.log('playersToImport', playersToImport)
+          }
+        )
+
+        return importedPlayerDocRef
+      })
     })
-
-    // return createdTournament
   }
 
   return (
@@ -132,7 +152,6 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
                 <Box overflowY="auto" maxHeight="calc(100vh - 280px)">
                   <TableContainer width="100%">
                     <Table variant="simple">
-                      {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
                       <Thead>
                         <Tr>
                           <Th>Nome</Th>
@@ -145,7 +164,31 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
                           <Tr key={`player-to-import-${playerIndex}`}>
                             <Td>{player.name}</Td>
                             <Td>{format(player.phoneNumber)}</Td>
-                            <Td></Td>
+                            <Td>
+                              <Tag
+                                size="lg"
+                                colorScheme={
+                                  importStatusLabelMap[player.status]?.color ||
+                                  importStatusLabelMap['ready'].color
+                                }
+                                borderRadius="full"
+                              >
+                                <Icon
+                                  as={
+                                    importStatusLabelMap[player.status]?.icon ||
+                                    importStatusLabelMap['ready'].icon
+                                  }
+                                  color={
+                                    importStatusLabelMap[player.status]
+                                      ?.color ||
+                                    importStatusLabelMap['ready'].color
+                                  }
+                                  mr={2}
+                                />
+                                {importStatusLabelMap[player.status]?.label ||
+                                  importStatusLabelMap['ready'].label}
+                              </Tag>
+                            </Td>
                           </Tr>
                         ))}
                       </Tbody>

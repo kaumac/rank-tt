@@ -9,10 +9,11 @@ import {
   Button,
   IconButton
 } from '@chakra-ui/react'
+import { collection } from 'firebase/firestore'
 import { useState } from 'react'
 import { BiTrash } from 'react-icons/bi'
 
-import { updateDoc } from '@/firebase'
+import { pushDoc, updateDoc } from '@/firebase'
 
 export const SelectTournamentFormat = ({ tournamentRef }) => {
   const [categories, setCategories] = useState([
@@ -38,8 +39,6 @@ export const SelectTournamentFormat = ({ tournamentRef }) => {
   const handleCategoryChange = (categoryIndex, event) => {
     const newCategories = [...categories]
 
-    console.log(newCategories, categoryIndex, event, event.target.value)
-
     newCategories[categoryIndex].name = event.target.value
     setCategories(newCategories)
   }
@@ -58,11 +57,16 @@ export const SelectTournamentFormat = ({ tournamentRef }) => {
   }
 
   const saveCategories = async () => {
-    const savedCategories = await updateDoc(tournamentRef, {
-      categories: categories
-    })
+    const categoriesRef = collection(tournamentRef, 'categories')
+    categories.forEach(async (category) => {
+      const savedCategory = await pushDoc(categoriesRef, category).then(
+        (savedCategoryDocRef) => {
+          updateDoc(savedCategoryDocRef, { id: savedCategoryDocRef.id })
+        }
+      )
 
-    return savedCategories
+      return savedCategory
+    })
   }
 
   return (

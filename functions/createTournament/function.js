@@ -34,7 +34,6 @@ const createTournament = functions.firestore
       players: [],
       groups: [],
       tables: [],
-      categories: [],
       settings: {},
       organizationId: data.organizationId,
       id: context.params.tournamentId,
