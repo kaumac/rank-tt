@@ -99,9 +99,11 @@ export default function RootLayout({ children }) {
   ] = useCurrentOrganization()
   const [isFullscreen, setIsFullscreen] = React.useState(false)
 
-  screenfull.on('change', () => {
-    setIsFullscreen(screenfull.isFullscreen)
-  })
+  if (typeof window !== 'undefined') {
+    screenfull.on('change', () => {
+      setIsFullscreen(screenfull.isFullscreen)
+    })
+  }
 
   return (
     <AuthContextProvider>
