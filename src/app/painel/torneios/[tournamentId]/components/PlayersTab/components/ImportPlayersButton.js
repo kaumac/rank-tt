@@ -121,9 +121,14 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
                       setSelectedCategory(val.target.value)
                     }}
                   >
-                    {categories.map((category) => (
-                      <option key={category.name}>{category.name}</option>
-                    ))}
+                    {categories.map((category) => {
+                      const categoryData = category.data()
+                      return (
+                        <option key={categoryData.id} value={category.id}>
+                          {categoryData.name}
+                        </option>
+                      )
+                    })}
                   </Select>
                 </FormControl>
               )}

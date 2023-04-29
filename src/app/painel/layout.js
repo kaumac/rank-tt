@@ -34,6 +34,7 @@ import useCurrentOrganization from '@/hooks/useCurrentOrganization'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import useOrganization from '@/hooks/useOrganization'
 import useSwitchOrganization from '@/hooks/useSwitchOrganization'
+import { AuthContextProvider } from '@/providers/AuthContextProvider'
 
 function OrganizationSwitchLink({ organizationId }) {
   const [organization, loading, error] = useOrganization(organizationId)
@@ -103,94 +104,96 @@ export default function RootLayout({ children }) {
   })
 
   return (
-    <Flex bg="#FFFFFF" boxShadow="md" height="100vh" overflow="hidden">
-      <CreateOrganization isOpen={isOpen} onClose={onClose} />
-      <Flex
-        boxShadow="1px 0 0 0 rgba(0,0,0,0.05)"
-        bg="#F9FBFC"
-        width="80px"
-        h="100%"
-        flexDirection="column"
-        justifyContent="space-between"
-        alignItems="center"
-        zIndex={999}
-      >
+    <AuthContextProvider>
+      <Flex bg="#FFFFFF" boxShadow="md" height="100vh" overflow="hidden">
+        <CreateOrganization isOpen={isOpen} onClose={onClose} />
         <Flex
-          bg="linear-gradient(140deg, #7F55DA 25%, #551FC9 75%)"
-          borderRadius="lg"
-          width="42px"
-          height="42px"
+          boxShadow="1px 0 0 0 rgba(0,0,0,0.05)"
+          bg="#F9FBFC"
+          width="80px"
+          h="100%"
+          flexDirection="column"
+          justifyContent="space-between"
           alignItems="center"
-          justifyContent="center"
-          mt="8px"
+          zIndex={999}
         >
-          <img src="/ranktt-navbar-logo.svg" width="24px" />
+          <Flex
+            bg="linear-gradient(140deg, #7F55DA 25%, #551FC9 75%)"
+            borderRadius="lg"
+            width="42px"
+            height="42px"
+            alignItems="center"
+            justifyContent="center"
+            mt="8px"
+          >
+            <img src="/ranktt-navbar-logo.svg" width="24px" />
+          </Flex>
+
+          <Stack gap="10px" margin="auto">
+            <NavbarIcon title="Painel" route="/painel" icon={BiHomeAlt} />
+            <NavbarIcon
+              title="Torneios"
+              route="/painel/torneios"
+              icon={BiTrophy}
+            />
+            <NavbarIcon title="Telões" route="/painel/teloes" icon={BiCast} />
+          </Stack>
+
+          <Flex></Flex>
+          <Menu isLazy>
+            <MenuButton>
+              <Flex
+                width="80px"
+                height="80px"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Avatar name="Ateme" />
+              </Flex>
+            </MenuButton>
+            <MenuList>
+              <MenuItem
+                icon={isFullscreen ? <BiExitFullscreen /> : <BiFullscreen />}
+                onClick={() => {
+                  screenfull.toggle()
+                }}
+              >
+                {isFullscreen ? 'Desativar tela cheia' : 'Modo tela cheia'}
+              </MenuItem>
+              <MenuGroup title="Organizações">
+                {currentUser?.organizations.map((organizationId) => (
+                  <OrganizationSwitchLink
+                    key={organizationId}
+                    organizationId={organizationId}
+                  />
+                ))}
+                <MenuItem icon={<BiStoreAlt />} onClick={onOpen}>
+                  Criar organização
+                </MenuItem>
+              </MenuGroup>
+              <MenuGroup title="Meu perfil">
+                <MenuItem icon={<BiCog />} onClick={onOpen}>
+                  Configurações
+                </MenuItem>
+                <MenuItem icon={<BiLogOut />} onClick={onOpen}>
+                  Encerrar sessão
+                </MenuItem>
+              </MenuGroup>
+            </MenuList>
+          </Menu>
         </Flex>
-
-        <Stack gap="10px" margin="auto">
-          <NavbarIcon title="Painel" route="/painel" icon={BiHomeAlt} />
-          <NavbarIcon
-            title="Torneios"
-            route="/painel/torneios"
-            icon={BiTrophy}
-          />
-          <NavbarIcon title="Telões" route="/painel/teloes" icon={BiCast} />
-        </Stack>
-
-        <Flex></Flex>
-        <Menu isLazy>
-          <MenuButton>
-            <Flex
-              width="80px"
-              height="80px"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Avatar name="Ateme" />
-            </Flex>
-          </MenuButton>
-          <MenuList>
-            <MenuItem
-              icon={isFullscreen ? <BiExitFullscreen /> : <BiFullscreen />}
-              onClick={() => {
-                screenfull.toggle()
-              }}
-            >
-              {isFullscreen ? 'Desativar tela cheia' : 'Modo tela cheia'}
-            </MenuItem>
-            <MenuGroup title="Organizações">
-              {currentUser?.organizations.map((organizationId) => (
-                <OrganizationSwitchLink
-                  key={organizationId}
-                  organizationId={organizationId}
-                />
-              ))}
-              <MenuItem icon={<BiStoreAlt />} onClick={onOpen}>
-                Criar organização
-              </MenuItem>
-            </MenuGroup>
-            <MenuGroup title="Meu perfil">
-              <MenuItem icon={<BiCog />} onClick={onOpen}>
-                Configurações
-              </MenuItem>
-              <MenuItem icon={<BiLogOut />} onClick={onOpen}>
-                Encerrar sessão
-              </MenuItem>
-            </MenuGroup>
-          </MenuList>
-        </Menu>
+        <Flex
+          flexDirection="column"
+          h="100vh"
+          flex="1"
+          overflowY="auto"
+          overflowX="hidden"
+          borderRadius="xl"
+          position="relative"
+        >
+          {children}
+        </Flex>
       </Flex>
-      <Flex
-        flexDirection="column"
-        h="100vh"
-        flex="1"
-        overflowY="auto"
-        overflowX="hidden"
-        borderRadius="xl"
-        position="relative"
-      >
-        {children}
-      </Flex>
-    </Flex>
+    </AuthContextProvider>
   )
 }

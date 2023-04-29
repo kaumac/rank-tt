@@ -13,7 +13,10 @@ import {
   Td
 } from '@chakra-ui/react'
 
-import { useTournamentPlayers } from '@/hooks/useTournament'
+import {
+  useTournamentPlayers,
+  useTournamentCategories
+} from '@/hooks/useTournament'
 
 import ImportPlayersButton from './components/ImportPlayersButton'
 
@@ -24,16 +27,16 @@ export const PlayersTab = ({ tournament }) => {
     tournamentPlayersLoading,
     tournamentPlayersError
   ] = useTournamentPlayers(tournament?.id)
+  const [categoriesSnapshot, categories, categoriesLoading, categoriesError] =
+    useTournamentCategories(tournament?.id)
   const tournamentData = tournament?.data()
-
-  console.log('tournamentPlayers', tournamentPlayers)
 
   return (
     <>
       {tournamentPlayers && tournamentPlayers.length > 0 ? (
         <Box flex="1" p={8}>
           <ImportPlayersButton
-            categories={tournamentData?.categories}
+            categories={categories}
             tournamentRef={tournament?.ref}
           />
           <TableContainer mt={8} width="100%">
@@ -92,7 +95,7 @@ export const PlayersTab = ({ tournament }) => {
           </Text>
           <Flex>
             <ImportPlayersButton
-              categories={tournamentData?.categories}
+              categories={categories}
               tournamentRef={tournament?.ref}
             />
             <Button borderRadius="100px" colorScheme="brand">

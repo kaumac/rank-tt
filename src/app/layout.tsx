@@ -3,7 +3,6 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import React from 'react'
 
-import { AuthContextProvider } from '@/providers/AuthContextProvider'
 import theme from '@/theme/theme'
 
 import './globals.css'
@@ -21,9 +20,7 @@ export default function RootLayout({
       */}
       <head />
       <body>
-        <AuthContextProvider>
-          <ChakraProvider theme={theme}>{children}</ChakraProvider>
-        </AuthContextProvider>
+        <ChakraProvider theme={theme}>{children}</ChakraProvider>
       </body>
     </html>
   )

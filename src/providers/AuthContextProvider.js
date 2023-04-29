@@ -1,3 +1,4 @@
+import { Center, Flex, Heading } from '@chakra-ui/react'
 import { onAuthStateChanged, getAuth } from 'firebase/auth'
 import React from 'react'
 
@@ -28,7 +29,25 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user }}>
-      {loading ? <div>Loading...</div> : children}
+      {loading ? (
+        <Center width="100vw" height="100vh" bg="gray.200">
+          <Flex
+            flexDirection="column"
+            width="240px"
+            height="240px"
+            alignItems="center"
+            justifyContent="center"
+            bg="white"
+            borderRadius="240px"
+            boxShadow="xl"
+          >
+            <img src="/gifs/ping-pong.gif" width="100px" />
+            <Heading size="sm">Carregando...</Heading>
+          </Flex>
+        </Center>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   )
 }
