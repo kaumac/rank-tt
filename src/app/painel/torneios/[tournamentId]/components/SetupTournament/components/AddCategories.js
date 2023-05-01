@@ -18,8 +18,8 @@ import { pushDoc, updateDoc } from '@/firebase'
 export const SelectTournamentFormat = ({ tournamentRef }) => {
   const [categories, setCategories] = useState([
     {
-      name: 'Categoria A/B',
-      subcategories: [{ name: 'Sub-categoria A' }, { name: 'Sub-categoria B' }]
+      name: 'A / B',
+      subcategories: [{ name: 'A' }, { name: 'B' }]
     }
   ])
 
@@ -27,11 +27,8 @@ export const SelectTournamentFormat = ({ tournamentRef }) => {
     setCategories([
       ...categories,
       {
-        name: 'Categoria A/B',
-        subcategories: [
-          { name: 'Sub-categoria A' },
-          { name: 'Sub-categoria B' }
-        ]
+        name: 'C / D',
+        subcategories: [{ name: 'C' }, { name: 'D' }]
       }
     ])
   }
