@@ -55,7 +55,10 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
   const [selectedCategory, setSelectedCategory] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  console.log(categories)
+  const categoriesData = categories?.map((category) => ({
+    ...category.data(),
+    id: category.id
+  }))
 
   let handleInputChange = (e) => {
     let inputValue = e.target.value
@@ -68,7 +71,7 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
       return {
         name: playerData[0],
         phoneNumber: (playerData[1] || '').replace(/[^A-Z0-9]/gi, '_'),
-        category: selectedCategory
+        category: selectedCategory.id
       }
     })
 
@@ -88,8 +91,6 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
               status: 'imported'
             }
             setPlayersToImport(newPlayersToImport)
-
-            console.log('playersToImport', playersToImport)
           }
         )
 
@@ -118,14 +119,17 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
                   <Select
                     placeholder="Selecione a categoria"
                     onChange={(val) => {
-                      setSelectedCategory(val.target.value)
+                      setSelectedCategory(
+                        categoriesData.filter((category) => {
+                          return category.id === val.target.value
+                        })[0]
+                      )
                     }}
                   >
-                    {categories.map((category) => {
-                      const categoryData = category.data()
+                    {categoriesData.map((category) => {
                       return (
-                        <option key={categoryData.id} value={category.id}>
-                          {categoryData.name}
+                        <option key={category.id} value={category.id}>
+                          {category.name}
                         </option>
                       )
                     })}
@@ -134,8 +138,8 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
               )}
               {!!selectedCategory && playersToImport.length === 0 && (
                 <>
-                  <Text mb={4} color="gray.600  ">
-                    <strong>{selectedCategory}</strong>
+                  <Text mb={4} color="gray.600">
+                    <strong>{selectedCategory.name}</strong>
                   </Text>
                   <Text mb={4} color="gray.500">
                     Insira os nomes dos jogadores que deseja importar.

@@ -31,6 +31,8 @@ export const PlayersTab = ({ tournament }) => {
     useTournamentCategories(tournament?.id)
   const tournamentData = tournament?.data()
 
+  console.log(tournamentPlayers, 'tournamentPlayers')
+
   return (
     <>
       {tournamentPlayers && tournamentPlayers.length > 0 ? (
@@ -53,26 +55,32 @@ export const PlayersTab = ({ tournament }) => {
                 </Tr>
               </Thead>
               <Tbody>
-                {tournamentPlayers.map((player) => (
-                  <Tr key={`player-list-item-${player.id}`}>
-                    <Td>{player.name}</Td>
-                    <Td>
-                      <Text
-                        as="span"
-                        color={
-                          player.status === 'active' ? 'green.500' : 'red.500'
-                        }
-                      >
-                        {player.status === 'active' ? 'Ativo' : 'Inativo'}
-                      </Text>
-                    </Td>
-                    <Td>{player.category}</Td>
-                    <Td>{player.group}</Td>
-                    <Td>{player.subCategory}</Td>
-                    <Td isNumeric>{player.wins}</Td>
-                    <Td isNumeric>{player.losses}</Td>
-                  </Tr>
-                ))}
+                {tournamentPlayers.map((player) => {
+                  const playerData = player.data()
+
+                  return (
+                    <Tr key={`player-list-item-${player.id}`}>
+                      <Td>{playerData.name}</Td>
+                      <Td>
+                        <Text
+                          as="span"
+                          color={
+                            playerData.status === 'active'
+                              ? 'green.500'
+                              : 'red.500'
+                          }
+                        >
+                          {playerData.status === 'active' ? 'Ativo' : 'Inativo'}
+                        </Text>
+                      </Td>
+                      <Td>{playerData.category}</Td>
+                      <Td>{playerData.group}</Td>
+                      <Td>{playerData.subCategory}</Td>
+                      <Td isNumeric>{playerData.wins}</Td>
+                      <Td isNumeric>{playerData.losses}</Td>
+                    </Tr>
+                  )
+                })}
               </Tbody>
             </Table>
           </TableContainer>
