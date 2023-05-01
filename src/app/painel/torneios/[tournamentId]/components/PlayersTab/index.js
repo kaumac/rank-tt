@@ -13,6 +13,7 @@ import {
   Td
 } from '@chakra-ui/react'
 
+import { indexCollectionDocsById } from '@/firebase'
 import {
   useTournamentPlayers,
   useTournamentCategories
@@ -31,7 +32,7 @@ export const PlayersTab = ({ tournament }) => {
     useTournamentCategories(tournament?.id)
   const tournamentData = tournament?.data()
 
-  console.log(tournamentPlayers, 'tournamentPlayers')
+  const indexedCategories = indexCollectionDocsById(categoriesSnapshot)
 
   return (
     <>
@@ -73,7 +74,7 @@ export const PlayersTab = ({ tournament }) => {
                           {playerData.status === 'active' ? 'Ativo' : 'Inativo'}
                         </Text>
                       </Td>
-                      <Td>{playerData.category}</Td>
+                      <Td>{indexedCategories[playerData.category]?.name}</Td>
                       <Td>{playerData.group}</Td>
                       <Td>{playerData.subCategory}</Td>
                       <Td isNumeric>{playerData.wins}</Td>
