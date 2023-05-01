@@ -42,7 +42,8 @@ export const SetupTournament = ({ tournament }) => {
       Object.keys(tournamentData?.settings?.groups || {}).length > 0,
     tournamentGames:
       Object.keys(tournamentData?.settings?.games || {}).length > 0,
-    tournamentTables: tournamentData?.tables.length > 0
+    tournamentTables:
+      Object.keys(tournamentData?.settings?.tables || {}).length > 0
   }
 
   return (

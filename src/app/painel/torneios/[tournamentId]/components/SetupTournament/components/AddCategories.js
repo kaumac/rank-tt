@@ -7,7 +7,8 @@ import {
   Radio,
   Input,
   Button,
-  IconButton
+  IconButton,
+  Box
 } from '@chakra-ui/react'
 import { collection } from 'firebase/firestore'
 import { useState } from 'react'
@@ -94,25 +95,61 @@ export const SelectTournamentFormat = ({ tournamentRef }) => {
                 deleteCategory(categoryIndex)
               }}
             />
-            <Input
-              value={category.name}
-              onChange={(event) => {
-                handleCategoryChange(categoryIndex, event)
-              }}
-            />
-            {category.subcategories.map((subcategory, subcategoryIndex) => (
+            <Flex flexDirection="column" alignItems="center" px={8}>
+              <Text fontWeight="bold" mb={2}>
+                Categoria
+              </Text>
               <Input
-                value={subcategory.name}
-                key={`subcategory-field-${subcategoryIndex}`}
+                textAlign="center"
+                value={category.name}
                 onChange={(event) => {
-                  handleSubcategoryChange(
-                    categoryIndex,
-                    subcategoryIndex,
-                    event
-                  )
+                  handleCategoryChange(categoryIndex, event)
                 }}
+                mb={2}
               />
-            ))}
+
+              <Box width="1px" height="18px" bg="gray.400" />
+            </Flex>
+            <Flex>
+              {category.subcategories.map((subcategory, subcategoryIndex) => (
+                <Flex
+                  key={`subcategory-field-${subcategoryIndex}`}
+                  position="relative"
+                  alignItems="center"
+                  justifyContent="center"
+                  flexDirection="column"
+                >
+                  <Box
+                    width="50%"
+                    height="1px"
+                    bg="gray.400"
+                    left={subcategoryIndex === 1 ? '0' : null}
+                    right={subcategoryIndex === 0 ? '0' : null}
+                    top="0"
+                    position="absolute"
+                  />
+                  <Box width="1px" height="18px" bg="gray.400" />
+                  <Text fontWeight="bold" mt={2}>
+                    Sub-categoria
+                  </Text>
+                  <Input
+                    textAlign="center"
+                    mt={2}
+                    ml={subcategoryIndex === 1 ? 2 : null}
+                    mr={subcategoryIndex === 0 ? 2 : null}
+                    value={subcategory.name}
+                    key={`subcategory-field-${subcategoryIndex}`}
+                    onChange={(event) => {
+                      handleSubcategoryChange(
+                        categoryIndex,
+                        subcategoryIndex,
+                        event
+                      )
+                    }}
+                  />
+                </Flex>
+              ))}
+            </Flex>
           </Card>
         ))}
         <Flex>

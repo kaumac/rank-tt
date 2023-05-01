@@ -47,8 +47,14 @@ const ProgressItem = ({
 
 export const SetupStatus = ({ completedSteps }) => {
   return (
-    <Flex width="25vw" bg="gray.100" p={8} flexDirection="column">
-      <Box>
+    <Flex
+      width="25vw"
+      bg="gray.100"
+      p={8}
+      flexDirection="column"
+      position="sticky"
+    >
+      <Box position="sticky">
         <Heading mb={4} size="md">
           Configurar torneio
         </Heading>
@@ -57,7 +63,7 @@ export const SetupStatus = ({ completedSteps }) => {
         </Text>
       </Box>
 
-      <Flex flex="1" py={{ sm: 4, md: 6, lg: 8 }}>
+      <Flex flex="1" py={{ sm: 4, md: 6, lg: 8 }} maxHeight="480px">
         <Box
           width="1px"
           borderLeft="3px dotted #DFE4EA"
