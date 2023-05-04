@@ -22,24 +22,20 @@ import {
 import ImportPlayersButton from './components/ImportPlayersButton'
 
 export const PlayersTab = ({ tournament }) => {
-  const [
-    tournamentPlayersSnapshot,
-    tournamentPlayers,
-    tournamentPlayersLoading,
-    tournamentPlayersError
-  ] = useTournamentPlayers(tournament?.id)
-  const [categoriesSnapshot, categories, categoriesLoading, categoriesError] =
+  const [tournamentPlayers, tournamentPlayersLoading, tournamentPlayersError] =
+    useTournamentPlayers(tournament?.id)
+  const [categories, categoriesLoading, categoriesError] =
     useTournamentCategories(tournament?.id)
   const tournamentData = tournament?.data()
 
-  const indexedCategories = indexCollectionDocsById(categoriesSnapshot)
+  const indexedCategories = indexCollectionDocsById(categories)
 
   return (
     <>
-      {tournamentPlayers && tournamentPlayers.length > 0 ? (
+      {tournamentPlayers && tournamentPlayers?.docs.length > 0 ? (
         <Box flex="1" p={8}>
           <ImportPlayersButton
-            categories={categories}
+            categories={categories?.docs}
             tournamentRef={tournament?.ref}
           />
           <TableContainer mt={8} width="100%">
@@ -56,7 +52,7 @@ export const PlayersTab = ({ tournament }) => {
                 </Tr>
               </Thead>
               <Tbody>
-                {tournamentPlayers.map((player) => {
+                {tournamentPlayers.docs.map((player) => {
                   const playerData = player.data()
 
                   return (
@@ -104,7 +100,7 @@ export const PlayersTab = ({ tournament }) => {
           </Text>
           <Flex>
             <ImportPlayersButton
-              categories={categories}
+              categories={categories?.docs}
               tournamentRef={tournament?.ref}
             />
             <Button borderRadius="100px" colorScheme="brand">

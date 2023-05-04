@@ -1,10 +1,4 @@
 import {
-  Heading,
-  Text,
-  Flex,
-  Stack,
-  Card,
-  Radio,
   useDisclosure,
   Button,
   Modal,
@@ -16,7 +10,6 @@ import {
   FormControl,
   FormLabel,
   Select,
-  Textarea,
   ModalFooter,
   TableContainer,
   Table,
@@ -27,17 +20,31 @@ import {
   Td,
   Box
 } from '@chakra-ui/react'
-import { arrayUnion, collection, doc, query, where } from 'firebase/firestore'
+import { arrayUnion, collection, query, where } from 'firebase/firestore'
 import { useState } from 'react'
 
 import firebaseUpdateDoc from '@/firebase/updateDoc'
+import { groupCollectionDocsByField } from '@/firebase/utils'
+import {
+  useTournamentCategories,
+  useTournamentPlayers
+} from '@/hooks/useTournament'
 
 export const CreateGroupButton = ({ tournament }) => {
   const [newGroup, setNewGroup] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [tournamentPlayers, tournamentPlayersLoading, tournamentPlayersError] =
+    useTournamentPlayers(tournament?.id)
+  const [categories, categoriesLoading, categoriesError] =
+    useTournamentCategories(tournament?.id)
 
   const tournamentData = tournament?.data()
+
+  const playersGroupedByCategory = groupCollectionDocsByField(
+    tournamentPlayers,
+    'category'
+  )
 
   const handleAddPlayer = (player) => {
     setNewGroup([...newGroup, player])
@@ -64,11 +71,8 @@ export const CreateGroupButton = ({ tournament }) => {
       })
     })
       .then((response) => {
-        console.log('newGroup', newGroup)
         newGroup.forEach((player) => {
-          console.log('newGroup', player)
           if (player.type !== 'bye') {
-            console.log('player', player)
             const playerRef = query(
               collection(tournament.ref, 'players'),
               where('name', '==', player.name)
@@ -78,7 +82,6 @@ export const CreateGroupButton = ({ tournament }) => {
             })
           }
         })
-        console.log('response', response)
       })
       .catch((error) => {
         console.log('error', error)
@@ -111,9 +114,16 @@ export const CreateGroupButton = ({ tournament }) => {
                       setSelectedCategory(val.target.value)
                     }}
                   >
-                    {tournamentData.categories.map((category) => (
-                      <option key={category.name}>{category.name}</option>
-                    ))}
+                    {categories?.docs &&
+                      categories.docs.map((category) => {
+                        const categoryData = category.data()
+                        return (
+                          <option key={category.id} value={category.id}>
+                            {category.id}
+                            {categoryData.name}
+                          </option>
+                        )
+                      })}
                   </Select>
                 </FormControl>
               )}
@@ -149,41 +159,40 @@ export const CreateGroupButton = ({ tournament }) => {
                               </Td>
                             </Tr>
                           ))}
-                        {tournamentData.players
-                          .filter(
-                            (player) => player.category === selectedCategory
-                          )
-                          .map((player) => (
-                            <Tr key={player.id}>
-                              <Td>{player.name}</Td>
-                              <Td>
-                                {newGroup.filter(
-                                  (newGroupPlayer) =>
-                                    newGroupPlayer.name === player.name
-                                ).length === 0 ? (
-                                  <Button
-                                    variant="ghost"
-                                    colorScheme="green"
-                                    onClick={() => {
-                                      handleAddPlayer(player)
-                                    }}
-                                  >
-                                    adicionar
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    variant="ghost"
-                                    colorScheme="red"
-                                    onClick={() => {
-                                      handleRemovePlayer(player)
-                                    }}
-                                  >
-                                    remover
-                                  </Button>
-                                )}
-                              </Td>
-                            </Tr>
-                          ))}
+                        {playersGroupedByCategory[selectedCategory] &&
+                          playersGroupedByCategory[selectedCategory].map(
+                            (player) => (
+                              <Tr key={player.id}>
+                                <Td>{player.name}</Td>
+                                <Td>
+                                  {newGroup.filter(
+                                    (newGroupPlayer) =>
+                                      newGroupPlayer.name === player.name
+                                  ).length === 0 ? (
+                                    <Button
+                                      variant="ghost"
+                                      colorScheme="green"
+                                      onClick={() => {
+                                        handleAddPlayer(player)
+                                      }}
+                                    >
+                                      adicionar
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      variant="ghost"
+                                      colorScheme="red"
+                                      onClick={() => {
+                                        handleRemovePlayer(player)
+                                      }}
+                                    >
+                                      remover
+                                    </Button>
+                                  )}
+                                </Td>
+                              </Tr>
+                            )
+                          )}
                       </Tbody>
                     </Table>
                   </TableContainer>

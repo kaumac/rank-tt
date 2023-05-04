@@ -22,11 +22,10 @@ export const useTournamentPlayers = (tournamentId) => {
     }
   )
 
-  return [snapshot, snapshot?.docs, loading, error]
+  return [snapshot, loading, error]
 }
 
 export const useTournamentCategories = (tournamentId) => {
-  console.log(tournamentId, 'useTournamentCategories tournamentId')
   const [snapshot, loading, error] = useCollection(
     collection(db, 'tournaments', tournamentId || 'undefined', 'categories'),
     {
@@ -34,7 +33,18 @@ export const useTournamentCategories = (tournamentId) => {
     }
   )
 
-  return [snapshot, snapshot?.docs, loading, error]
+  return [snapshot, loading, error]
+}
+
+export const useTournamentGroups = (tournamentId) => {
+  const [snapshot, loading, error] = useCollection(
+    collection(db, 'tournaments', tournamentId || 'undefined', 'groups'),
+    {
+      snapshotListenOptions: { includeMetadataChanges: true }
+    }
+  )
+
+  return [snapshot, loading, error]
 }
 
 export default useTournament

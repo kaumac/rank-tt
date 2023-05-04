@@ -18,7 +18,7 @@ import SelectTournamentFormat from './components/SelectTournamentFormat'
 import SetupProgress from './components/SetupProgress'
 
 export const SetupTournament = ({ tournament }) => {
-  const [categoriesSnapshot, categories, categoriesLoading, categoriesError] =
+  const [categories, categoriesLoading, categoriesError] =
     useTournamentCategories(tournament?.id)
   const tournamentData = tournament?.data()
 
@@ -37,7 +37,7 @@ export const SetupTournament = ({ tournament }) => {
     tournamentCategories:
       tournamentData?.settings?.tournamentFormat ===
         TOURNAMENT_FORMAT.NO_CATEGORIES ||
-      (categories && categories.length > 0),
+      (categories?.docs && categories?.docs.length > 0),
     tournamentGroups:
       Object.keys(tournamentData?.settings?.groups || {}).length > 0,
     tournamentGames:
