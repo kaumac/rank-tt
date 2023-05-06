@@ -39,6 +39,9 @@ export const PlayersTab = ({ tournament }) => {
     'category'
   )
 
+  const selectedCategoryData =
+    indexedCategories[categoryFilter] &&
+    indexedCategories[categoryFilter].data()
   const selectedCategoryPlayers = groupedPlayer[categoryFilter]
 
   console.log('selectedCategoryPlayers', selectedCategoryPlayers)
@@ -90,8 +93,8 @@ export const PlayersTab = ({ tournament }) => {
           </Box>
           <Box flex="1">
             <Flex p={8} alignItems="center">
-              <Heading size="lg" pl={3} mr={8}>
-                Categoria {indexedCategories[categoryFilter]?.name}
+              <Heading size="md" pl={3} mr={8}>
+                Categoria {selectedCategoryData.name}
               </Heading>
               <ImportPlayersButton
                 category={indexedCategories[categoryFilter]}
