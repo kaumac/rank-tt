@@ -49,16 +49,11 @@ const importStatusLabelMap = {
   }
 }
 
-export const ImportPlayersButton = ({ categories, tournamentRef }) => {
+export const ImportPlayersButton = ({ category, tournamentRef }) => {
+  const [isImportComplete, setIsImportComplete] = useState(false)
   const [playersToImportInput, setPlayersToImportInput] = useState('')
   const [playersToImport, setPlayersToImport] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const categoriesData = categories?.map((category) => ({
-    ...category.data(),
-    id: category.id
-  }))
 
   let handleInputChange = (e) => {
     let inputValue = e.target.value
@@ -71,7 +66,7 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
       return {
         name: playerData[0],
         phoneNumber: (playerData[1] || '').replace(/[^A-Z0-9]/gi, '_'),
-        category: selectedCategory.id
+        category: category.id
       }
     })
 
@@ -82,150 +77,141 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
     const playersCollectionRef = collection(tournamentRef, 'players')
 
     playersToImport.forEach(async (player, playerIndex) => {
-      pushDoc(playersCollectionRef, player).then((importedPlayerDocRef) => {
-        updateDoc(importedPlayerDocRef, { id: importedPlayerDocRef.id }).then(
-          () => {
-            const newPlayersToImport = [...playersToImport]
-            newPlayersToImport[playerIndex] = {
-              ...player,
-              status: 'imported'
-            }
-            setPlayersToImport(newPlayersToImport)
-          }
-        )
-
-        return importedPlayerDocRef
+      pushDoc(playersCollectionRef, player).then(() => {
+        const newPlayersToImport = [...playersToImport]
+        newPlayersToImport[playerIndex] = {
+          ...player,
+          status: 'imported'
+        }
+        setPlayersToImport(newPlayersToImport)
+        setIsImportComplete(true)
       })
     })
   }
 
   return (
-    categories && (
-      <>
-        <Button colorScheme="orange" mr={6} onClick={onOpen}>
-          Importar jogadores
-        </Button>
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Importar lista de jogadores</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              {!selectedCategory && (
-                <FormControl mb={4}>
-                  <FormLabel>
-                    <strong>Para qual categoria deseja importar?</strong>
-                  </FormLabel>
-                  <Select
-                    placeholder="Selecione a categoria"
-                    onChange={(val) => {
-                      setSelectedCategory(
-                        categoriesData.filter((category) => {
-                          return category.id === val.target.value
-                        })[0]
-                      )
-                    }}
-                  >
-                    {categoriesData.map((category) => {
-                      return (
-                        <option key={category.id} value={category.id}>
-                          {category.name}
-                        </option>
-                      )
-                    })}
-                  </Select>
-                </FormControl>
-              )}
-              {!!selectedCategory && playersToImport.length === 0 && (
-                <>
-                  <Text mb={4} color="gray.600">
-                    <strong>{selectedCategory.name}</strong>
-                  </Text>
-                  <Text mb={4} color="gray.500">
-                    Insira os nomes dos jogadores que deseja importar.
-                    <br />* Insira <strong>apenas um nome por linha</strong>
-                    .
-                    <br />
-                    ** <strong>Opcionalmente</strong> você pode inserir um
-                    número de celular separado por vírgula para cada jogador.
-                  </Text>
-                  <Textarea
-                    value={playersToImportInput}
-                    onChange={handleInputChange}
-                    placeholder="Joaquim José da Silva"
-                    size="sm"
-                  />
-                </>
-              )}
-              {!!selectedCategory && playersToImport.length > 0 && (
-                <Box overflowY="auto" maxHeight="calc(100vh - 280px)">
-                  <TableContainer width="100%">
-                    <Table variant="simple">
-                      <Thead>
-                        <Tr>
-                          <Th>Nome</Th>
-                          <Th>Celular</Th>
-                          <Th>Status</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        {playersToImport.map((player, playerIndex) => (
-                          <Tr key={`player-to-import-${playerIndex}`}>
-                            <Td>{player.name}</Td>
-                            <Td>{format(player.phoneNumber)}</Td>
-                            <Td>
-                              <Tag
-                                size="lg"
-                                colorScheme={
+    <>
+      <Button colorScheme="orange" mr={6} onClick={onOpen}>
+        Importar jogadores
+      </Button>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          onClose()
+          setIsImportComplete(false)
+          setPlayersToImportInput('')
+          setPlayersToImport([])
+        }}
+        isCentered
+        size="xl"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            Importar jogadores
+            {category && ` (Categoria ${category.data().name}`})
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {playersToImport.length === 0 && (
+              <>
+                <Text mb={4} color="gray.500">
+                  Insira os nomes dos jogadores que deseja importar.
+                  <br />* Insira <strong>apenas um nome por linha</strong>
+                  .
+                  <br />
+                  ** <strong>Opcionalmente</strong> você pode inserir um número
+                  de celular separado por vírgula para cada jogador.
+                </Text>
+                <Textarea
+                  value={playersToImportInput}
+                  onChange={handleInputChange}
+                  placeholder="Joaquim José da Silva"
+                  size="sm"
+                />
+              </>
+            )}
+            {playersToImport.length > 0 && (
+              <Box overflowY="auto" maxHeight="calc(100vh - 280px)">
+                <TableContainer width="100%">
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        <Th>Nome</Th>
+                        <Th>Celular</Th>
+                        <Th>Status</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {playersToImport.map((player, playerIndex) => (
+                        <Tr key={`player-to-import-${playerIndex}`}>
+                          <Td>{player.name}</Td>
+                          <Td>{format(player.phoneNumber)}</Td>
+                          <Td>
+                            <Tag
+                              size="lg"
+                              colorScheme={
+                                importStatusLabelMap[player.status]?.color ||
+                                importStatusLabelMap['ready'].color
+                              }
+                              borderRadius="full"
+                            >
+                              <Icon
+                                as={
+                                  importStatusLabelMap[player.status]?.icon ||
+                                  importStatusLabelMap['ready'].icon
+                                }
+                                color={
                                   importStatusLabelMap[player.status]?.color ||
                                   importStatusLabelMap['ready'].color
                                 }
-                                borderRadius="full"
-                              >
-                                <Icon
-                                  as={
-                                    importStatusLabelMap[player.status]?.icon ||
-                                    importStatusLabelMap['ready'].icon
-                                  }
-                                  color={
-                                    importStatusLabelMap[player.status]
-                                      ?.color ||
-                                    importStatusLabelMap['ready'].color
-                                  }
-                                  mr={2}
-                                />
-                                {importStatusLabelMap[player.status]?.label ||
-                                  importStatusLabelMap['ready'].label}
-                              </Tag>
-                            </Td>
-                          </Tr>
-                        ))}
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
-                </Box>
-              )}
-            </ModalBody>
+                                mr={2}
+                              />
+                              {importStatusLabelMap[player.status]?.label ||
+                                importStatusLabelMap['ready'].label}
+                            </Tag>
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            )}
+          </ModalBody>
 
-            <ModalFooter>
-              <Button variant="gray" onClick={onClose}>
-                Cancelar
+          <ModalFooter>
+            <Button variant="gray" onClick={onClose}>
+              Cancelar
+            </Button>
+            {playersToImport.length === 0 && !isImportComplete && (
+              <Button colorScheme="brand" ml={3} onClick={onPrepareToImport}>
+                Continuar
               </Button>
-              {!!selectedCategory && playersToImport.length === 0 && (
-                <Button colorScheme="brand" ml={3} onClick={onPrepareToImport}>
-                  Continuar
-                </Button>
-              )}
-              {!!selectedCategory && playersToImport.length > 0 && (
-                <Button colorScheme="brand" ml={3} onClick={onImportPlayers}>
-                  Importar todos
-                </Button>
-              )}
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
-    )
+            )}
+            {playersToImport.length > 0 && !isImportComplete && (
+              <Button colorScheme="brand" ml={3} onClick={onImportPlayers}>
+                Importar todos
+              </Button>
+            )}
+            {isImportComplete && (
+              <Button
+                colorScheme="brand"
+                ml={3}
+                onClick={() => {
+                  onClose()
+                  setIsImportComplete(false)
+                  setPlayersToImportInput('')
+                  setPlayersToImport([])
+                }}
+              >
+                Concluir
+              </Button>
+            )}
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   )
 }
 

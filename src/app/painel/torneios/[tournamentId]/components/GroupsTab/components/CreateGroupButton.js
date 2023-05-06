@@ -170,37 +170,41 @@ export const CreateGroupButton = ({ tournament }) => {
                           ))}
                         {playersGroupedByCategory[selectedCategory] &&
                           playersGroupedByCategory[selectedCategory].map(
-                            (player) => (
-                              <Tr key={player.id}>
-                                <Td>{player.name}</Td>
-                                <Td>
-                                  {newGroup.filter(
-                                    (newGroupPlayer) =>
-                                      newGroupPlayer.name === player.name
-                                  ).length === 0 ? (
-                                    <Button
-                                      variant="ghost"
-                                      colorScheme="green"
-                                      onClick={() => {
-                                        handleAddPlayer(player)
-                                      }}
-                                    >
-                                      adicionar
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      variant="ghost"
-                                      colorScheme="red"
-                                      onClick={() => {
-                                        handleRemovePlayer(player)
-                                      }}
-                                    >
-                                      remover
-                                    </Button>
-                                  )}
-                                </Td>
-                              </Tr>
-                            )
+                            (playerSnapshot) => {
+                              const player = playerSnapshot.data()
+
+                              return (
+                                <Tr key={player.id}>
+                                  <Td>{player.name}</Td>
+                                  <Td>
+                                    {newGroup.filter(
+                                      (newGroupPlayer) =>
+                                        newGroupPlayer.name === player.name
+                                    ).length === 0 ? (
+                                      <Button
+                                        variant="ghost"
+                                        colorScheme="green"
+                                        onClick={() => {
+                                          handleAddPlayer(player)
+                                        }}
+                                      >
+                                        adicionar
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        variant="ghost"
+                                        colorScheme="red"
+                                        onClick={() => {
+                                          handleRemovePlayer(player)
+                                        }}
+                                      >
+                                        remover
+                                      </Button>
+                                    )}
+                                  </Td>
+                                </Tr>
+                              )
+                            }
                           )}
                       </Tbody>
                     </Table>

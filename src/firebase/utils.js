@@ -2,7 +2,7 @@ export const indexCollectionDocsById = (firebaseCollectionSnapshot) => {
   return (firebaseCollectionSnapshot?.docs || []).reduce(
     (accObject, documentSnapshot) => {
       return Object.assign(accObject, {
-        [documentSnapshot.id]: documentSnapshot.data()
+        [documentSnapshot.id]: documentSnapshot
       })
     },
     {}
@@ -19,10 +19,8 @@ export const groupCollectionDocsByField = (
         [documentSnapshot.data()[field]]: accObject[
           documentSnapshot.data()[field]
         ]
-          ? accObject[documentSnapshot.data()[field]].concat(
-              documentSnapshot.data()
-            )
-          : [].concat(documentSnapshot.data())
+          ? accObject[documentSnapshot.data()[field]].concat(documentSnapshot)
+          : [].concat(documentSnapshot)
       })
     },
     {}

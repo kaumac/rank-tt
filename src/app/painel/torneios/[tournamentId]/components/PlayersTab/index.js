@@ -34,14 +34,14 @@ export const PlayersTab = ({ tournament }) => {
   const [categoryFilter, setCategoryFilter] = useState()
 
   const indexedCategories = indexCollectionDocsById(categories)
-  const indexedPlayers = groupCollectionDocsByField(
+  const groupedPlayer = groupCollectionDocsByField(
     tournamentPlayers,
     'category'
   )
 
-  const categoryPlayers = indexedPlayers[categoryFilter]
+  const selectedCategoryPlayers = groupedPlayer[categoryFilter]
 
-  console.log('categoryPlayers', categoryPlayers)
+  console.log('selectedCategoryPlayers', selectedCategoryPlayers)
 
   useEffect(() => {
     if (categories?.docs.length > 0) {
@@ -94,7 +94,7 @@ export const PlayersTab = ({ tournament }) => {
                 Categoria {indexedCategories[categoryFilter]?.name}
               </Heading>
               <ImportPlayersButton
-                categories={categories?.docs}
+                category={indexedCategories[categoryFilter]}
                 tournamentRef={tournament?.ref}
               />
             </Flex>
@@ -104,7 +104,6 @@ export const PlayersTab = ({ tournament }) => {
                   <Tr>
                     <Th>Nome</Th>
                     <Th>Status</Th>
-                    <Th>Categoria</Th>
                     <Th isNumeric>Grupo</Th>
                     <Th>Sub-categoria</Th>
                     <Th isNumeric>Vitórias</Th>
@@ -112,7 +111,7 @@ export const PlayersTab = ({ tournament }) => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {tournamentPlayers.docs.map((player) => {
+                  {(selectedCategoryPlayers || []).map((player) => {
                     const playerData = player.data()
 
                     return (
@@ -132,7 +131,6 @@ export const PlayersTab = ({ tournament }) => {
                               : 'Inativo'}
                           </Text>
                         </Td>
-                        <Td>{indexedCategories[playerData.category]?.name}</Td>
                         <Td>{playerData.group}</Td>
                         <Td>{playerData.subCategory}</Td>
                         <Td isNumeric>{playerData.wins}</Td>
@@ -163,7 +161,7 @@ export const PlayersTab = ({ tournament }) => {
           </Text>
           <Flex>
             <ImportPlayersButton
-              categories={categories?.docs}
+              category={indexedCategories[categoryFilter]}
               tournamentRef={tournament?.ref}
             />
             <Button borderRadius="100px" colorScheme="brand">
