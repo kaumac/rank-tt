@@ -102,8 +102,8 @@ export const ImportPlayersButton = ({ categories, tournamentRef }) => {
   return (
     categories && (
       <>
-        <Button colorScheme="gray" mr={6} onClick={onOpen}>
-          Importar lista de jogadores
+        <Button colorScheme="orange" mr={6} onClick={onOpen}>
+          Importar jogadores
         </Button>
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
           <ModalOverlay />

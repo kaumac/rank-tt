@@ -22,7 +22,14 @@ import {
   useTab
 } from '@chakra-ui/react'
 import React from 'react'
-import { BiCog, BiExtension, BiGroup, BiTrophy, BiUser } from 'react-icons/bi'
+import {
+  BiCog,
+  BiExtension,
+  BiGroup,
+  BiSitemap,
+  BiTrophy,
+  BiUser
+} from 'react-icons/bi'
 import { MdOutlineTableRestaurant } from 'react-icons/md'
 
 import useTournament from '@/hooks/useTournament'
@@ -93,11 +100,11 @@ function Page({ params }) {
           <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiTrophy} />}>
             Geral
           </CustomTab>
-          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiUser} />}>
-            Atletas
-          </CustomTab>
           <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiGroup} />}>
-            Grupos
+            Atletas e grupos
+          </CustomTab>
+          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiSitemap} />}>
+            Jogos
           </CustomTab>
           <CustomTab
             icon={

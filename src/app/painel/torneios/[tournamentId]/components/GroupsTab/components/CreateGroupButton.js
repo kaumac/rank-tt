@@ -27,6 +27,7 @@ import firebaseUpdateDoc from '@/firebase/updateDoc'
 import { groupCollectionDocsByField } from '@/firebase/utils'
 import {
   useTournamentCategories,
+  useTournamentGroups,
   useTournamentPlayers
 } from '@/hooks/useTournament'
 
@@ -38,11 +39,18 @@ export const CreateGroupButton = ({ tournament }) => {
     useTournamentPlayers(tournament?.id)
   const [categories, categoriesLoading, categoriesError] =
     useTournamentCategories(tournament?.id)
+  const [tournamentGroups, tournamentGroupsLoading, tournamentGroupsError] =
+    useTournamentGroups(tournament?.id)
 
   const tournamentData = tournament?.data()
 
   const playersGroupedByCategory = groupCollectionDocsByField(
     tournamentPlayers,
+    'category'
+  )
+
+  const groupsGroupedByCategory = groupCollectionDocsByField(
+    tournamentGroups,
     'category'
   )
 
@@ -55,44 +63,45 @@ export const CreateGroupButton = ({ tournament }) => {
   }
 
   const onCreateGroup = () => {
-    const groupNumber =
-      tournamentData.groups.filter((group) => {
-        return group.category === selectedCategory
-      }).length + 1
+    const groupNumber = groupsGroupedByCategory[selectedCategory]
+      ? groupsGroupedByCategory[selectedCategory].length + 1
+      : 1
 
-    const groupId = `${selectedCategory}-${groupNumber}`
+    console.log('groupNumber', groupNumber)
 
-    firebaseUpdateDoc(tournament.ref, {
-      groups: arrayUnion({
-        name: `Grupo ${groupNumber}`,
-        players: newGroup,
-        category: selectedCategory,
-        id: groupId
-      })
-    })
-      .then((response) => {
-        newGroup.forEach((player) => {
-          if (player.type !== 'bye') {
-            const playerRef = query(
-              collection(tournament.ref, 'players'),
-              where('name', '==', player.name)
-            )
-            firebaseUpdateDoc(playerRef, {
-              grupo: groupId
-            })
-          }
-        })
-      })
-      .catch((error) => {
-        console.log('error', error)
-      })
+    // const groupId = `${selectedCategory}-${groupNumber}`
+
+    // firebaseUpdateDoc(tournament.ref, {
+    //   groups: arrayUnion({
+    //     name: `Grupo ${groupNumber}`,
+    //     players: newGroup,
+    //     category: selectedCategory,
+    //     id: groupId
+    //   })
+    // })
+    //   .then((response) => {
+    //     newGroup.forEach((player) => {
+    //       if (player.type !== 'bye') {
+    //         const playerRef = query(
+    //           collection(tournament.ref, 'players'),
+    //           where('name', '==', player.name)
+    //         )
+    //         firebaseUpdateDoc(playerRef, {
+    //           grupo: groupId
+    //         })
+    //       }
+    //     })
+    //   })
+    //   .catch((error) => {
+    //     console.log('error', error)
+    //   })
   }
 
   return (
     tournamentData && (
       <>
         <Button colorScheme="gray" mr={6} onClick={onOpen}>
-          Criar grupo
+          Criar grupos manualmente
         </Button>
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="full">
           <ModalOverlay />
