@@ -25,11 +25,7 @@ import React, { useState } from 'react'
 
 import firebaseUpdateDoc from '@/firebase/updateDoc'
 import { groupCollectionDocsByField } from '@/firebase/utils'
-import {
-  useTournamentCategories,
-  useTournamentGroups,
-  useTournamentPlayers
-} from '@/hooks/useTournament'
+import { useTournamentGroups } from '@/hooks/useTournament'
 
 export const CreateGroupWrapper = ({
   children,
@@ -37,44 +33,39 @@ export const CreateGroupWrapper = ({
   category,
   players
 }) => {
-  const [newGroup, setNewGroup] = useState([])
+  const [newGroup, setNewGroup] = useState({ players: [] })
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [tournamentPlayers, tournamentPlayersLoading, tournamentPlayersError] =
-    useTournamentPlayers(tournament?.id)
-  const [categories, categoriesLoading, categoriesError] =
-    useTournamentCategories(tournament?.id)
   const [tournamentGroups, tournamentGroupsLoading, tournamentGroupsError] =
     useTournamentGroups(tournament?.id)
 
   categoryId = category?.id
-
-  const playersGroupedByCategory = groupCollectionDocsByField(
-    tournamentPlayers,
-    'category'
-  )
 
   const groupsGroupedByCategory = groupCollectionDocsByField(
     tournamentGroups,
     'category'
   )
 
-  const handleAddPlayer = (player) => {
-    setNewGroup([...newGroup, player])
+  const categoryGroups = groupsGroupedByCategory[categoryId]
+
+  console.log({ categoryGroups })
+
+  const groupNumber = categoryGroups ? categoryGroups.length + 1 : 1
+
+  const handleAddPlayer = (playerId) => {
+    setNewGroup({
+      ...newGroup,
+      players: [...newGroup.players, playerId]
+    })
   }
 
-  const handleRemovePlayer = (player) => {
-    setNewGroup(newGroup.filter((p) => p.name !== player.name))
+  const handleRemovePlayer = (playerId) => {
+    setNewGroup({
+      ...newGroup,
+      players: newGroup.players.filter((player) => player !== playerId)
+    })
   }
 
   const onCreateGroup = () => {
-    const groupNumber = groupsGroupedByCategory[categoryId]
-      ? groupsGroupedByCategory[categoryId].length + 1
-      : 1
-
-    console.log('groupNumber', groupNumber)
-
-    // const groupId = `${categoryId}-${groupNumber}`
-
     // firebaseUpdateDoc(tournament.ref, {
     //   groups: arrayUnion({
     //     name: `Grupo ${groupNumber}`,
@@ -109,18 +100,20 @@ export const CreateGroupWrapper = ({
     })
   }
 
+  console.log({ newGroup })
+
   return (
     <>
       {renderChildren()}
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="full">
+      <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
         <ModalOverlay />
-        <ModalContent p={10}>
+        <ModalContent p={4}>
           <ModalHeader>
             Criar grupo{' '}
             {newGroup.length > 0 && `(${newGroup.length} selecionados)`}
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody px={0}>
             <Box overflowY="auto" maxHeight="calc(100vh - 280px)">
               <TableContainer width="100%">
                 <Table variant="simple">
@@ -132,17 +125,17 @@ export const CreateGroupWrapper = ({
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {newGroup
-                      .filter((newGroupPlayer) => newGroupPlayer.name === 'Bye')
-                      .map((player) => (
-                        <Tr key={`add-player-list-${player?.id}`}>
-                          <Td>{player.name}</Td>
+                    {newGroup.players
+                      .filter((newGroupPlayer) => newGroupPlayer === 'bye')
+                      .map((bye, byeIndex) => (
+                        <Tr key={`group-bye-list-${byeIndex}`}>
+                          <Td>Bye</Td>
                           <Td>
                             <Button
                               variant="ghost"
                               colorScheme="red"
                               onClick={() => {
-                                handleRemovePlayer({ name: 'Bye' })
+                                handleRemovePlayer('bye')
                               }}
                             >
                               remover
@@ -150,37 +143,32 @@ export const CreateGroupWrapper = ({
                           </Td>
                         </Tr>
                       ))}
-                    {(players || []).map((playerSnapshot) => {
-                      const player = playerSnapshot.data()
-
-                      console.log('category player', player)
+                    {(players || []).map((player) => {
+                      const playerData = player.data()
 
                       return (
                         <Tr key={player.id}>
-                          <Td>{player.name}</Td>
+                          <Td>{playerData.name}</Td>
                           <Td>
-                            {newGroup.filter(
-                              (newGroupPlayer) =>
-                                newGroupPlayer.name === player.name
-                            ).length === 0 ? (
-                              <Button
-                                variant="ghost"
-                                colorScheme="green"
-                                onClick={() => {
-                                  handleAddPlayer(player)
-                                }}
-                              >
-                                adicionar
-                              </Button>
-                            ) : (
+                            {newGroup.players.includes(player.id) ? (
                               <Button
                                 variant="ghost"
                                 colorScheme="red"
                                 onClick={() => {
-                                  handleRemovePlayer(player)
+                                  handleRemovePlayer(player.id)
                                 }}
                               >
                                 remover
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="ghost"
+                                colorScheme="green"
+                                onClick={() => {
+                                  handleAddPlayer(player.id)
+                                }}
+                              >
+                                adicionar
                               </Button>
                             )}
                           </Td>
@@ -194,13 +182,13 @@ export const CreateGroupWrapper = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="ghost" onClick={onClose}>
+            <Button variant="ghost" onClick={onClose} color="red">
               Cancelar
             </Button>
             <Button
-              variant="gray"
+              variant="ghost"
               onClick={() => {
-                handleAddPlayer({ name: 'Bye', type: 'bye' })
+                handleAddPlayer('bye')
               }}
             >
               Adicionar bye
