@@ -34,7 +34,6 @@ import { MdOutlineTableRestaurant } from 'react-icons/md'
 
 import useTournament from '@/hooks/useTournament'
 
-import GroupsTab from './components/GroupsTab'
 import PlayersTab from './components/PlayersTab'
 import SetupTournament from './components/SetupTournament'
 
@@ -131,7 +130,7 @@ function Page({ params }) {
             <PlayersTab tournament={tournament} />
           </TabPanel>
           <TabPanel display="flex" flex="1" p={0}>
-            <GroupsTab tournament={tournament} />
+            <PlayersTab tournament={tournament} />
           </TabPanel>
           <TabPanel p={8}>
             <p>three!</p>

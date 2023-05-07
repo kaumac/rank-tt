@@ -8,13 +8,23 @@ import {
   Table,
   Thead,
   Tr,
+  Icon,
   Th,
   Tbody,
   Td,
   Tag,
-  TagLabel
+  TagLabel,
+  Grid,
+  GridItem,
+  Card,
+  Spacer,
+  Divider,
+  Center,
+  Avatar,
+  IconButton
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { BiPlus } from 'react-icons/bi'
 
 import { indexCollectionDocsById } from '@/firebase'
 import { groupCollectionDocsByField } from '@/firebase/utils'
@@ -23,6 +33,7 @@ import {
   useTournamentCategories
 } from '@/hooks/useTournament'
 
+import CreateGroupWrapper from './components/CreateGroupWrapper'
 import ImportPlayersButton from './components/ImportPlayersButton'
 
 export const PlayersTab = ({ tournament }) => {
@@ -34,15 +45,17 @@ export const PlayersTab = ({ tournament }) => {
   const [categoryFilter, setCategoryFilter] = useState()
 
   const indexedCategories = indexCollectionDocsById(categories)
-  const groupedPlayer = groupCollectionDocsByField(
+  const groupedPlayers = groupCollectionDocsByField(
     tournamentPlayers,
     'category'
   )
 
+  console.log({ groupedPlayers })
+
   const selectedCategoryData =
     indexedCategories[categoryFilter] &&
     indexedCategories[categoryFilter].data()
-  const selectedCategoryPlayers = groupedPlayer[categoryFilter]
+  const selectedCategoryPlayers = groupedPlayers[categoryFilter]
 
   console.log('selectedCategoryPlayers', selectedCategoryPlayers)
 
@@ -92,16 +105,117 @@ export const PlayersTab = ({ tournament }) => {
             })}
           </Box>
           <Box flex="1">
-            <Flex p={8} alignItems="center">
+            <Flex p={6} alignItems="center" mb={8}>
               <Heading size="md" pl={3} mr={8}>
-                Categoria {selectedCategoryData.name}
+                Categoria {selectedCategoryData?.name}
               </Heading>
               <ImportPlayersButton
                 category={indexedCategories[categoryFilter]}
                 tournamentRef={tournament?.ref}
               />
             </Flex>
-            <TableContainer mt={8} width="100%" px={5}>
+            <Grid templateColumns="repeat(3, 1fr)" gap={6} px={10} mb={16}>
+              <GridItem w="100%">
+                <Card p={4} height="140px">
+                  <CreateGroupWrapper
+                    players={selectedCategoryPlayers}
+                    category={indexedCategories[categoryFilter]}
+                  >
+                    <Center height="100%" width="100%" cursor="pointer">
+                      <IconButton
+                        variant="solid"
+                        colorScheme="brand"
+                        aria-label="Call Sage"
+                        fontSize="24px"
+                        size="sm"
+                        icon={<BiPlus />}
+                      />
+                      <Button
+                        colorScheme="brand"
+                        size="sm"
+                        variant="link"
+                        ml={2}
+                      >
+                        Criar novo grupo
+                      </Button>
+                    </Center>
+                  </CreateGroupWrapper>
+                </Card>
+              </GridItem>
+              <GridItem w="100%">
+                <Card p={4}>
+                  <Heading color="gray.600" size="sm" mb={2}>
+                    Grupo 01
+                  </Heading>
+                  <Text fontSize="sm" color="gray.500">
+                    Kaue Machado
+                  </Text>
+                  <Divider color="gray.200" my={1} />
+                  <Text fontSize="sm" color="gray.500">
+                    Zé Driveiro
+                  </Text>
+                  <Divider color="gray.200" my={1} />
+                  <Text fontSize="sm" color="gray.500">
+                    Jão do Back
+                  </Text>
+                </Card>
+              </GridItem>
+              <GridItem w="100%">
+                <Card p={4}>
+                  <Heading color="gray.600" size="sm" mb={2}>
+                    Grupo 01
+                  </Heading>
+                  <Text fontSize="sm" color="gray.500">
+                    Kaue Machado
+                  </Text>
+                  <Divider color="gray.200" my={1} />
+                  <Text fontSize="sm" color="gray.500">
+                    Zé Driveiro
+                  </Text>
+                  <Divider color="gray.200" my={1} />
+                  <Text fontSize="sm" color="gray.500">
+                    Jão do Back
+                  </Text>
+                </Card>
+              </GridItem>
+              <GridItem w="100%">
+                <Card p={4}>
+                  <Heading color="gray.600" size="sm" mb={2}>
+                    Grupo 01
+                  </Heading>
+                  <Text fontSize="sm" color="gray.500">
+                    Kaue Machado
+                  </Text>
+                  <Divider color="gray.200" my={1} />
+                  <Text fontSize="sm" color="gray.500">
+                    Zé Driveiro
+                  </Text>
+                  <Divider color="gray.200" my={1} />
+                  <Text fontSize="sm" color="gray.500">
+                    Jão do Back
+                  </Text>
+                </Card>
+              </GridItem>
+              <GridItem w="100%">
+                <Card p={4}>
+                  <Heading color="gray.600" size="sm" mb={2}>
+                    Grupo 01
+                  </Heading>
+                  <Text fontSize="sm" color="gray.500">
+                    Kaue Machado
+                  </Text>
+                  <Divider color="gray.200" my={1} />
+                  <Text fontSize="sm" color="gray.500">
+                    Zé Driveiro
+                  </Text>
+                  <Divider color="gray.200" my={1} />
+                  <Text fontSize="sm" color="gray.500">
+                    Jão do Back
+                  </Text>
+                </Card>
+              </GridItem>
+            </Grid>
+            <TableContainer mt={8} width="100%" px={3}>
               <Table variant="simple">
                 <Thead>
                   <Tr>
