@@ -62,7 +62,7 @@ function Page({ params }) {
 
   return (
     <>
-      <Flex width="100%" alignItems="center" px={8} pt={8}>
+      <Flex width="100%" alignItems="center" px={8} pt={6} pb={2} bg="#FFF">
         <Box flex="none" maxWidth="75%">
           <Heading noOfLines={1} size="lg" as={Text}>
             {tournamentData?.name}
@@ -87,7 +87,7 @@ function Page({ params }) {
           </Box>
         </Tooltip>
       </Flex>
-      <Tabs isFitted mt={2} display="flex" flexDirection="column" flex="1">
+      <Tabs isFitted display="flex" flexDirection="column" flex="1">
         <TabList
           position="sticky"
           top="0"

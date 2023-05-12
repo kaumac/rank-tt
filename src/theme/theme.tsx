@@ -1,12 +1,7 @@
-import {
-  extendTheme,
-  HTMLChakraProps,
-  ThemingProps,
-  withDefaultColorScheme
-} from '@chakra-ui/react'
+import { extendTheme, withDefaultColorScheme } from '@chakra-ui/react'
 
 import { ButtonComponent } from './additions/button/button'
-import { CardComponent } from './additions/card/card'
+import { NewCard } from './additions/card/card'
 import { badgeStyles } from './components/badge'
 import { buttonStyles } from './components/button'
 import { inputStyles } from './components/input'
@@ -29,9 +24,7 @@ export default extendTheme(
   inputStyles, // input styles
   textareaStyles, // textarea styles
   switchStyles, // switch styles
+  NewCard, // card component
   ButtonComponent, // card component
-  CardComponent, // card component
   withDefaultColorScheme({ colorScheme: 'brand' })
 )
-
-export interface CustomCardProps extends HTMLChakraProps<'div'>, ThemingProps {}

@@ -116,7 +116,7 @@ export const PlayersTab = ({ tournament }) => {
             </Flex>
             <Grid templateColumns="repeat(3, 1fr)" gap={6} px={10} mb={16}>
               <GridItem w="100%">
-                <Card p={4} height="140px">
+                <Card height="140px">
                   <CreateGroupWrapper
                     players={selectedCategoryPlayers}
                     category={indexedCategories[categoryFilter]}
@@ -143,7 +143,7 @@ export const PlayersTab = ({ tournament }) => {
                 </Card>
               </GridItem>
               <GridItem w="100%">
-                <Card p={4}>
+                <Card>
                   <Heading color="gray.600" size="sm" mb={2}>
                     Grupo 01
                   </Heading>
@@ -161,7 +161,7 @@ export const PlayersTab = ({ tournament }) => {
                 </Card>
               </GridItem>
               <GridItem w="100%">
-                <Card p={4}>
+                <Card>
                   <Heading color="gray.600" size="sm" mb={2}>
                     Grupo 01
                   </Heading>
@@ -179,7 +179,7 @@ export const PlayersTab = ({ tournament }) => {
                 </Card>
               </GridItem>
               <GridItem w="100%">
-                <Card p={4}>
+                <Card>
                   <Heading color="gray.600" size="sm" mb={2}>
                     Grupo 01
                   </Heading>
@@ -197,7 +197,7 @@ export const PlayersTab = ({ tournament }) => {
                 </Card>
               </GridItem>
               <GridItem w="100%">
-                <Card p={4}>
+                <Card>
                   <Heading color="gray.600" size="sm" mb={2}>
                     Grupo 01
                   </Heading>
@@ -215,49 +215,51 @@ export const PlayersTab = ({ tournament }) => {
                 </Card>
               </GridItem>
             </Grid>
-            <TableContainer mt={8} width="100%" px={3}>
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Nome</Th>
-                    <Th>Status</Th>
-                    <Th isNumeric>Grupo</Th>
-                    <Th>Sub-categoria</Th>
-                    <Th isNumeric>Vitórias</Th>
-                    <Th isNumeric>Derrotas</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {(selectedCategoryPlayers || []).map((player) => {
-                    const playerData = player.data()
+            <Card px={0} m={10}>
+              <TableContainer width="100%">
+                <Table variant="simple">
+                  <Thead>
+                    <Tr>
+                      <Th>Nome</Th>
+                      <Th>Status</Th>
+                      <Th isNumeric>Grupo</Th>
+                      <Th>Sub-categoria</Th>
+                      <Th isNumeric>Vitórias</Th>
+                      <Th isNumeric>Derrotas</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {(selectedCategoryPlayers || []).map((player) => {
+                      const playerData = player.data()
 
-                    return (
-                      <Tr key={`player-list-item-${player.id}`}>
-                        <Td>{playerData.name}</Td>
-                        <Td>
-                          <Text
-                            as="span"
-                            color={
-                              playerData.status === 'active'
-                                ? 'green.500'
-                                : 'red.500'
-                            }
-                          >
-                            {playerData.status === 'active'
-                              ? 'Ativo'
-                              : 'Inativo'}
-                          </Text>
-                        </Td>
-                        <Td>{playerData.group}</Td>
-                        <Td>{playerData.subCategory}</Td>
-                        <Td isNumeric>{playerData.wins}</Td>
-                        <Td isNumeric>{playerData.losses}</Td>
-                      </Tr>
-                    )
-                  })}
-                </Tbody>
-              </Table>
-            </TableContainer>
+                      return (
+                        <Tr key={`player-list-item-${player.id}`}>
+                          <Td>{playerData.name}</Td>
+                          <Td>
+                            <Text
+                              as="span"
+                              color={
+                                playerData.status === 'active'
+                                  ? 'green.500'
+                                  : 'red.500'
+                              }
+                            >
+                              {playerData.status === 'active'
+                                ? 'Ativo'
+                                : 'Inativo'}
+                            </Text>
+                          </Td>
+                          <Td>{playerData.group}</Td>
+                          <Td>{playerData.subCategory}</Td>
+                          <Td isNumeric>{playerData.wins}</Td>
+                          <Td isNumeric>{playerData.losses}</Td>
+                        </Tr>
+                      )
+                    })}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </Card>
           </Box>
         </Flex>
       ) : (

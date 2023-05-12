@@ -106,6 +106,15 @@ export const globalStyles = {
     heading: headingFont.style.fontFamily,
     body: bodyFont.style.fontFamily
   },
+  shadows: {
+    base: '0 2px 4px rgba(0,0,0,0.05)',
+    xs: 'none',
+    sm: 'none',
+    md: '0 2px 4px rgba(0,0,0,0.05)',
+    lg: 'none',
+    xl: 'none',
+    '2xl': 'none'
+  },
   styles: {
     global: (props: any) => ({
       body: {

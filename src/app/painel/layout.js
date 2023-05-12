@@ -58,8 +58,6 @@ function OrganizationSwitchLink({ organizationId }) {
 
 const NavbarIcon = ({ route, title, icon }) => {
   const pathname = usePathname()
-  console.log(pathname.split('/'))
-  console.log('route', route)
   const isRouteActive =
     route.split('/').length === 2
       ? pathname === route
@@ -70,19 +68,18 @@ const NavbarIcon = ({ route, title, icon }) => {
       <Flex
         as={Link}
         href={route}
-        bg={isRouteActive ? '#FFF' : 'transparent'}
+        bg={isRouteActive ? '#242529' : 'transparent'}
         width="48px"
         height="48px"
         alignItems="center"
         justifyContent="center"
         borderRadius="20%"
-        boxShadow={isRouteActive ? 'inset 0px 0px 0px 1px #E9ECED' : 'none'}
       >
         <Icon
           as={icon}
           w="24px"
           h="24px"
-          color={isRouteActive ? '#39404D' : '#686F7A'}
+          color={isRouteActive ? '#FFF' : '#AAAAAA'}
         />
       </Flex>
     </Tooltip>
@@ -107,11 +104,11 @@ export default function RootLayout({ children }) {
 
   return (
     <AuthContextProvider>
-      <Flex bg="#FFFFFF" boxShadow="md" height="100vh" overflow="hidden">
+      <Flex bg="#FAFAFB" boxShadow="md" height="100vh" overflow="hidden">
         <CreateOrganization isOpen={isOpen} onClose={onClose} />
         <Flex
           boxShadow="1px 0 0 0 rgba(0,0,0,0.05)"
-          bg="#F9FBFC"
+          bg="#161819"
           width="80px"
           h="100%"
           flexDirection="column"
