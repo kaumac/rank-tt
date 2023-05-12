@@ -69,7 +69,7 @@ export const PlayersTab = ({ tournament }) => {
     <>
       {tournamentPlayers && tournamentPlayers?.docs.length > 0 ? (
         <Flex flex="1">
-          <Box bg="white" p={8} pl={5} boxShadow="md">
+          <Box px={12} py={8} pl={5}>
             <Heading size="sm" mb={4} color="gray.600" pl={3}>
               Categorias
             </Heading>
@@ -91,14 +91,16 @@ export const PlayersTab = ({ tournament }) => {
                   <Tag
                     mb={2}
                     size="lg"
-                    colorScheme={
-                      categoryFilter === category.id ? 'green' : 'gray'
-                    }
+                    bg={categoryFilter === category.id ? '#000' : 'transparent'}
                     borderRadius="full"
                     cursor="pointer"
                     onClick={() => setCategoryFilter(category.id)}
                   >
-                    <TagLabel>{categoryData.name}</TagLabel>
+                    <TagLabel
+                      color={categoryFilter === category.id ? '#FFF' : 'black'}
+                    >
+                      {categoryData.name}
+                    </TagLabel>
                   </Tag>
                 </Box>
               )
@@ -116,7 +118,7 @@ export const PlayersTab = ({ tournament }) => {
             </Flex>
             <Grid templateColumns="repeat(3, 1fr)" gap={6} px={10} mb={16}>
               <GridItem w="100%">
-                <Card height="140px">
+                <Card height="164px">
                   <CreateGroupWrapper
                     players={selectedCategoryPlayers}
                     category={indexedCategories[categoryFilter]}
@@ -144,7 +146,7 @@ export const PlayersTab = ({ tournament }) => {
               </GridItem>
               <GridItem w="100%">
                 <Card>
-                  <Heading color="gray.600" size="sm" mb={2}>
+                  <Heading color="gray.600" size="sm" mb={4}>
                     Grupo 01
                   </Heading>
                   <Text fontSize="sm" color="gray.500">
@@ -162,7 +164,7 @@ export const PlayersTab = ({ tournament }) => {
               </GridItem>
               <GridItem w="100%">
                 <Card>
-                  <Heading color="gray.600" size="sm" mb={2}>
+                  <Heading color="gray.600" size="sm" mb={4}>
                     Grupo 01
                   </Heading>
                   <Text fontSize="sm" color="gray.500">
@@ -180,7 +182,7 @@ export const PlayersTab = ({ tournament }) => {
               </GridItem>
               <GridItem w="100%">
                 <Card>
-                  <Heading color="gray.600" size="sm" mb={2}>
+                  <Heading color="gray.600" size="sm" mb={4}>
                     Grupo 01
                   </Heading>
                   <Text fontSize="sm" color="gray.500">
@@ -198,7 +200,7 @@ export const PlayersTab = ({ tournament }) => {
               </GridItem>
               <GridItem w="100%">
                 <Card>
-                  <Heading color="gray.600" size="sm" mb={2}>
+                  <Heading color="gray.600" size="sm" mb={4}>
                     Grupo 01
                   </Heading>
                   <Text fontSize="sm" color="gray.500">

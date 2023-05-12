@@ -106,11 +106,22 @@ export const globalStyles = {
     heading: headingFont.style.fontFamily,
     body: bodyFont.style.fontFamily
   },
+  radii: {
+    none: '0',
+    sm: '0.2rem',
+    base: '0.4rem',
+    md: '0.6rem',
+    lg: '0.8rem',
+    xl: '1rem',
+    '2xl': '1.4rem',
+    '3xl': '1.8rem',
+    full: '9999px'
+  },
   shadows: {
-    base: '0 2px 4px rgba(0,0,0,0.05)',
-    xs: 'none',
-    sm: 'none',
-    md: '0 2px 4px rgba(0,0,0,0.05)',
+    base: '0 3px 9px rgba(0,0,0,0.05)',
+    xs: '0 1px 3px rgba(0,0,0,0.04)',
+    sm: '0 2px 6px rgba(0,0,0,0.05)',
+    md: '0 3px 9px rgba(0,0,0,0.05)',
     lg: 'none',
     xl: 'none',
     '2xl': 'none'

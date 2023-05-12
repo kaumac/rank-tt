@@ -7,15 +7,10 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  FormControl,
-  FormLabel,
-  Select,
   ModalFooter,
   TableContainer,
   Table,
-  Thead,
   Tr,
-  Th,
   Tbody,
   Td,
   Box,
@@ -23,14 +18,11 @@ import {
   Center,
   Card,
   Heading,
-  Text,
-  Divider
+  Text
 } from '@chakra-ui/react'
-import { arrayUnion, collection, query, where } from 'firebase/firestore'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BiTrash, BiPlus } from 'react-icons/bi'
 
-import firebaseUpdateDoc from '@/firebase/updateDoc'
 import { groupCollectionDocsByField } from '@/firebase/utils'
 import { useTournamentGroups } from '@/hooks/useTournament'
 
@@ -38,21 +30,21 @@ export const CreateGroupWrapper = ({
   children,
   tournament,
   category,
-  players
+  players = []
 }) => {
   const [newGroup, setNewGroup] = useState({ players: [] })
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [tournamentGroups, tournamentGroupsLoading, tournamentGroupsError] =
     useTournamentGroups(tournament?.id)
 
-  categoryId = category?.id
+  const categoryId = category?.id
 
   const groupsGroupedByCategory = groupCollectionDocsByField(
     tournamentGroups,
     'category'
   )
 
-  const categoryGroups = groupsGroupedByCategory[categoryId]
+  const categoryGroups = groupsGroupedByCategory[categoryId] || []
 
   const unassignedPlayers = players.filter(
     (player) =>
@@ -60,9 +52,7 @@ export const CreateGroupWrapper = ({
       !newGroup.players.find((newGroupPlayer) => newGroupPlayer === player.id)
   )
 
-  console.log({ categoryGroups })
-
-  const groupNumber = categoryGroups ? categoryGroups.length + 1 : 1
+  const groupNumber = categoryGroups.length + 1
 
   const handleAddPlayer = (playerId) => {
     setNewGroup({
@@ -71,11 +61,18 @@ export const CreateGroupWrapper = ({
     })
   }
 
-  const handleRemovePlayer = (playerId) => {
+  const handleRemovePlayer = (playerToBeRemoved) => {
     setNewGroup({
       ...newGroup,
-      players: newGroup.players.filter((player) => player !== playerId)
+      players: newGroup.players.filter(
+        (newGroupPlayer) => newGroupPlayer !== playerToBeRemoved
+      )
     })
+  }
+
+  const handleOnClose = () => {
+    setNewGroup({ players: [] })
+    onClose()
   }
 
   const onCreateGroup = () => {
@@ -113,12 +110,17 @@ export const CreateGroupWrapper = ({
     })
   }
 
-  console.log({ newGroup })
+  useEffect(() => {
+    setNewGroup({
+      ...newGroup,
+      number: groupNumber
+    })
+  }, [groupNumber])
 
   return (
     <>
       {renderChildren()}
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+      <Modal isOpen={isOpen} onClose={handleOnClose} isCentered size="xl">
         <ModalOverlay />
         <ModalContent p={4} maxWidth="80vw">
           <ModalHeader>
@@ -128,69 +130,79 @@ export const CreateGroupWrapper = ({
           <ModalCloseButton />
           <ModalBody px={0}>
             <Flex>
-              <Box pl={6} pr={8} minWidth="50%">
-                <Text color="gray.500" mb={2}>
-                  Selecione os jogadores na lista para criar um novo grupo
-                </Text>
+              <Box pl={6} pr={8} width="50%">
                 <Card p={4}>
                   <Heading color="gray.700" size="md" mb={8}>
-                    Grupo 01
+                    Grupo {newGroup.number}
                   </Heading>
-                  <TableContainer width="100%">
-                    <Table variant="simple">
-                      <Tbody>
-                        {newGroup.players.map(
-                          (newGroupPlayer, newGroupPlayerIndex) => {
-                            playerData = players
-                              .find((player) => player.id === newGroupPlayer)
-                              .data()
+                  {newGroup.players.length > 0 ? (
+                    <TableContainer width="100%">
+                      <Table variant="simple">
+                        <Tbody>
+                          {newGroup.players.map(
+                            (newGroupPlayer, newGroupPlayerIndex) => {
+                              const player = players.find(
+                                (player) => player.id === newGroupPlayer
+                              )
 
-                            console.log(playerData)
+                              if (!player) return null
 
-                            return (
-                              <Tr
-                                key={`group-player-list-${newGroupPlayerIndex}`}
-                              >
-                                <Td
-                                  position="relative"
-                                  data-group
-                                  borderBottom={
-                                    newGroupPlayerIndex + 1 ===
-                                    newGroup.players.length
-                                      ? 'none'
-                                      : null
-                                  }
+                              const playerData = player.data()
+
+                              return (
+                                <Tr
+                                  key={`group-player-list-${newGroupPlayerIndex}`}
                                 >
-                                  {playerData?.name}
-                                  <Center
-                                    width="100%"
-                                    height="100%"
-                                    position="absolute"
-                                    top="0"
-                                    left="0"
-                                    cursor="pointer"
-                                    opacity="0"
-                                    transition="opacity 0.2s ease-in-out"
-                                    _groupHover={{
-                                      bg: 'rgba(201, 41, 31, 0.04)',
-                                      opacity: 1
-                                    }}
+                                  <Td
+                                    position="relative"
+                                    data-group
+                                    borderBottom={
+                                      newGroupPlayerIndex + 1 ===
+                                      newGroup.players.length
+                                        ? 'none'
+                                        : null
+                                    }
                                   >
-                                    <Button
-                                      colorScheme="red"
-                                      leftIcon={<BiTrash />}
+                                    {playerData?.name}
+                                    <Center
+                                      width="100%"
+                                      height="100%"
+                                      position="absolute"
+                                      top="0"
+                                      left="0"
+                                      cursor="pointer"
+                                      opacity="0"
+                                      transition="opacity 0.2s ease-in-out"
+                                      _groupHover={{
+                                        bg: 'rgba(201, 41, 31, 0.04)',
+                                        opacity: 1
+                                      }}
+                                      onClick={() => {
+                                        handleRemovePlayer(newGroupPlayer)
+                                      }}
                                     >
-                                      Remover do grupo
-                                    </Button>
-                                  </Center>
-                                </Td>
-                              </Tr>
-                            )
-                          }
-                        )}
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
+                                      <Button
+                                        colorScheme="red"
+                                        leftIcon={<BiTrash />}
+                                      >
+                                        Remover do grupo
+                                      </Button>
+                                    </Center>
+                                  </Td>
+                                </Tr>
+                              )
+                            }
+                          )}
+                        </Tbody>
+                      </Table>
+                    </TableContainer>
+                  ) : (
+                    <Center width="100%">
+                      <Text color="gray.500" p={4} textAlign="center">
+                        Selecione os jogadores na lista para criar um novo grupo
+                      </Text>
+                    </Center>
+                  )}
                 </Card>
               </Box>
               <Box overflowY="auto" maxHeight="calc(100vh - 280px)" flex="1">
@@ -235,38 +247,15 @@ export const CreateGroupWrapper = ({
                                   bg: 'rgba(85, 31, 201, 0.04)',
                                   opacity: 1
                                 }}
+                                onClick={() => {
+                                  handleAddPlayer(player.id)
+                                }}
                               >
-                                <Button
-                                  leftIcon={<BiPlus />}
-                                  onClick={() => {
-                                    handleAddPlayer(player.id)
-                                  }}
-                                >
+                                <Button leftIcon={<BiPlus />}>
                                   Adicionar ao grupo
                                 </Button>
                               </Center>
                             </Td>
-                            {/* <Td>
-                              {newGroup.players.includes(player.id) ? (
-                                <Button
-                                  variant="ghost"
-                                  colorScheme="red"
-                                  onClick={() => {
-                                    handleRemovePlayer(player.id)
-                                  }}
-                                >
-                                  remover
-                                </Button>
-                              ) : (
-                                <Button
-                                  variant="ghost"
-                                  colorScheme="green"
-                                  
-                                >
-                                  adicionar
-                                </Button>
-                              )}
-                            </Td> */}
                           </Tr>
                         )
                       })}
