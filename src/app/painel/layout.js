@@ -68,7 +68,7 @@ const NavbarIcon = ({ route, title, icon }) => {
       <Flex
         as={Link}
         href={route}
-        bg={isRouteActive ? '#242529' : 'transparent'}
+        bg={isRouteActive ? '#000' : 'transparent'}
         width="48px"
         height="48px"
         alignItems="center"

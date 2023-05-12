@@ -58,6 +58,13 @@ export const globalStyles = {
       800: '#707EAE',
       900: '#1B2559'
     },
+    black: {
+      500: '#000000',
+      600: '#333333',
+      700: '#707EAE',
+      800: '#707EAE',
+      900: '#1B2559'
+    },
     purple: {
       600: '#49347B'
     },
@@ -108,8 +115,8 @@ export const globalStyles = {
   },
   radii: {
     none: '0',
-    sm: '0.2rem',
-    base: '0.4rem',
+    sm: '0.3rem',
+    base: '0.6rem',
     md: '0.6rem',
     lg: '0.8rem',
     xl: '1rem',

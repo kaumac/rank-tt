@@ -25,6 +25,7 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { BiPlus } from 'react-icons/bi'
+import StickyBox from 'react-sticky-box'
 
 import { indexCollectionDocsById } from '@/firebase'
 import { groupCollectionDocsByField } from '@/firebase/utils'
@@ -69,11 +70,12 @@ export const PlayersTab = ({ tournament }) => {
     <>
       {tournamentPlayers && tournamentPlayers?.docs.length > 0 ? (
         <Flex flex="1">
-          <Box px={12} py={8} pl={5}>
-            <Heading size="sm" mb={4} color="gray.600" pl={3}>
-              Categorias
-            </Heading>
-            {/* <Tag
+          <Box px={12} py={8} pl={5} borderRight="1px solid #EEE">
+            <StickyBox offsetTop={92} offsetBottom={20}>
+              <Heading size="sm" mb={4} color="gray.600" pl={3}>
+                Categorias
+              </Heading>
+              {/* <Tag
               size="lg"
               colorScheme={categoryFilter === 'all' ? 'green' : 'gray'}
               borderRadius="full"
@@ -83,28 +85,33 @@ export const PlayersTab = ({ tournament }) => {
             >
               <TagLabel>Todas as categorias</TagLabel>
             </Tag> */}
-            {categories?.docs.map((category) => {
-              const categoryData = category.data()
+              {categories?.docs.map((category) => {
+                const categoryData = category.data()
 
-              return (
-                <Box>
-                  <Tag
-                    mb={2}
-                    size="lg"
-                    bg={categoryFilter === category.id ? '#000' : 'transparent'}
-                    borderRadius="full"
-                    cursor="pointer"
-                    onClick={() => setCategoryFilter(category.id)}
-                  >
-                    <TagLabel
-                      color={categoryFilter === category.id ? '#FFF' : 'black'}
+                return (
+                  <Box>
+                    <Tag
+                      mb={2}
+                      size="lg"
+                      bg={
+                        categoryFilter === category.id ? '#000' : 'transparent'
+                      }
+                      borderRadius="full"
+                      cursor="pointer"
+                      onClick={() => setCategoryFilter(category.id)}
                     >
-                      {categoryData.name}
-                    </TagLabel>
-                  </Tag>
-                </Box>
-              )
-            })}
+                      <TagLabel
+                        color={
+                          categoryFilter === category.id ? '#FFF' : 'black'
+                        }
+                      >
+                        {categoryData.name}
+                      </TagLabel>
+                    </Tag>
+                  </Box>
+                )
+              })}
+            </StickyBox>
           </Box>
           <Box flex="1">
             <Flex p={6} alignItems="center" mb={8}>
@@ -120,12 +127,14 @@ export const PlayersTab = ({ tournament }) => {
               <GridItem w="100%">
                 <Card height="164px">
                   <CreateGroupWrapper
+                    tournament={tournament}
                     players={selectedCategoryPlayers}
                     category={indexedCategories[categoryFilter]}
                   >
                     <Center height="100%" width="100%" cursor="pointer">
                       <IconButton
                         variant="solid"
+                        borderRadius="full"
                         colorScheme="brand"
                         aria-label="Call Sage"
                         fontSize="24px"

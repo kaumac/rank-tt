@@ -20,9 +20,11 @@ import {
   Heading,
   Text
 } from '@chakra-ui/react'
+import { collection, doc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { BiTrash, BiPlus } from 'react-icons/bi'
 
+import { pushDoc } from '@/firebase'
 import { groupCollectionDocsByField } from '@/firebase/utils'
 import { useTournamentGroups } from '@/hooks/useTournament'
 
@@ -75,31 +77,26 @@ export const CreateGroupWrapper = ({
     onClose()
   }
 
-  const onCreateGroup = () => {
-    // firebaseUpdateDoc(tournament.ref, {
-    //   groups: arrayUnion({
-    //     name: `Grupo ${groupNumber}`,
-    //     players: newGroup,
-    //     category: categoryId,
-    //     id: groupId
-    //   })
-    // })
-    //   .then((response) => {
-    //     newGroup.forEach((player) => {
-    //       if (player.type !== 'bye') {
-    //         const playerRef = query(
-    //           collection(tournament.ref, 'players'),
-    //           where('name', '==', player.name)
-    //         )
-    //         firebaseUpdateDoc(playerRef, {
-    //           grupo: groupId
-    //         })
-    //       }
-    //     })
-    //   })
-    //   .catch((error) => {
-    //     console.log('error', error)
-    //   })
+  const onCreateGroup = async () => {
+    if (!category) return
+
+    const groupsRef = collection(category.ref, 'groups')
+
+    await pushDoc(groupsRef, newGroup).then(async (createdGroup) => {
+      for await (const playerId of newGroup.players) {
+        if (playerId === 'bye') continue
+
+        const playerRef = doc(tournament.ref, 'players', playerId)
+
+        console.log('playerRef', playerRef)
+        //   playerRef.update({
+        //     group: createdGroup.id,
+        //     groupNumber: newGroup.number
+        //   })
+      }
+    })
+
+    handleOnClose()
   }
 
   const renderChildren = () => {
@@ -267,7 +264,7 @@ export const CreateGroupWrapper = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="ghost" onClick={onClose} color="red">
+            <Button variant="ghost" onClick={handleOnClose} color="red">
               Cancelar
             </Button>
             <Button
@@ -278,7 +275,7 @@ export const CreateGroupWrapper = ({
             >
               Adicionar bye
             </Button>
-            <Button colorScheme="brand" ml={3} onClick={onCreateGroup}>
+            <Button ml={3} onClick={onCreateGroup} colorScheme="black">
               Criar grupo
             </Button>
           </ModalFooter>

@@ -91,7 +91,7 @@ export const ImportPlayersButton = ({ category, tournamentRef }) => {
 
   return (
     <>
-      <Button colorScheme="orange" mr={6} onClick={onOpen}>
+      <Button colorScheme="black" mr={6} onClick={onOpen}>
         Importar jogadores
       </Button>
       <Modal
