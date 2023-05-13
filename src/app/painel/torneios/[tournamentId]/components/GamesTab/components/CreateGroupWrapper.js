@@ -78,7 +78,7 @@ export const CreateGroupWrapper = ({
   }
 
   const handleOnClose = () => {
-    setNewGroup({ ...newGroup, players: [] })
+    setNewGroup({ players: [] })
     onClose()
   }
 

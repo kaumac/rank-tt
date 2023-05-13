@@ -11,7 +11,7 @@ import { doc } from 'firebase/firestore'
 
 import { TOURNAMENT_FORMAT } from '@/constants'
 import { db, updateDoc } from '@/firebase'
-import useTournament, { useTournamentCategories } from '@/hooks/useTournament'
+import { useTournamentCategories } from '@/hooks/useTournament'
 
 import AddCategories from './components/AddCategories'
 import SelectTournamentFormat from './components/SelectTournamentFormat'

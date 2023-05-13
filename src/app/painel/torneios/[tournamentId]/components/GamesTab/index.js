@@ -40,7 +40,7 @@ import {
 import CreateGroupWrapper from './components/CreateGroupWrapper'
 import ImportPlayersButton from './components/ImportPlayersButton'
 
-export const PlayersTab = ({ tournament }) => {
+export const GamesTab = ({ tournament }) => {
   const [categoryFilter, setCategoryFilter] = useState()
   const [tournamentPlayers, tournamentPlayersLoading, tournamentPlayersError] =
     useTournamentPlayers(tournament?.id)
@@ -105,7 +105,7 @@ export const PlayersTab = ({ tournament }) => {
           <Box flex="1">
             <Flex p={6} alignItems="center" mb={8}>
               <Heading size="md" pl={3} mr={8}>
-                Atletas e grupos ({selectedCategoryData?.name})
+                Jogos ({selectedCategoryData?.name})
               </Heading>
               <ImportPlayersButton
                 category={indexedCategories[categoryFilter]}
@@ -279,4 +279,4 @@ export const PlayersTab = ({ tournament }) => {
   )
 }
 
-export default PlayersTab
+export default GamesTab
