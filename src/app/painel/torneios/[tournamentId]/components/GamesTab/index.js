@@ -78,7 +78,7 @@ export const GamesTab = ({ tournament }) => {
                 const categoryData = category.data()
 
                 return (
-                  <Box>
+                  <Box key={`games-tab-category-option-${category.id}`}>
                     <Tag
                       mb={2}
                       size="lg"
@@ -107,145 +107,8 @@ export const GamesTab = ({ tournament }) => {
               <Heading size="md" pl={3} mr={8}>
                 Jogos ({selectedCategoryData?.name})
               </Heading>
-              <ImportPlayersButton
-                category={indexedCategories[categoryFilter]}
-                tournamentRef={tournament?.ref}
-              />
+              <Button>Botao aqui</Button>
             </Flex>
-            <Grid templateColumns="repeat(3, 1fr)" gap={6} px={10} mb={16}>
-              <GridItem w="100%">
-                <Card height="200px">
-                  <CreateGroupWrapper
-                    tournament={tournament}
-                    categoryPlayers={categoryPlayers}
-                    categoryGroups={categoryGroups}
-                    category={indexedCategories[categoryFilter]}
-                  >
-                    <Center height="100%" width="100%" cursor="pointer">
-                      <IconButton
-                        variant="solid"
-                        borderRadius="full"
-                        colorScheme="brand"
-                        aria-label="Call Sage"
-                        fontSize="24px"
-                        size="sm"
-                        icon={<BiPlus />}
-                      />
-                      <Button
-                        colorScheme="brand"
-                        size="sm"
-                        variant="link"
-                        ml={2}
-                      >
-                        Criar novo grupo
-                      </Button>
-                    </Center>
-                  </CreateGroupWrapper>
-                </Card>
-              </GridItem>
-              {categoryGroups?.docs.map((group) => {
-                const groupData = group.data()
-
-                return (
-                  <GridItem w="100%">
-                    <Card>
-                      <Flex alignItems="center" mb={4}>
-                        <Heading color="gray.600" size="sm">
-                          Grupo {groupData.number < 10 && '0'}
-                          {groupData.number}
-                        </Heading>
-                        {groupData.hasBye && (
-                          <Tag ml={4} colorScheme="brand">
-                            Bye
-                          </Tag>
-                        )}
-                      </Flex>
-
-                      <Stack>
-                        {groupData.players.map((player) => (
-                          <Flex alignItems="center" key={player.id}>
-                            <Avatar
-                              size="sm"
-                              colorScheme="green"
-                              name={
-                                indexedCategoryPlayers[player] &&
-                                indexedCategoryPlayers[player].data().name
-                              }
-                              src={
-                                indexedCategoryPlayers[player] &&
-                                indexedCategoryPlayers[player].data().photoURL
-                              }
-                            />
-                            <Text fontSize="sm" color="gray.700" ml={2}>
-                              {indexedCategoryPlayers[player] &&
-                                indexedCategoryPlayers[player].data().name}
-                            </Text>
-                          </Flex>
-                        ))}
-                        {groupData.hasBye && (
-                          <Flex alignItems="center">
-                            <Avatar
-                              size="sm"
-                              colorScheme="brand"
-                              bg="gray.300"
-                              icon={<BiArrowFromLeft fontSize={24} />}
-                            />
-                            <Text fontSize="sm" color="gray.500" ml={2}>
-                              Bye
-                            </Text>
-                          </Flex>
-                        )}
-                      </Stack>
-                    </Card>
-                  </GridItem>
-                )
-              })}
-            </Grid>
-            <Card px={0} m={10}>
-              <TableContainer width="100%">
-                <Table variant="simple">
-                  <Thead>
-                    <Tr>
-                      <Th>Nome</Th>
-                      <Th>Status</Th>
-                      <Th isNumeric>Grupo</Th>
-                      <Th>Sub-categoria</Th>
-                      <Th isNumeric>Vitórias</Th>
-                      <Th isNumeric>Derrotas</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {(categoryPlayers?.docs || []).map((player) => {
-                      const playerData = player.data()
-
-                      return (
-                        <Tr key={`player-list-item-${player.id}`}>
-                          <Td>{playerData.name}</Td>
-                          <Td>
-                            <Text
-                              as="span"
-                              color={
-                                playerData.status === 'active'
-                                  ? 'green.500'
-                                  : 'red.500'
-                              }
-                            >
-                              {playerData.status === 'active'
-                                ? 'Ativo'
-                                : 'Inativo'}
-                            </Text>
-                          </Td>
-                          <Td>{playerData.groupNumber || '-'}</Td>
-                          <Td>{playerData.subCategory}</Td>
-                          <Td isNumeric>{playerData.wins}</Td>
-                          <Td isNumeric>{playerData.losses}</Td>
-                        </Tr>
-                      )
-                    })}
-                  </Tbody>
-                </Table>
-              </TableContainer>
-            </Card>
           </Box>
         </Flex>
       ) : (

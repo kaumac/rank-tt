@@ -78,7 +78,7 @@ export const PlayersTab = ({ tournament }) => {
                 const categoryData = category.data()
 
                 return (
-                  <Box>
+                  <Box key={`players-tab-category-option-${category.id}`}>
                     <Tag
                       mb={2}
                       size="lg"
@@ -147,7 +147,10 @@ export const PlayersTab = ({ tournament }) => {
                 const groupData = group.data()
 
                 return (
-                  <GridItem w="100%">
+                  <GridItem
+                    w="100%"
+                    key={`players-tab-group-list-item-${group.id}`}
+                  >
                     <Card>
                       <Flex alignItems="center" mb={4}>
                         <Heading color="gray.600" size="sm">
