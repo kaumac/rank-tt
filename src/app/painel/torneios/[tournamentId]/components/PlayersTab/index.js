@@ -8,28 +8,23 @@ import {
   Table,
   Thead,
   Tr,
-  Icon,
   Th,
   Tbody,
   Td,
   Tag,
-  TagLabel,
   Grid,
   GridItem,
   Card,
-  Spacer,
-  Divider,
   Center,
   Avatar,
   IconButton,
-  Stack
+  Stack,
+  Select
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { BiArrowFromLeft, BiPlus } from 'react-icons/bi'
-import StickyBox from 'react-sticky-box'
 
 import { indexCollectionDocsById } from '@/firebase'
-import { groupCollectionDocsByField } from '@/firebase/utils'
 import {
   useTournamentPlayers,
   useTournamentCategories,
@@ -68,49 +63,44 @@ export const PlayersTab = ({ tournament }) => {
     <>
       {tournamentPlayers && tournamentPlayers?.docs.length > 0 ? (
         <Flex flex="1">
-          <Box px={12} py={8} pl={5} borderRight="1px solid #EEE">
-            <StickyBox offsetTop={92} offsetBottom={20}>
-              <Heading size="sm" mb={4} color="gray.600" pl={3}>
-                Categorias
-              </Heading>
-
-              {categories?.docs.map((category) => {
-                const categoryData = category.data()
-
-                return (
-                  <Box key={`players-tab-category-option-${category.id}`}>
-                    <Tag
-                      mb={2}
-                      size="lg"
-                      bg={
-                        categoryFilter === category.id ? '#000' : 'transparent'
-                      }
-                      borderRadius="full"
-                      cursor="pointer"
-                      onClick={() => setCategoryFilter(category.id)}
-                    >
-                      <TagLabel
-                        color={
-                          categoryFilter === category.id ? '#FFF' : 'black'
-                        }
-                      >
-                        {categoryData.name}
-                      </TagLabel>
-                    </Tag>
-                  </Box>
-                )
-              })}
-            </StickyBox>
-          </Box>
           <Box flex="1">
             <Flex p={6} alignItems="center" mb={8}>
-              <Heading size="md" pl={3} mr={8}>
-                Atletas e grupos ({selectedCategoryData?.name})
+              <Heading size="xs" pl={3} mr={8} color="gray.600">
+                Categoria:
               </Heading>
-              <ImportPlayersButton
+              <Select
+                bg="gray.200"
+                borderColor="gray.200"
+                borderRadius="sm"
+                color="black"
+                placeholder="Selecione uma categoria"
+                maxWidth={300}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                value={categoryFilter}
+                size="sm"
+              >
+                {categories?.docs.map((category) => {
+                  const categoryData = category.data()
+
+                  return (
+                    <option
+                      value={category.id}
+                      key={`players-tab-category-option-${category.id}`}
+                    >
+                      {categoryData.name}
+                    </option>
+                  )
+                })}
+              </Select>
+              {/* <ImportPlayersButton
                 category={indexedCategories[categoryFilter]}
                 tournamentRef={tournament?.ref}
-              />
+              /> */}
+            </Flex>
+            <Flex p={6} alignItems="center" mb={8}>
+              <Heading size="sm" pl={3} mr={8}>
+                Grupos
+              </Heading>
             </Flex>
             <Grid templateColumns="repeat(3, 1fr)" gap={6} px={10} mb={16}>
               <GridItem w="100%">

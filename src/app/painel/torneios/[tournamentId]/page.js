@@ -43,7 +43,12 @@ const CustomTab = React.forwardRef((props, ref) => {
   const styles = useMultiStyleConfig('Tabs', tabProps)
 
   return (
-    <Button __css={styles.tab} {...tabProps} py={4} px={8}>
+    <Button
+      __css={styles.tab}
+      {...tabProps}
+      py={4}
+      px={{ lg: 5, xl: 6, xxl: 8 }}
+    >
       <Flex alignItems="center" justifyContent="center">
         <Box as="span" mr="2" transform="translateY(2px)">
           {props.icon}
@@ -63,9 +68,16 @@ function Page({ params }) {
 
   return (
     <>
-      <Flex width="100%" alignItems="center" px={8} pt={6} pb={2} bg="#FFF">
+      <Flex
+        width="100%"
+        alignItems="center"
+        px={{ lg: 5, xl: 6, xxl: 8 }}
+        pt={{ lg: 4, xl: 5, xxl: 6 }}
+        pb={{ lg: 1, xl: 1, xxl: 2 }}
+        bg="#FFF"
+      >
         <Box flex="none" maxWidth="75%">
-          <Heading noOfLines={1} size="lg" as={Text}>
+          <Heading noOfLines={1} size={{ lg: 'md', xl: 'lg' }} as={Text}>
             {tournamentData?.name}
           </Heading>
         </Box>
@@ -101,7 +113,7 @@ function Page({ params }) {
             Geral
           </CustomTab>
           <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiGroup} />}>
-            Atletas e grupos
+            Grupos e atletas
           </CustomTab>
           <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiSitemap} />}>
             Jogos

@@ -107,9 +107,11 @@ export default function RootLayout({ children }) {
       <Flex bg="#FAFAFB" boxShadow="md" height="100vh" overflow="hidden">
         <CreateOrganization isOpen={isOpen} onClose={onClose} />
         <Flex
-          boxShadow="1px 0 0 0 rgba(0,0,0,0.05)"
           bg="#161819"
-          width="80px"
+          width={{
+            lg: '64px',
+            xl: '80px'
+          }}
           h="100%"
           flexDirection="column"
           justifyContent="space-between"
@@ -142,8 +144,14 @@ export default function RootLayout({ children }) {
           <Menu isLazy>
             <MenuButton>
               <Flex
-                width="80px"
-                height="80px"
+                width={{
+                  lg: '64px',
+                  xl: '80px'
+                }}
+                height={{
+                  lg: '64px',
+                  xl: '80px'
+                }}
                 alignItems="center"
                 justifyContent="center"
               >
