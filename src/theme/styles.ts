@@ -15,7 +15,7 @@ const headingFont = Lexend({
 export const globalStyles = {
   colors: {
     brand: {
-      100: '#F0EBFA',
+      100: '#F4F0FD',
       200: '#A17CF3',
       300: '#8A5EEB',
       400: '#7949DF',

@@ -19,10 +19,27 @@ import {
   Avatar,
   IconButton,
   Stack,
-  Select
+  Select,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
+  useDisclosure
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { BiArrowFromLeft, BiPlus } from 'react-icons/bi'
+import {
+  BiArrowFromLeft,
+  BiDotsVerticalRounded,
+  BiGridAlt,
+  BiGridVertical,
+  BiGroup,
+  BiIdCard,
+  BiListUl,
+  BiMenu,
+  BiMenuAltLeft,
+  BiPlus
+} from 'react-icons/bi'
 
 import { indexCollectionDocsById } from '@/firebase'
 import {
@@ -37,6 +54,19 @@ import ImportPlayersButton from './components/ImportPlayersButton'
 
 export const PlayersTab = ({ tournament }) => {
   const [categoryFilter, setCategoryFilter] = useState()
+  const [selectedPlayer, setSelectedPlayer] = useState(null)
+  const [selectedGroup, setSelectedGroup] = useState(null)
+  const {
+    isOpen: isPlayerPanelOpen,
+    onOpen: onOpenPlayerPanel,
+    onClose: onClosePlayerPanel
+  } = useDisclosure()
+  const {
+    isOpen: isGroupPanelOpen,
+    onOpen: onOpenGroupPanel,
+    onClose: onCloseGroupPanel
+  } = useDisclosure()
+
   const [tournamentPlayers, tournamentPlayersLoading, tournamentPlayersError] =
     useTournamentPlayers(tournament?.id)
   const [categories, categoriesLoading, categoriesError] =
@@ -53,6 +83,26 @@ export const PlayersTab = ({ tournament }) => {
     indexedCategories[categoryFilter] &&
     indexedCategories[categoryFilter].data()
 
+  const handlePlayerClick = (playerId) => {
+    setSelectedPlayer(playerId)
+    onOpenPlayerPanel()
+  }
+
+  const handlePlayerPanelClose = () => {
+    setSelectedPlayer(null)
+    onClosePlayerPanel()
+  }
+
+  const handleGroupClick = (groupId) => {
+    setSelectedGroup(groupId)
+    onOpenGroupPanel()
+  }
+
+  const handleGroupPanelClose = () => {
+    setSelectedGroup(null)
+    onCloseGroupPanel()
+  }
+
   useEffect(() => {
     if (categories?.docs.length > 0) {
       setCategoryFilter(categories?.docs[0].id)
@@ -64,7 +114,14 @@ export const PlayersTab = ({ tournament }) => {
       {tournamentPlayers && tournamentPlayers?.docs.length > 0 ? (
         <Flex flex="1">
           <Box flex="1">
-            <Flex p={6} alignItems="center" mb={8}>
+            <Flex
+              px={{ lg: 2, xl: 6 }}
+              bg="gray.100"
+              py={6}
+              alignItems="center"
+              mb={8}
+              borderBottom="1px solid #EEEEEE"
+            >
               <Heading size="xs" pl={3} mr={8} color="gray.600">
                 Categoria:
               </Heading>
@@ -97,42 +154,32 @@ export const PlayersTab = ({ tournament }) => {
                 tournamentRef={tournament?.ref}
               /> */}
             </Flex>
-            <Flex p={6} alignItems="center" mb={8}>
-              <Heading size="sm" pl={3} mr={8}>
+            <Flex px={{ lg: 2, xl: 6 }} alignItems="center" mb={8}>
+              <Heading size="sm" pl={3} mr={4}>
                 Grupos
               </Heading>
+              <CreateGroupWrapper
+                tournament={tournament}
+                categoryPlayers={categoryPlayers}
+                categoryGroups={categoryGroups}
+                category={indexedCategories[categoryFilter]}
+              >
+                <Button
+                  colorScheme="brand"
+                  size="sm"
+                  ml={2}
+                  leftIcon={<BiGridAlt fontSize="18px" />}
+                >
+                  Criar novo grupo
+                </Button>
+              </CreateGroupWrapper>
             </Flex>
-            <Grid templateColumns="repeat(3, 1fr)" gap={6} px={10} mb={16}>
-              <GridItem w="100%">
-                <Card height="200px">
-                  <CreateGroupWrapper
-                    tournament={tournament}
-                    categoryPlayers={categoryPlayers}
-                    categoryGroups={categoryGroups}
-                    category={indexedCategories[categoryFilter]}
-                  >
-                    <Center height="100%" width="100%" cursor="pointer">
-                      <IconButton
-                        variant="solid"
-                        borderRadius="full"
-                        colorScheme="brand"
-                        aria-label="Call Sage"
-                        fontSize="24px"
-                        size="sm"
-                        icon={<BiPlus />}
-                      />
-                      <Button
-                        colorScheme="brand"
-                        size="sm"
-                        variant="link"
-                        ml={2}
-                      >
-                        Criar novo grupo
-                      </Button>
-                    </Center>
-                  </CreateGroupWrapper>
-                </Card>
-              </GridItem>
+            <Grid
+              templateColumns="repeat(3, 1fr)"
+              gap={6}
+              px={{ lg: 6, xl: 10 }}
+              mb={8}
+            >
               {categoryGroups?.docs.map((group) => {
                 const groupData = group.data()
 
@@ -141,17 +188,35 @@ export const PlayersTab = ({ tournament }) => {
                     w="100%"
                     key={`players-tab-group-list-item-${group.id}`}
                   >
-                    <Card>
-                      <Flex alignItems="center" mb={4}>
-                        <Heading color="gray.600" size="sm">
-                          Grupo {groupData.number < 10 && '0'}
-                          {groupData.number}
-                        </Heading>
-                        {groupData.hasBye && (
-                          <Tag ml={4} colorScheme="brand">
-                            Bye
-                          </Tag>
-                        )}
+                    <Card
+                      pt={4}
+                      cursor="pointer"
+                      onClick={() => {
+                        handleGroupClick(group.id)
+                      }}
+                    >
+                      <Flex
+                        alignItems="center"
+                        mb={4}
+                        justifyContent="space-between"
+                      >
+                        <Flex alignItems="center">
+                          <Heading color="gray.600" size="sm">
+                            Grupo {groupData.number < 10 && '0'}
+                            {groupData.number}
+                          </Heading>
+                          {groupData.hasBye && (
+                            <Tag ml={4} colorScheme="brand">
+                              Bye
+                            </Tag>
+                          )}
+                        </Flex>
+                        <IconButton
+                          variant="ghost"
+                          size="sm"
+                          icon={<BiDotsVerticalRounded />}
+                          transform="translateX(10px)"
+                        />
                       </Flex>
 
                       <Stack>
@@ -194,17 +259,25 @@ export const PlayersTab = ({ tournament }) => {
                 )
               })}
             </Grid>
-            <Card px={0} m={10}>
+            <Flex px={{ lg: 2, xl: 6 }} alignItems="center" mb={8}>
+              <Heading size="sm" pl={3}>
+                Jogadores
+              </Heading>
+            </Flex>
+            <Card px={0} m={{ lg: 6, xl: 10 }}>
               <TableContainer width="100%">
                 <Table variant="simple">
                   <Thead>
                     <Tr>
                       <Th>Nome</Th>
                       <Th>Status</Th>
-                      <Th isNumeric>Grupo</Th>
-                      <Th>Sub-categoria</Th>
-                      <Th isNumeric>Vitórias</Th>
-                      <Th isNumeric>Derrotas</Th>
+                      <Th isNumeric width="80px">
+                        Grupo
+                      </Th>
+                      <Th width="200px">Sub-categoria</Th>
+                      <Th textAlign="right" width="80px">
+                        Ver
+                      </Th>
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -212,7 +285,11 @@ export const PlayersTab = ({ tournament }) => {
                       const playerData = player.data()
 
                       return (
-                        <Tr key={`player-list-item-${player.id}`}>
+                        <Tr
+                          key={`player-list-item-${player.id}`}
+                          cursor="pointer"
+                          onClick={() => handlePlayerClick(player.id)}
+                        >
                           <Td>{playerData.name}</Td>
                           <Td>
                             <Text
@@ -225,13 +302,23 @@ export const PlayersTab = ({ tournament }) => {
                             >
                               {playerData.status === 'active'
                                 ? 'Ativo'
-                                : 'Inativo'}
+                                : 'Check-in pendente'}
                             </Text>
                           </Td>
-                          <Td>{playerData.groupNumber || '-'}</Td>
-                          <Td>{playerData.subCategory}</Td>
-                          <Td isNumeric>{playerData.wins}</Td>
-                          <Td isNumeric>{playerData.losses}</Td>
+                          <Td width="80px">{playerData.groupNumber || '-'}</Td>
+                          <Td width="200px">{playerData.subCategory}</Td>
+                          <Td textAlign="right" width="80px">
+                            <IconButton
+                              variant="ghost"
+                              borderRadius="full"
+                              colorScheme="brand"
+                              bg="brand.100"
+                              aria-label="Call Sage"
+                              fontSize="18px"
+                              size="sm"
+                              icon={<BiIdCard />}
+                            />
+                          </Td>
                         </Tr>
                       )
                     })}
@@ -268,6 +355,89 @@ export const PlayersTab = ({ tournament }) => {
           </Flex>
         </Flex>
       )}
+      <Drawer
+        placement="right"
+        isOpen={isPlayerPanelOpen}
+        onClose={handlePlayerPanelClose}
+        size="sm"
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px">
+            <Flex justifyContent="space-between" alignItems="center">
+              <Flex alignItems="center">
+                <Avatar
+                  size="sm"
+                  bg="brand.500"
+                  color="white"
+                  name={
+                    indexedCategoryPlayers[selectedPlayer] &&
+                    indexedCategoryPlayers[selectedPlayer].data().name
+                  }
+                  src={
+                    indexedCategoryPlayers[selectedPlayer] &&
+                    indexedCategoryPlayers[selectedPlayer].data().photoURL
+                  }
+                />
+                <Text fontSize="sm" color="gray.700" ml={2}>
+                  {indexedCategoryPlayers[selectedPlayer] &&
+                    indexedCategoryPlayers[selectedPlayer].data().name}
+                </Text>
+              </Flex>
+            </Flex>
+          </DrawerHeader>
+          <DrawerBody>
+            <Button variant="solid" colorScheme="black" width="100%">
+              Confirmar check-in
+            </Button>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+
+      <Drawer
+        placement="right"
+        isOpen={isGroupPanelOpen}
+        onClose={handleGroupPanelClose}
+        size="sm"
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px">
+            <Flex justifyContent="space-between" alignItems="center">
+              <Flex alignItems="center">
+                <Avatar
+                  size="sm"
+                  bg="brand.500"
+                  color="white"
+                  name={
+                    indexedCategoryPlayers[selectedPlayer] &&
+                    indexedCategoryPlayers[selectedPlayer].data().name
+                  }
+                  src={
+                    indexedCategoryPlayers[selectedPlayer] &&
+                    indexedCategoryPlayers[selectedPlayer].data().photoURL
+                  }
+                />
+                <Text fontSize="sm" color="gray.700" ml={2}>
+                  {indexedCategoryPlayers[selectedPlayer] &&
+                    indexedCategoryPlayers[selectedPlayer].data().name}
+                </Text>
+              </Flex>
+            </Flex>
+          </DrawerHeader>
+          <DrawerBody>
+            <Button variant="solid" colorScheme="black" width="100%">
+              Confirmar check-in
+            </Button>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   )
 }

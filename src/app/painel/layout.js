@@ -130,7 +130,7 @@ export default function RootLayout({ children }) {
             <img src="/ranktt-navbar-logo.svg" width="24px" />
           </Flex>
 
-          <Stack gap="10px" margin="auto">
+          <Stack gap={{ lg: '4px', xl: '8px' }} margin="auto">
             <NavbarIcon title="Painel" route="/painel" icon={BiHomeAlt} />
             <NavbarIcon
               title="Torneios"
