@@ -129,22 +129,19 @@ export const PlayersTab = ({ tournament }) => {
               borderBottom="1px solid #EEEEEE"
             >
               <InputGroup bg="white" maxWidth="360px" mr={4}>
-                <InputLeftAddon
-                  children={
-                    <Flex alignItems="center">
-                      <Icon
-                        color="gray.600"
-                        fontSize="20px"
-                        as={BiCollection}
-                        mr={2}
-                      />
-                      <Text fontSize="sm" color="gray.600" fontWeight="bold">
-                        Categoria
-                      </Text>
-                    </Flex>
-                  }
-                  bg="gray.200"
-                />
+                <InputLeftAddon bg="gray.200">
+                  <Flex alignItems="center">
+                    <Icon
+                      color="gray.600"
+                      fontSize="20px"
+                      as={BiCollection}
+                      mr={2}
+                    />
+                    <Text fontSize="sm" color="gray.600" fontWeight="bold">
+                      Categoria
+                    </Text>
+                  </Flex>
+                </InputLeftAddon>
                 <Select
                   bg="white"
                   borderColor="gray.200"
@@ -172,22 +169,19 @@ export const PlayersTab = ({ tournament }) => {
                 </Select>
               </InputGroup>
               <InputGroup bg="white" maxWidth={600}>
-                <InputLeftAddon
-                  children={
-                    <Flex alignItems="center">
-                      <Icon
-                        color="gray.600"
-                        fontSize="20px"
-                        as={BiSearch}
-                        mr={2}
-                      />
-                      <Text fontSize="sm" color="gray.600" fontWeight="bold">
-                        Busca
-                      </Text>
-                    </Flex>
-                  }
-                  bg="gray.200"
-                />
+                <InputLeftAddon bg="gray.200">
+                  <Flex alignItems="center">
+                    <Icon
+                      color="gray.600"
+                      fontSize="20px"
+                      as={BiSearch}
+                      mr={2}
+                    />
+                    <Text fontSize="sm" color="gray.600" fontWeight="bold">
+                      Busca
+                    </Text>
+                  </Flex>
+                </InputLeftAddon>
                 <Input placeholder="Número do grupo ou nome do atleta" />
               </InputGroup>
             </Flex>
