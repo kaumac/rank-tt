@@ -150,7 +150,6 @@ export const PlayersTab = ({ tournament }) => {
                   onChange={(e) => setCategoryFilter(e.target.value)}
                   value={categoryFilter}
                   size="md"
-                  borderLeft="none"
                   borderTopLeftRadius={0}
                   borderBottomLeftRadius={0}
                 >
