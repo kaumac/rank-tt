@@ -26,7 +26,7 @@ import {
 } from '@chakra-ui/react'
 import { collection } from 'firebase/firestore'
 import { useState } from 'react'
-import { BiCheck, BiError } from 'react-icons/bi'
+import { BiCheck, BiError, BiGridAlt, BiUserPlus } from 'react-icons/bi'
 import { format } from 'telefone'
 
 import { pushDoc, updateDoc } from '@/firebase'
@@ -91,7 +91,12 @@ export const ImportPlayersButton = ({ category, tournamentRef }) => {
 
   return (
     <>
-      <Button colorScheme="black" mr={6} onClick={onOpen}>
+      <Button
+        colorScheme="brand"
+        size="sm"
+        leftIcon={<BiUserPlus fontSize="22px" />}
+        onClick={onOpen}
+      >
         Importar jogadores
       </Button>
       <Modal

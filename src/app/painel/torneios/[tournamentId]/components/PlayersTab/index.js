@@ -1,5 +1,6 @@
 import {
   Heading,
+  Icon,
   Text,
   Flex,
   Button,
@@ -25,11 +26,16 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerBody,
-  useDisclosure
+  useDisclosure,
+  Input,
+  InputLeftAddon,
+  InputGroup
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import {
   BiArrowFromLeft,
+  BiCollection,
+  BiCustomize,
   BiDotsVerticalRounded,
   BiGridAlt,
   BiGridVertical,
@@ -38,7 +44,8 @@ import {
   BiListUl,
   BiMenu,
   BiMenuAltLeft,
-  BiPlus
+  BiPlus,
+  BiSearch
 } from 'react-icons/bi'
 
 import { indexCollectionDocsById } from '@/firebase'
@@ -115,47 +122,77 @@ export const PlayersTab = ({ tournament }) => {
         <Flex flex="1">
           <Box flex="1">
             <Flex
-              px={{ lg: 2, xl: 6 }}
+              px={{ lg: 6, xl: 8 }}
               bg="gray.100"
-              py={6}
+              py={{ lg: 4, xl: 6 }}
               alignItems="center"
-              mb={8}
               borderBottom="1px solid #EEEEEE"
             >
-              <Heading size="xs" pl={3} mr={8} color="gray.600">
-                Categoria:
-              </Heading>
-              <Select
-                bg="gray.200"
-                borderColor="gray.200"
-                borderRadius="sm"
-                color="black"
-                placeholder="Selecione uma categoria"
-                maxWidth={300}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-                value={categoryFilter}
-                size="sm"
-              >
-                {categories?.docs.map((category) => {
-                  const categoryData = category.data()
+              <InputGroup bg="white" maxWidth="360px" mr={4}>
+                <InputLeftAddon
+                  children={
+                    <Flex alignItems="center">
+                      <Icon
+                        color="gray.600"
+                        fontSize="20px"
+                        as={BiCollection}
+                        mr={2}
+                      />
+                      <Text fontSize="sm" color="gray.600" fontWeight="bold">
+                        Categoria
+                      </Text>
+                    </Flex>
+                  }
+                  bg="gray.200"
+                />
+                <Select
+                  bg="white"
+                  borderColor="gray.200"
+                  color="black"
+                  placeholder="Selecione uma categoria"
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                  value={categoryFilter}
+                  size="md"
+                  borderLeft="none"
+                  borderTopLeftRadius={0}
+                  borderBottomLeftRadius={0}
+                >
+                  {categories?.docs.map((category) => {
+                    const categoryData = category.data()
 
-                  return (
-                    <option
-                      value={category.id}
-                      key={`players-tab-category-option-${category.id}`}
-                    >
-                      {categoryData.name}
-                    </option>
-                  )
-                })}
-              </Select>
-              {/* <ImportPlayersButton
-                category={indexedCategories[categoryFilter]}
-                tournamentRef={tournament?.ref}
-              /> */}
+                    return (
+                      <option
+                        value={category.id}
+                        key={`players-tab-category-option-${category.id}`}
+                      >
+                        {categoryData.name}
+                      </option>
+                    )
+                  })}
+                </Select>
+              </InputGroup>
+              <InputGroup bg="white" maxWidth={600}>
+                <InputLeftAddon
+                  children={
+                    <Flex alignItems="center">
+                      <Icon
+                        color="gray.600"
+                        fontSize="20px"
+                        as={BiSearch}
+                        mr={2}
+                      />
+                      <Text fontSize="sm" color="gray.600" fontWeight="bold">
+                        Busca
+                      </Text>
+                    </Flex>
+                  }
+                  bg="gray.200"
+                />
+                <Input placeholder="Número do grupo ou nome do atleta" />
+              </InputGroup>
             </Flex>
-            <Flex px={{ lg: 2, xl: 6 }} alignItems="center" mb={8}>
-              <Heading size="sm" pl={3} mr={4}>
+            <Flex px={{ lg: 6, xl: 8 }} alignItems="center" mt={10}>
+              <Heading size="md" mr={4}>
                 Grupos
               </Heading>
               <CreateGroupWrapper
@@ -168,17 +205,17 @@ export const PlayersTab = ({ tournament }) => {
                   colorScheme="brand"
                   size="sm"
                   ml={2}
-                  leftIcon={<BiGridAlt fontSize="18px" />}
+                  leftIcon={<BiCustomize fontSize="18px" />}
                 >
-                  Criar novo grupo
+                  Criar grupo
                 </Button>
               </CreateGroupWrapper>
             </Flex>
             <Grid
               templateColumns="repeat(3, 1fr)"
               gap={6}
-              px={{ lg: 6, xl: 10 }}
-              mb={8}
+              px={{ lg: 6, xl: 8 }}
+              mt={8}
             >
               {categoryGroups?.docs.map((group) => {
                 const groupData = group.data()
@@ -259,10 +296,14 @@ export const PlayersTab = ({ tournament }) => {
                 )
               })}
             </Grid>
-            <Flex px={{ lg: 2, xl: 6 }} alignItems="center" mb={8}>
-              <Heading size="sm" pl={3}>
+            <Flex px={{ lg: 6, xl: 8 }} alignItems="center" mt={10}>
+              <Heading size="md" mr={4}>
                 Jogadores
               </Heading>
+              <ImportPlayersButton
+                category={indexedCategories[categoryFilter]}
+                tournamentRef={tournament?.ref}
+              />
             </Flex>
             <Card px={0} m={{ lg: 6, xl: 10 }}>
               <TableContainer width="100%">
