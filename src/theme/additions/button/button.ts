@@ -3,11 +3,15 @@ const Button = {
     borderRadius: 'sm'
   }),
   variants: {
+    solid: (props: any) => ({
+      colorScheme: 'black'
+    }),
     ghost: (props: any) => ({
       colorScheme: 'brand'
     }),
     outline: (props: any) => ({
-      colorScheme: 'brand'
+      colorScheme: 'brand',
+      borderRadius: 'sm'
     })
   },
   defaultProps: {

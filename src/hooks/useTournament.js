@@ -37,6 +37,22 @@ export const useTournamentCategories = (tournamentId) => {
  * Player hooks
  */
 
+// Get player by id
+export const useTournamentPlayer = (tournamentId, playerId) => {
+  const [value, loading, error] = useDocument(
+    doc(db, 'tournaments', tournamentId || 'undefined'),
+    'players',
+    playerId,
+    {
+      snapshotListenOptions: { includeMetadataChanges: true }
+    }
+  )
+
+  if (error) console.warn(error)
+
+  return [value, loading, error]
+}
+
 // Get all tournament players
 export const useTournamentPlayers = (tournamentId) => {
   const [snapshot, loading, error] = useCollection(

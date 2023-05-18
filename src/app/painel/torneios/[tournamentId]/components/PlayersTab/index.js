@@ -57,12 +57,13 @@ import {
 } from '@/hooks/useTournament'
 
 import CreateGroupWrapper from './components/CreateGroupWrapper'
+import EditGroupPanel from './components/EditGroupPanel'
 import ImportPlayersButton from './components/ImportPlayersButton'
 
 export const PlayersTab = ({ tournament }) => {
   const [categoryFilter, setCategoryFilter] = useState()
   const [selectedPlayer, setSelectedPlayer] = useState(null)
-  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [selectedGroupId, setSelectedGroupId] = useState(null)
   const {
     isOpen: isPlayerPanelOpen,
     onOpen: onOpenPlayerPanel,
@@ -101,12 +102,12 @@ export const PlayersTab = ({ tournament }) => {
   }
 
   const handleGroupClick = (groupId) => {
-    setSelectedGroup(groupId)
+    setSelectedGroupId(groupId)
     onOpenGroupPanel()
   }
 
   const handleGroupPanelClose = () => {
-    setSelectedGroup(null)
+    setSelectedGroupId(null)
     onCloseGroupPanel()
   }
 
@@ -124,25 +125,28 @@ export const PlayersTab = ({ tournament }) => {
             <Flex
               px={{ lg: 6, xl: 8 }}
               bg="gray.100"
-              py={{ lg: 4, xl: 6 }}
+              py={{ lg: 2, xl: 4 }}
               alignItems="center"
               borderBottom="1px solid #EEEEEE"
             >
-              <InputGroup bg="white" maxWidth="360px" mr={4}>
-                <InputLeftAddon bg="gray.200">
-                  <Flex alignItems="center">
-                    <Icon
-                      color="gray.600"
-                      fontSize="20px"
-                      as={BiCollection}
-                      mr={2}
-                    />
-                    <Text fontSize="sm" color="gray.600" fontWeight="bold">
-                      Categoria
-                    </Text>
-                  </Flex>
-                </InputLeftAddon>
+              <InputGroup bg="white" maxWidth="360px" mr={{ lg: 4, xl: 6 }}>
+                <label htmlFor="testeiro">
+                  <InputLeftAddon bg="gray.200">
+                    <Flex alignItems="center">
+                      <Icon
+                        color="gray.600"
+                        fontSize="20px"
+                        as={BiCollection}
+                        mr={2}
+                      />
+                      <Text fontSize="sm" color="gray.600" fontWeight="bold">
+                        Categoria
+                      </Text>
+                    </Flex>
+                  </InputLeftAddon>
+                </label>
                 <Select
+                  id="testeiro"
                   bg="white"
                   borderColor="gray.200"
                   color="black"
@@ -195,7 +199,6 @@ export const PlayersTab = ({ tournament }) => {
                 category={indexedCategories[categoryFilter]}
               >
                 <Button
-                  colorScheme="brand"
                   size="sm"
                   ml={2}
                   leftIcon={<BiCustomize fontSize="18px" />}
@@ -205,8 +208,8 @@ export const PlayersTab = ({ tournament }) => {
               </CreateGroupWrapper>
             </Flex>
             <Grid
-              templateColumns="repeat(3, 1fr)"
-              gap={6}
+              templateColumns={{ lg: 'repeat(3, 1fr)', xl: 'repeat(4, 1fr)' }}
+              gap={{ lg: 4, xl: 6 }}
               px={{ lg: 6, xl: 8 }}
               mt={8}
             >
@@ -253,7 +256,7 @@ export const PlayersTab = ({ tournament }) => {
                         {groupData.players.map((player) => (
                           <Flex alignItems="center" key={player.id}>
                             <Avatar
-                              size="sm"
+                              size="xs"
                               colorScheme="green"
                               name={
                                 indexedCategoryPlayers[player] &&
@@ -437,40 +440,12 @@ export const PlayersTab = ({ tournament }) => {
         onClose={handleGroupPanelClose}
         size="sm"
       >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px">
-            <Flex justifyContent="space-between" alignItems="center">
-              <Flex alignItems="center">
-                <Avatar
-                  size="sm"
-                  bg="brand.500"
-                  color="white"
-                  name={
-                    indexedCategoryPlayers[selectedPlayer] &&
-                    indexedCategoryPlayers[selectedPlayer].data().name
-                  }
-                  src={
-                    indexedCategoryPlayers[selectedPlayer] &&
-                    indexedCategoryPlayers[selectedPlayer].data().photoURL
-                  }
-                />
-                <Text fontSize="sm" color="gray.700" ml={2}>
-                  {indexedCategoryPlayers[selectedPlayer] &&
-                    indexedCategoryPlayers[selectedPlayer].data().name}
-                </Text>
-              </Flex>
-            </Flex>
-          </DrawerHeader>
-          <DrawerBody>
-            <Button variant="solid" colorScheme="black" width="100%">
-              Confirmar check-in
-            </Button>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-          </DrawerBody>
-        </DrawerContent>
+        <EditGroupPanel
+          groupId={selectedGroupId}
+          group={(categoryGroups?.docs || []).find(
+            (doc) => doc.id === selectedGroupId
+          )}
+        />
       </Drawer>
     </>
   )

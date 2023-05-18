@@ -26,7 +26,6 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { BiArrowFromLeft, BiPlus } from 'react-icons/bi'
-import StickyBox from 'react-sticky-box'
 
 import { indexCollectionDocsById } from '@/firebase'
 import { groupCollectionDocsByField } from '@/firebase/utils'
@@ -68,40 +67,7 @@ export const GamesTab = ({ tournament }) => {
     <>
       {tournamentPlayers && tournamentPlayers?.docs.length > 0 ? (
         <Flex flex="1">
-          <Box px={12} py={8} pl={5} borderRight="1px solid #EEE">
-            <StickyBox offsetTop={92} offsetBottom={20}>
-              <Heading size="sm" mb={4} color="gray.600" pl={3}>
-                Categorias
-              </Heading>
-
-              {categories?.docs.map((category) => {
-                const categoryData = category.data()
-
-                return (
-                  <Box key={`games-tab-category-option-${category.id}`}>
-                    <Tag
-                      mb={2}
-                      size="lg"
-                      bg={
-                        categoryFilter === category.id ? '#000' : 'transparent'
-                      }
-                      borderRadius="full"
-                      cursor="pointer"
-                      onClick={() => setCategoryFilter(category.id)}
-                    >
-                      <TagLabel
-                        color={
-                          categoryFilter === category.id ? '#FFF' : 'black'
-                        }
-                      >
-                        {categoryData.name}
-                      </TagLabel>
-                    </Tag>
-                  </Box>
-                )
-              })}
-            </StickyBox>
-          </Box>
+          <Box px={12} py={8} pl={5} borderRight="1px solid #EEE"></Box>
           <Box flex="1">
             <Flex p={6} alignItems="center" mb={8}>
               <Heading size="md" pl={3} mr={8}>
