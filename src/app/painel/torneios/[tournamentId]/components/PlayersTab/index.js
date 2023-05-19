@@ -77,10 +77,11 @@ export const PlayersTab = ({ tournament }) => {
 
   const [tournamentPlayers, tournamentPlayersLoading, tournamentPlayersError] =
     useTournamentPlayers(tournament?.id)
-  const [categories, categoriesLoading, categoriesError] =
-    useTournamentCategories(tournament?.id)
-  const [categoryGroups, categoryGroupsLoading, categoryGroupsError] =
-    useTournamentCategoryGroups(tournament?.id, categoryFilter)
+  const [categories, categoriesLoading, categoriesError] = useTournamentCategories(tournament?.id)
+  const [categoryGroups, categoryGroupsLoading, categoryGroupsError] = useTournamentCategoryGroups(
+    tournament?.id,
+    categoryFilter
+  )
   const [categoryPlayers, categoryPlayersLoading, categoryPlayersError] =
     useTournamentCategoryPlayers(tournament?.id, categoryFilter)
 
@@ -88,8 +89,7 @@ export const PlayersTab = ({ tournament }) => {
   const indexedCategoryPlayers = indexCollectionDocsById(categoryPlayers)
 
   const selectedCategoryData =
-    indexedCategories[categoryFilter] &&
-    indexedCategories[categoryFilter].data()
+    indexedCategories[categoryFilter] && indexedCategories[categoryFilter].data()
 
   const handlePlayerClick = (playerId) => {
     setSelectedPlayer(playerId)
@@ -133,12 +133,7 @@ export const PlayersTab = ({ tournament }) => {
                 <label htmlFor="testeiro">
                   <InputLeftAddon bg="gray.200">
                     <Flex alignItems="center">
-                      <Icon
-                        color="gray.600"
-                        fontSize="20px"
-                        as={BiCollection}
-                        mr={2}
-                      />
+                      <Icon color="gray.600" fontSize="20px" as={BiCollection} mr={2} />
                       <Text fontSize="sm" color="gray.600" fontWeight="bold">
                         Categoria
                       </Text>
@@ -174,12 +169,7 @@ export const PlayersTab = ({ tournament }) => {
               <InputGroup bg="white" maxWidth={600}>
                 <InputLeftAddon bg="gray.200">
                   <Flex alignItems="center">
-                    <Icon
-                      color="gray.600"
-                      fontSize="20px"
-                      as={BiSearch}
-                      mr={2}
-                    />
+                    <Icon color="gray.600" fontSize="20px" as={BiSearch} mr={2} />
                     <Text fontSize="sm" color="gray.600" fontWeight="bold">
                       Busca
                     </Text>
@@ -198,11 +188,7 @@ export const PlayersTab = ({ tournament }) => {
                 categoryGroups={categoryGroups}
                 category={indexedCategories[categoryFilter]}
               >
-                <Button
-                  size="sm"
-                  ml={2}
-                  leftIcon={<BiCustomize fontSize="18px" />}
-                >
+                <Button size="sm" ml={2} leftIcon={<BiCustomize fontSize="18px" />}>
                   Criar grupo
                 </Button>
               </CreateGroupWrapper>
@@ -217,10 +203,7 @@ export const PlayersTab = ({ tournament }) => {
                 const groupData = group.data()
 
                 return (
-                  <GridItem
-                    w="100%"
-                    key={`players-tab-group-list-item-${group.id}`}
-                  >
+                  <GridItem w="100%" key={`players-tab-group-list-item-${group.id}`}>
                     <Card
                       pt={4}
                       cursor="pointer"
@@ -228,11 +211,7 @@ export const PlayersTab = ({ tournament }) => {
                         handleGroupClick(group.id)
                       }}
                     >
-                      <Flex
-                        alignItems="center"
-                        mb={4}
-                        justifyContent="space-between"
-                      >
+                      <Flex alignItems="center" mb={4} justifyContent="space-between">
                         <Flex alignItems="center">
                           <Heading color="gray.600" size="sm">
                             Grupo {groupData.number < 10 && '0'}
@@ -276,10 +255,10 @@ export const PlayersTab = ({ tournament }) => {
                         {groupData.hasBye && (
                           <Flex alignItems="center">
                             <Avatar
-                              size="sm"
+                              size="xs"
                               colorScheme="brand"
                               bg="gray.300"
-                              icon={<BiArrowFromLeft fontSize={24} />}
+                              icon={<BiArrowFromLeft fontSize={18} />}
                             />
                             <Text fontSize="sm" color="gray.500" ml={2}>
                               Bye
@@ -331,15 +310,9 @@ export const PlayersTab = ({ tournament }) => {
                           <Td>
                             <Text
                               as="span"
-                              color={
-                                playerData.status === 'active'
-                                  ? 'green.500'
-                                  : 'red.500'
-                              }
+                              color={playerData.status === 'active' ? 'green.500' : 'red.500'}
                             >
-                              {playerData.status === 'active'
-                                ? 'Ativo'
-                                : 'Check-in pendente'}
+                              {playerData.status === 'active' ? 'Ativo' : 'Check-in pendente'}
                             </Text>
                           </Td>
                           <Td width="80px">{playerData.groupNumber || '-'}</Td>
@@ -366,20 +339,14 @@ export const PlayersTab = ({ tournament }) => {
           </Box>
         </Flex>
       ) : (
-        <Flex
-          flex="1"
-          alignItems="center"
-          justifyContent="center"
-          flexDirection="column"
-        >
+        <Flex flex="1" alignItems="center" justifyContent="center" flexDirection="column">
           <img src="/gifs/engagement.gif" width="120px" />
           <Heading size="md" color="gray.600" mt={4}>
             Nenhum atleta cadastrado ainda
           </Heading>
           <Text textAlign="center" mb={8} mt={2} color="gray.600">
-            Você pode cadastrar atletas manualmente ou compartilhar o link{' '}
-            <br /> da página de inscrição do torneio para que os atletas se
-            inscrevam.
+            Você pode cadastrar atletas manualmente ou compartilhar o link <br /> da página de
+            inscrição do torneio para que os atletas se inscrevam.
           </Text>
           <Flex>
             <ImportPlayersButton
@@ -434,17 +401,11 @@ export const PlayersTab = ({ tournament }) => {
         </DrawerContent>
       </Drawer>
 
-      <Drawer
-        placement="right"
-        isOpen={isGroupPanelOpen}
-        onClose={handleGroupPanelClose}
-        size="sm"
-      >
+      <Drawer placement="right" isOpen={isGroupPanelOpen} onClose={handleGroupPanelClose} size="sm">
         <EditGroupPanel
+          tournamentId={tournament?.id}
           groupId={selectedGroupId}
-          group={(categoryGroups?.docs || []).find(
-            (doc) => doc.id === selectedGroupId
-          )}
+          group={(categoryGroups?.docs || []).find((doc) => doc.id === selectedGroupId)}
         />
       </Drawer>
     </>

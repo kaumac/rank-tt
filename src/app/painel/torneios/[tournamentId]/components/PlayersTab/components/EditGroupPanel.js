@@ -1,4 +1,11 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Avatar,
   Button,
   DrawerBody,
@@ -6,30 +13,29 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
+  List,
+  ListIcon,
+  ListItem,
   Stack,
   Switch,
-  Text
+  Text,
+  UnorderedList,
+  useDisclosure
 } from '@chakra-ui/react'
-import { useState } from 'react'
-import { BiTrash } from 'react-icons/bi'
+import { useRef, useState } from 'react'
+import { BiInfoCircle, BiTrash } from 'react-icons/bi'
 
-import { useTournamentPlayer } from '@/hooks/useTournament'
+import { useTournamentPlayer, useQueueTournamentGroupDeletion } from '@/hooks/useTournament'
 
 const PlayerListItem = ({ playerId }) => {
   const [player, loading, error] = useTournamentPlayer(playerId)
+
   const playerData = player ? player.data() : null
 
   return playerData ? (
     <Flex alignItems="center" key={player.id}>
-      <Avatar
-        size="xs"
-        colorScheme="green"
-        name={playerData.name}
-        src={playerData.photoURL}
-      />
+      <Avatar size="xs" colorScheme="green" name={playerData.name} src={playerData.photoURL} />
       <Text fontSize="sm" color="gray.700" ml={2}>
         {playerData.name}
       </Text>
@@ -42,8 +48,23 @@ const PlayerListItem = ({ playerId }) => {
   )
 }
 
-export const EditGroupPanel = ({ groupId, group }) => {
+export const EditGroupPanel = ({ tournamentId, groupId, group }) => {
   const [editMode, setEditMode] = useState(false)
+  const [isGroupDeleted, setIsGroupDeleted] = useState(false)
+  const cancelDeleteGroupRef = useRef()
+  const {
+    isOpen: isDeleteGroupAlertOpen,
+    onOpen: onDeleteGroupAlertOpen,
+    onClose: onDeleteGroupAlertClose
+  } = useDisclosure()
+
+  const queueDeleteTournamentGroup = useQueueTournamentGroupDeletion(tournamentId, groupId)
+
+  const handleGroupDeletion = async () => {
+    await queueDeleteTournamentGroup.mutate()
+    console.log(queueDeleteTournamentGroup)
+  }
+
   const groupData = group ? group.data() : null
 
   return groupData ? (
@@ -57,19 +78,15 @@ export const EditGroupPanel = ({ groupId, group }) => {
               {groupData.number}
             </Heading>
 
-            <label htmlFor="email-alerts">
+            <label htmlFor={`toggle-group-${groupId}-edit`}>
               <Flex alignItems="center">
-                <Text
-                  fontSize="sm"
-                  color={editMode ? 'brand.500' : 'gray.500'}
-                  mr={2}
-                >
+                <Text fontSize="sm" color={editMode ? 'brand.500' : 'gray.500'} mr={2}>
                   Editar
                 </Text>
                 <Switch
                   isChecked={editMode}
                   value={editMode}
-                  id="email-alerts"
+                  id={`toggle-group-${groupId}-edit`}
                   onChange={(evt) => {
                     setEditMode(!editMode)
                   }}
@@ -85,14 +102,60 @@ export const EditGroupPanel = ({ groupId, group }) => {
             ))}
           </Stack>
           {editMode && (
-            <Button
-              variant="outline"
-              colorScheme="red"
-              width="100%"
-              leftIcon={<BiTrash fontSize="18px" />}
-            >
-              Excluir grupo
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                colorScheme="red"
+                width="100%"
+                leftIcon={<BiTrash fontSize="18px" />}
+                onClick={onDeleteGroupAlertOpen}
+              >
+                Excluir grupo
+              </Button>
+              <AlertDialog
+                motionPreset="slideInBottom"
+                leastDestructiveRef={cancelDeleteGroupRef}
+                onClose={onDeleteGroupAlertClose}
+                isOpen={isDeleteGroupAlertOpen}
+                isCentered
+                size="xl"
+              >
+                <AlertDialogOverlay />
+
+                <AlertDialogContent>
+                  <AlertDialogHeader>Tem certeza?</AlertDialogHeader>
+                  <AlertDialogCloseButton />
+                  <AlertDialogBody>
+                    Você está prestes a <strong>excluir o grupo {groupData.number}</strong>. Esta
+                    ação será irreverssível!
+                    <UnorderedList spacing={1} mt={4}>
+                      <ListItem color="gray.600">
+                        O grupo {groupData.number} será permanentemente excluído.
+                      </ListItem>
+                      <ListItem color="gray.600">
+                        Todos os jogadores do grupo {groupData.number} ficarão sem grupo e poderão
+                        ser adicionados à um novo grupo.
+                      </ListItem>
+                      <ListItem color="gray.600">
+                        O número dos grupos seguintes ao grupo {groupData.number} serão alterados.
+                      </ListItem>
+                    </UnorderedList>
+                  </AlertDialogBody>
+                  <AlertDialogFooter>
+                    <Button
+                      ref={cancelDeleteGroupRef}
+                      onClick={onDeleteGroupAlertClose}
+                      colorScheme="black"
+                    >
+                      Cancelar
+                    </Button>
+                    <Button colorScheme="red" ml={3} variant="ghost" onClick={handleGroupDeletion}>
+                      Confirmar exclusão
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </>
           )}
         </DrawerBody>
       </DrawerContent>

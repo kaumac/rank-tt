@@ -100,7 +100,7 @@ function Page({ params }) {
           </Box>
         </Tooltip>
       </Flex>
-      <Tabs isFitted display="flex" flexDirection="column" flex="1">
+      <Tabs>
         <TabList
           position="sticky"
           top="0"
