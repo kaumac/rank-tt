@@ -22,14 +22,7 @@ import {
   useTab
 } from '@chakra-ui/react'
 import React from 'react'
-import {
-  BiCog,
-  BiExtension,
-  BiGroup,
-  BiSitemap,
-  BiTrophy,
-  BiUser
-} from 'react-icons/bi'
+import { BiCog, BiExtension, BiGroup, BiSitemap, BiTrophy, BiUser } from 'react-icons/bi'
 import { MdOutlineTableRestaurant } from 'react-icons/md'
 
 import useTournament from '@/hooks/useTournament'
@@ -43,12 +36,7 @@ const CustomTab = React.forwardRef((props, ref) => {
   const styles = useMultiStyleConfig('Tabs', tabProps)
 
   return (
-    <Button
-      __css={styles.tab}
-      {...tabProps}
-      py={4}
-      px={{ lg: 5, xl: 6, xxl: 8 }}
-    >
+    <Button __css={styles.tab} {...tabProps} py={4} px={{ lg: 5, xl: 6, xxl: 8 }}>
       <Flex alignItems="center" justifyContent="center">
         <Box as="span" mr="2" transform="translateY(2px)">
           {props.icon}
@@ -81,11 +69,7 @@ function Page({ params }) {
             {tournamentData?.name}
           </Heading>
         </Box>
-        <Tooltip
-          hasArrow
-          label="Clique para iniciar o torneio"
-          placement="auto"
-        >
+        <Tooltip hasArrow label="Clique para iniciar o torneio" placement="auto">
           <Box>
             <FormControl display="flex" alignItems="center" ml={4}>
               <Tag size="lg" colorScheme="orange" borderRadius="full">
@@ -109,30 +93,18 @@ function Page({ params }) {
           bg="white"
           zIndex={10}
         >
-          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiTrophy} />}>
-            Geral
-          </CustomTab>
+          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiTrophy} />}>Geral</CustomTab>
           <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiGroup} />}>
             Grupos e atletas
           </CustomTab>
-          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiSitemap} />}>
-            Jogos
-          </CustomTab>
-          <CustomTab
-            icon={
-              <Icon boxSize={{ sm: 4, xl: 5 }} as={MdOutlineTableRestaurant} />
-            }
-          >
+          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiSitemap} />}>Jogos</CustomTab>
+          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={MdOutlineTableRestaurant} />}>
             Mesas
           </CustomTab>
-          <CustomTab
-            icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiExtension} />}
-          >
+          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiExtension} />}>
             Utilidades
           </CustomTab>
-          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiCog} />}>
-            Configurações
-          </CustomTab>
+          <CustomTab icon={<Icon boxSize={{ sm: 4, xl: 5 }} as={BiCog} />}>Configurações</CustomTab>
         </TabList>
         <TabIndicator height="3px" />
         <TabPanels display="flex" flex="1">
