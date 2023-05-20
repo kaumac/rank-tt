@@ -61,12 +61,7 @@ export const EventWizard = () => {
         display="flex"
         flexDirection="column"
       >
-        <TabList
-          display="flex"
-          alignItems="center"
-          alignSelf="center"
-          justifySelf="center"
-        >
+        <TabList display="flex" alignItems="center" alignSelf="center" justifySelf="center">
           <Tab
             ref={productTab}
             w={{ sm: '120px', md: '250px', lg: '300px' }}
@@ -177,12 +172,7 @@ export const EventWizard = () => {
               })
             }
           >
-            <Flex
-              direction="column"
-              justify="center"
-              align="center"
-              position="relative"
-            >
+            <Flex direction="column" justify="center" align="center" position="relative">
               <Box
                 zIndex="1"
                 border="2px solid"
@@ -204,11 +194,7 @@ export const EventWizard = () => {
           </Tab>
         </TabList>
         <TabPanels mt="24px" maxW={{ md: '90%', lg: '100%' }} mx="auto">
-          <TabPanel
-            w={{ sm: '330px', md: '700px', lg: '850px' }}
-            p="0px"
-            mx="auto"
-          >
+          <TabPanel w={{ sm: '330px', md: '700px', lg: '850px' }} p="0px" mx="auto">
             <Card p="30px">
               <Text color={textColor} fontSize="2xl" fontWeight="700" mb="20px">
                 Product Info
@@ -222,18 +208,8 @@ export const EventWizard = () => {
                       placeholder="eg. Elegant Chair"
                       label="Product Name"
                     />
-                    <InputField
-                      mb="0px"
-                      id="weight"
-                      placeholder="eg. 20kg"
-                      label="Weight"
-                    />
-                    <InputField
-                      mb="0px"
-                      id="Color"
-                      placeholder="eg. Purple"
-                      label="Color"
-                    />
+                    <InputField mb="0px" id="weight" placeholder="eg. 20kg" label="Weight" />
+                    <InputField mb="0px" id="Color" placeholder="eg. Purple" label="Color" />
                   </Stack>
                   <Stack direction="column" gap="20px">
                     <InputField
@@ -267,11 +243,7 @@ export const EventWizard = () => {
               </Flex>
             </Card>
           </TabPanel>
-          <TabPanel
-            w={{ sm: '330px', md: '700px', lg: '850px' }}
-            p="0px"
-            mx="auto"
-          >
+          <TabPanel w={{ sm: '330px', md: '700px', lg: '850px' }} p="0px" mx="auto">
             <Card p="30px">
               <Text color={textColor} fontSize="2xl" fontWeight="700" mb="20px">
                 Media
@@ -279,12 +251,7 @@ export const EventWizard = () => {
               <Dropzone
                 content={
                   <Box>
-                    <Icon
-                      as={MdOutlineCloudUpload}
-                      w="80px"
-                      h="80px"
-                      color={textColor}
-                    />
+                    <Icon as={MdOutlineCloudUpload} w="80px" h="80px" color={textColor} />
                     <Text
                       mx="auto"
                       mb="12px"
@@ -294,20 +261,11 @@ export const EventWizard = () => {
                       color={textColor}
                     >
                       Drop your files here, or{' '}
-                      <Text
-                        as="span"
-                        fontSize="lg"
-                        fontWeight="700"
-                        color={brand}
-                      >
+                      <Text as="span" fontSize="lg" fontWeight="700" color={brand}>
                         browse
                       </Text>
                     </Text>
-                    <Text
-                      fontSize="sm"
-                      fontWeight="500"
-                      color="secondaryGray.500"
-                    >
+                    <Text fontSize="sm" fontWeight="500" color="secondaryGray.500">
                       PNG, JPG and GIF files are allowed
                     </Text>
                   </Box>
@@ -337,31 +295,16 @@ export const EventWizard = () => {
               </Flex>
             </Card>
           </TabPanel>
-          <TabPanel
-            w={{ sm: '330px', md: '700px', lg: '850px' }}
-            p="0px"
-            mx="auto"
-          >
+          <TabPanel w={{ sm: '330px', md: '700px', lg: '850px' }} p="0px" mx="auto">
             <Card p="30px">
               <Text color={textColor} fontSize="2xl" fontWeight="700" mb="20px">
                 Pricing
               </Text>
               <Flex direction="column" w="100%">
                 <Stack direction="column" spacing="20px">
-                  <SimpleGrid
-                    columns={{ base: 1, md: 3 }}
-                    gap={{ base: '0px', md: '20px' }}
-                  >
-                    <InputField
-                      id="price"
-                      placeholder="eg. $99"
-                      label="Price"
-                    />
-                    <InputField
-                      id="code"
-                      placeholder="eg. 4030120241"
-                      label="Unique Code"
-                    />
+                  <SimpleGrid columns={{ base: 1, md: 3 }} gap={{ base: '0px', md: '20px' }}>
+                    <InputField id="price" placeholder="eg. $99" label="Price" />
+                    <InputField id="code" placeholder="eg. 4030120241" label="Unique Code" />
                     <Flex direction="column" mb="34px">
                       <FormLabel
                         ms="10px"

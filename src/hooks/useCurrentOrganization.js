@@ -6,12 +6,9 @@ import { db } from '@/firebase'
 
 function useCurrentOrganization(id) {
   const [currentOrgId] = useLocalStorageState('currentOrganizationId')
-  const [value, loading, error] = useDocument(
-    doc(db, 'organizations', currentOrgId || 'xpto'),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true }
-    }
-  )
+  const [value, loading, error] = useDocument(doc(db, 'organizations', currentOrgId || 'xpto'), {
+    snapshotListenOptions: { includeMetadataChanges: true }
+  })
 
   return [value?.data(), loading, error]
 }

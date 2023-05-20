@@ -1,13 +1,6 @@
 'use client'
 
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Text,
-  useDisclosure
-} from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, Text, useDisclosure } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -40,12 +33,7 @@ function Page() {
           })}
         </>
       ) : (
-        <Flex
-          flex="1"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-        >
+        <Flex flex="1" justifyContent="center" alignItems="center" flexDirection="column">
           <Heading size="md" textAlign="center">
             Essa organização ainda não tem competições ativas
           </Heading>

@@ -29,10 +29,7 @@ export const inputStyles = {
             color: mode('navy.700', 'white')(props),
             bg: mode('transparent', 'transparent')(props),
             border: '1px solid',
-            borderColor: mode(
-              'secondaryGray.100',
-              'rgba(135, 140, 189, 0.3)'
-            )(props),
+            borderColor: mode('secondaryGray.100', 'rgba(135, 140, 189, 0.3)')(props),
             borderRadius: '16px',
             _placeholder: { color: 'secondaryGray.600', fontWeight: '400' }
           }

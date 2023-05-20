@@ -1,11 +1,4 @@
-import {
-  Button,
-  Center,
-  Container,
-  Heading,
-  Text,
-  VStack
-} from '@chakra-ui/react'
+import { Button, Center, Container, Heading, Text, VStack } from '@chakra-ui/react'
 import { FunctionComponent } from 'react'
 
 interface HeroSectionProps {}
@@ -21,8 +14,7 @@ export const HeroSection: FunctionComponent<HeroSectionProps> = () => {
             </Heading>
 
             <Text fontSize="xl" color="gray.500">
-              Se increva em competições, acompanhe seus jogos e resultados
-              anteriores.
+              Se increva em competições, acompanhe seus jogos e resultados anteriores.
             </Text>
 
             <Button

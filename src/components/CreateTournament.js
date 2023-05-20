@@ -58,13 +58,7 @@ export const CreateTournament = ({ isOpen, onClose }) => {
   }
 
   return (
-    <Modal
-      isCentered
-      onClose={onClose}
-      isOpen={isOpen}
-      motionPreset="slideInBottom"
-      size="xl"
-    >
+    <Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom" size="xl">
       <ModalOverlay />
       <ModalContent>
         {!createdTournament ? (
@@ -73,8 +67,8 @@ export const CreateTournament = ({ isOpen, onClose }) => {
             <ModalCloseButton />
             <ModalBody>
               <Text fontSize={14} mb={6} mr={24}>
-                Essas e outras configurações como data, horário e formato da
-                competição poderão ser alteradas depois nas configurações.
+                Essas e outras configurações como data, horário e formato da competição poderão ser
+                alteradas depois nas configurações.
               </Text>
               <FormControl isInvalid={errors.name}>
                 <FormLabel htmlFor="name">Nome da competição</FormLabel>
@@ -89,9 +83,7 @@ export const CreateTournament = ({ isOpen, onClose }) => {
                     }
                   })}
                 />
-                <FormErrorMessage>
-                  {errors.name && errors.name.message}
-                </FormErrorMessage>
+                <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
               </FormControl>
             </ModalBody>
             <ModalFooter>
@@ -125,13 +117,12 @@ export const CreateTournament = ({ isOpen, onClose }) => {
                 Torneio criado!
               </Heading>
               <Text mt={2} textAlign="center">
-                O torneio <strong>{createdTournament.name}</strong> foi criado
-                com sucesso!
+                O torneio <strong>{createdTournament.name}</strong> foi criado com sucesso!
               </Text>
 
               <Text mt={4} textAlign="center">
-                Agora você pode continuar a configuração do torneio e definir
-                data, horário, formato dos jogos, etc.
+                Agora você pode continuar a configuração do torneio e definir data, horário, formato
+                dos jogos, etc.
               </Text>
 
               <Button

@@ -51,13 +51,7 @@ export const CreateOrganization = ({ isOpen, onClose }) => {
   }
 
   return (
-    <Modal
-      isCentered
-      onClose={onClose}
-      isOpen={isOpen}
-      motionPreset="slideInBottom"
-      size="xl"
-    >
+    <Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom" size="xl">
       <ModalOverlay />
       <ModalContent>
         {!createdOrg ? (
@@ -78,9 +72,7 @@ export const CreateOrganization = ({ isOpen, onClose }) => {
                     }
                   })}
                 />
-                <FormErrorMessage>
-                  {errors.name && errors.name.message}
-                </FormErrorMessage>
+                <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
               </FormControl>
             </ModalBody>
             <ModalFooter>
@@ -114,11 +106,10 @@ export const CreateOrganization = ({ isOpen, onClose }) => {
                 Organização criada!
               </Heading>
               <Text mt={2} textAlign="center">
-                A organização <strong>{createdOrg.name}</strong> foi criada com
-                sucesso!
+                A organização <strong>{createdOrg.name}</strong> foi criada com sucesso!
                 <br />
-                Clique no botão abaixo para gerenciar essa organização e começar
-                a organizar competições!
+                Clique no botão abaixo para gerenciar essa organização e começar a organizar
+                competições!
               </Text>
 
               <Button

@@ -30,29 +30,15 @@ const navLinks = [
 const DesktopSidebarContents = () => {
   return (
     <Container maxW={['full', 'container.lg']} p={0}>
-      <Stack
-        justify="space-between"
-        p={[0, 4]}
-        w="full"
-        direction={['column', 'row']}
-      >
+      <Stack justify="space-between" p={[0, 4]} w="full" direction={['column', 'row']}>
         <Box display={{ base: 'none', md: 'flex' }}>
           <img src="/ranktt-logo.svg" width={150} />
         </Box>
         <Spacer />
-        <Stack
-          align="flex-start"
-          spacing={[4, 10]}
-          direction={['column', 'row']}
-        >
+        <Stack align="flex-start" spacing={[4, 10]} direction={['column', 'row']}>
           {navLinks.map((navLink: any, i: number) => {
             return (
-              <Link
-                href={navLink.link}
-                key={`navlink_${i}`}
-                fontWeight={500}
-                variant="ghost"
-              >
+              <Link href={navLink.link} key={`navlink_${i}`} fontWeight={500} variant="ghost">
                 {navLink.name}
               </Link>
             )
@@ -76,11 +62,7 @@ const MobileSidebar = () => {
       <Flex w="full" align="center">
         LPLPLPLP
         <Spacer />
-        <IconButton
-          aria-label="Search database"
-          icon={<BiMenu />}
-          onClick={onOpen}
-        />
+        <IconButton aria-label="Search database" icon={<BiMenu />} onClick={onOpen} />
         <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="xs">
           <DrawerOverlay />
           <DrawerContent bg="gray.50">
