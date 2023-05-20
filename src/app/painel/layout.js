@@ -75,12 +75,7 @@ const NavbarIcon = ({ route, title, icon }) => {
         justifyContent="center"
         borderRadius="20%"
       >
-        <Icon
-          as={icon}
-          w="24px"
-          h="24px"
-          color={isRouteActive ? '#FFF' : '#AAAAAA'}
-        />
+        <Icon as={icon} w="24px" h="24px" color={isRouteActive ? '#FFF' : '#AAAAAA'} />
       </Flex>
     </Tooltip>
   )
@@ -89,11 +84,8 @@ const NavbarIcon = ({ route, title, icon }) => {
 export default function RootLayout({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [currentUser, loadingCurrentUser, currentUserError] = useCurrentUser()
-  const [
-    currentOrganization,
-    loadingCurrentOrganization,
-    currentOrganizationError
-  ] = useCurrentOrganization()
+  const [currentOrganization, loadingCurrentOrganization, currentOrganizationError] =
+    useCurrentOrganization()
   const [isFullscreen, setIsFullscreen] = React.useState(false)
 
   if (typeof window !== 'undefined') {
@@ -132,11 +124,7 @@ export default function RootLayout({ children }) {
 
           <Stack gap={{ lg: '4px', xl: '8px' }} margin="auto">
             <NavbarIcon title="Painel" route="/painel" icon={BiHomeAlt} />
-            <NavbarIcon
-              title="Torneios"
-              route="/painel/torneios"
-              icon={BiTrophy}
-            />
+            <NavbarIcon title="Torneios" route="/painel/torneios" icon={BiTrophy} />
             <NavbarIcon title="Telões" route="/painel/teloes" icon={BiCast} />
           </Stack>
 
@@ -169,10 +157,7 @@ export default function RootLayout({ children }) {
               </MenuItem>
               <MenuGroup title="Organizações">
                 {currentUser?.organizations.map((organizationId) => (
-                  <OrganizationSwitchLink
-                    key={organizationId}
-                    organizationId={organizationId}
-                  />
+                  <OrganizationSwitchLink key={organizationId} organizationId={organizationId} />
                 ))}
                 <MenuItem icon={<BiStoreAlt />} onClick={onOpen}>
                   Criar organização

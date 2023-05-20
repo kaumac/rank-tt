@@ -41,18 +41,14 @@ export const CreateGroupWrapper = ({
 
   const categoryId = category?.id
 
-  const unassignedPlayers = (categoryPlayers?.docs || []).filter(
-    (categoryPlayer) => {
-      const categoryPlayerData = categoryPlayer.data()
+  const unassignedPlayers = (categoryPlayers?.docs || []).filter((categoryPlayer) => {
+    const categoryPlayerData = categoryPlayer.data()
 
-      return (
-        !categoryPlayerData.group &&
-        !newGroup.players.find(
-          (newGroupPlayer) => newGroupPlayer === categoryPlayer.id
-        )
-      )
-    }
-  )
+    return (
+      !categoryPlayerData.group &&
+      !newGroup.players.find((newGroupPlayer) => newGroupPlayer === categoryPlayer.id)
+    )
+  })
 
   const handleAddPlayer = (playerId) => {
     setNewGroup({
@@ -64,9 +60,7 @@ export const CreateGroupWrapper = ({
   const handleRemovePlayer = (playerToBeRemoved) => {
     setNewGroup({
       ...newGroup,
-      players: newGroup.players.filter(
-        (newGroupPlayer) => newGroupPlayer !== playerToBeRemoved
-      )
+      players: newGroup.players.filter((newGroupPlayer) => newGroupPlayer !== playerToBeRemoved)
     })
   }
 
@@ -128,8 +122,7 @@ export const CreateGroupWrapper = ({
         <ModalOverlay />
         <ModalContent p={4} maxWidth="80vw">
           <ModalHeader>
-            Criar grupo{' '}
-            {newGroup.length > 0 && `(${newGroup.length} selecionados)`}
+            Criar grupo {newGroup.length > 0 && `(${newGroup.length} selecionados)`}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody px={0}>
@@ -150,61 +143,52 @@ export const CreateGroupWrapper = ({
                     <TableContainer width="100%">
                       <Table variant="simple">
                         <Tbody>
-                          {newGroup.players.map(
-                            (newGroupPlayer, newGroupPlayerIndex) => {
-                              const player = (categoryPlayers?.docs || []).find(
-                                (categoryPlayer) =>
-                                  categoryPlayer.id === newGroupPlayer
-                              )
+                          {newGroup.players.map((newGroupPlayer, newGroupPlayerIndex) => {
+                            const player = (categoryPlayers?.docs || []).find(
+                              (categoryPlayer) => categoryPlayer.id === newGroupPlayer
+                            )
 
-                              if (!player) return null
+                            if (!player) return null
 
-                              const playerData = player.data()
+                            const playerData = player.data()
 
-                              return (
-                                <Tr
-                                  key={`group-player-list-${newGroupPlayerIndex}`}
+                            return (
+                              <Tr key={`group-player-list-${newGroupPlayerIndex}`}>
+                                <Td
+                                  position="relative"
+                                  data-group
+                                  borderBottom={
+                                    newGroupPlayerIndex + 1 === newGroup.players.length
+                                      ? 'none'
+                                      : null
+                                  }
                                 >
-                                  <Td
-                                    position="relative"
-                                    data-group
-                                    borderBottom={
-                                      newGroupPlayerIndex + 1 ===
-                                      newGroup.players.length
-                                        ? 'none'
-                                        : null
-                                    }
+                                  {playerData?.name}
+                                  <Center
+                                    width="100%"
+                                    height="100%"
+                                    position="absolute"
+                                    top="0"
+                                    left="0"
+                                    cursor="pointer"
+                                    opacity="0"
+                                    transition="opacity 0.2s ease-in-out"
+                                    _groupHover={{
+                                      bg: 'rgba(201, 41, 31, 0.04)',
+                                      opacity: 1
+                                    }}
+                                    onClick={() => {
+                                      handleRemovePlayer(newGroupPlayer)
+                                    }}
                                   >
-                                    {playerData?.name}
-                                    <Center
-                                      width="100%"
-                                      height="100%"
-                                      position="absolute"
-                                      top="0"
-                                      left="0"
-                                      cursor="pointer"
-                                      opacity="0"
-                                      transition="opacity 0.2s ease-in-out"
-                                      _groupHover={{
-                                        bg: 'rgba(201, 41, 31, 0.04)',
-                                        opacity: 1
-                                      }}
-                                      onClick={() => {
-                                        handleRemovePlayer(newGroupPlayer)
-                                      }}
-                                    >
-                                      <Button
-                                        colorScheme="red"
-                                        leftIcon={<BiTrash />}
-                                      >
-                                        Remover do grupo
-                                      </Button>
-                                    </Center>
-                                  </Td>
-                                </Tr>
-                              )
-                            }
-                          )}
+                                    <Button colorScheme="red" leftIcon={<BiTrash />}>
+                                      Remover do grupo
+                                    </Button>
+                                  </Center>
+                                </Td>
+                              </Tr>
+                            )
+                          })}
                         </Tbody>
                       </Table>
                     </TableContainer>
@@ -245,9 +229,7 @@ export const CreateGroupWrapper = ({
                                   handleAddPlayer(player.id)
                                 }}
                               >
-                                <Button leftIcon={<BiPlus />}>
-                                  Adicionar ao grupo
-                                </Button>
+                                <Button leftIcon={<BiPlus />}>Adicionar ao grupo</Button>
                               </Center>
                             </Td>
                           </Tr>

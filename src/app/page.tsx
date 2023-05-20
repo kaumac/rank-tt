@@ -127,13 +127,7 @@ export default function Home() {
             Used by teams worldwide
           </Text>
 
-          <Wrap
-            spacing={[10, 20]}
-            mt={8}
-            align="center"
-            justify="center"
-            w="full"
-          >
+          <Wrap spacing={[10, 20]} mt={8} align="center" justify="center" w="full">
             <WrapItem>
               <Image src="microsoft-logo.svg" alt="Microsoft logo" />
             </WrapItem>
@@ -152,27 +146,19 @@ export default function Home() {
           </Wrap>
         </Container>
 
-        <VStack
-          backgroundColor="white"
-          w="full"
-          id="features"
-          spacing={16}
-          py={[16, 0]}
-        >
-          {features.map(
-            ({ title, description, image }: FeatureType, i: number) => {
-              return (
-                <div key={`feature_${i}`}>feat</div>
-                // <Feature
-                //   key={`feature_${i}`}
-                //   title={title}
-                //   description={description}
-                //   image={image}
-                //   reverse={i % 2 === 1}
-                // />
-              )
-            }
-          )}
+        <VStack backgroundColor="white" w="full" id="features" spacing={16} py={[16, 0]}>
+          {features.map(({ title, description, image }: FeatureType, i: number) => {
+            return (
+              <div key={`feature_${i}`}>feat</div>
+              // <Feature
+              //   key={`feature_${i}`}
+              //   title={title}
+              //   description={description}
+              //   image={image}
+              //   reverse={i % 2 === 1}
+              // />
+            )
+          })}
         </VStack>
 
         <Container maxW="container.md" centerContent py={[8, 28]}>
