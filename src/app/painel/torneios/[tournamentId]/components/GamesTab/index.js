@@ -43,10 +43,11 @@ export const GamesTab = ({ tournament }) => {
   const [categoryFilter, setCategoryFilter] = useState()
   const [tournamentPlayers, tournamentPlayersLoading, tournamentPlayersError] =
     useTournamentPlayers(tournament?.id)
-  const [categories, categoriesLoading, categoriesError] =
-    useTournamentCategories(tournament?.id)
-  const [categoryGroups, categoryGroupsLoading, categoryGroupsError] =
-    useTournamentCategoryGroups(tournament?.id, categoryFilter)
+  const [categories, categoriesLoading, categoriesError] = useTournamentCategories(tournament?.id)
+  const [categoryGroups, categoryGroupsLoading, categoryGroupsError] = useTournamentCategoryGroups(
+    tournament?.id,
+    categoryFilter
+  )
   const [categoryPlayers, categoryPlayersLoading, categoryPlayersError] =
     useTournamentCategoryPlayers(tournament?.id, categoryFilter)
 
@@ -54,8 +55,7 @@ export const GamesTab = ({ tournament }) => {
   const indexedCategoryPlayers = indexCollectionDocsById(categoryPlayers)
 
   const selectedCategoryData =
-    indexedCategories[categoryFilter] &&
-    indexedCategories[categoryFilter].data()
+    indexedCategories[categoryFilter] && indexedCategories[categoryFilter].data()
 
   useEffect(() => {
     if (categories?.docs.length > 0) {
@@ -78,20 +78,14 @@ export const GamesTab = ({ tournament }) => {
           </Box>
         </Flex>
       ) : (
-        <Flex
-          flex="1"
-          alignItems="center"
-          justifyContent="center"
-          flexDirection="column"
-        >
+        <Flex flex="1" alignItems="center" justifyContent="center" flexDirection="column">
           <img src="/gifs/engagement.gif" width="120px" />
           <Heading size="md" color="gray.600" mt={4}>
             Nenhum atleta cadastrado ainda
           </Heading>
           <Text textAlign="center" mb={8} mt={2} color="gray.600">
-            Você pode cadastrar atletas manualmente ou compartilhar o link{' '}
-            <br /> da página de inscrição do torneio para que os atletas se
-            inscrevam.
+            Você pode cadastrar atletas manualmente ou compartilhar o link <br /> da página de
+            inscrição do torneio para que os atletas se inscrevam.
           </Text>
           <Flex>
             <ImportPlayersButton

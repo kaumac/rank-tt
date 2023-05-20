@@ -120,8 +120,8 @@ export const ImportPlayersButton = ({ category, tournamentRef }) => {
                   <br />* Insira <strong>apenas um nome por linha</strong>
                   .
                   <br />
-                  ** <strong>Opcionalmente</strong> você pode inserir um número
-                  de celular separado por vírgula para cada jogador.
+                  ** <strong>Opcionalmente</strong> você pode inserir um número de celular separado
+                  por vírgula para cada jogador.
                 </Text>
                 <Textarea
                   value={playersToImportInput}
