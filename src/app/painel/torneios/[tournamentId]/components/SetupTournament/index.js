@@ -1,12 +1,4 @@
-import {
-  Heading,
-  Text,
-  Center,
-  Flex,
-  Stack,
-  Card,
-  Radio
-} from '@chakra-ui/react'
+import { Heading, Text, Center, Flex, Stack, Card, Radio } from '@chakra-ui/react'
 import { doc } from 'firebase/firestore'
 
 import { TOURNAMENT_FORMAT } from '@/constants'
@@ -18,8 +10,7 @@ import SelectTournamentFormat from './components/SelectTournamentFormat'
 import SetupProgress from './components/SetupProgress'
 
 export const SetupTournament = ({ tournament }) => {
-  const [categories, categoriesLoading, categoriesError] =
-    useTournamentCategories(tournament?.id)
+  const [categories, categoriesLoading, categoriesError] = useTournamentCategories(tournament?.id)
   const tournamentData = tournament?.data()
 
   const setTournamentFormat = async (format) => {
@@ -35,15 +26,11 @@ export const SetupTournament = ({ tournament }) => {
   const completedSteps = {
     tournamentFormat: !!tournamentData?.settings?.tournamentFormat,
     tournamentCategories:
-      tournamentData?.settings?.tournamentFormat ===
-        TOURNAMENT_FORMAT.NO_CATEGORIES ||
+      tournamentData?.settings?.tournamentFormat === TOURNAMENT_FORMAT.NO_CATEGORIES ||
       (categories?.docs && categories?.docs.length > 0),
-    tournamentGroups:
-      Object.keys(tournamentData?.settings?.groups || {}).length > 0,
-    tournamentGames:
-      Object.keys(tournamentData?.settings?.games || {}).length > 0,
-    tournamentTables:
-      Object.keys(tournamentData?.settings?.tables || {}).length > 0
+    tournamentGroups: Object.keys(tournamentData?.settings?.groups || {}).length > 0,
+    tournamentGames: Object.keys(tournamentData?.settings?.games || {}).length > 0,
+    tournamentTables: Object.keys(tournamentData?.settings?.tables || {}).length > 0
   }
 
   return (
@@ -53,10 +40,9 @@ export const SetupTournament = ({ tournament }) => {
         {!completedSteps.tournamentFormat && (
           <SelectTournamentFormat onSelect={setTournamentFormat} />
         )}
-        {!completedSteps.tournamentCategories &&
-          !!completedSteps.tournamentFormat && (
-            <AddCategories tournamentRef={tournament?.ref} />
-          )}
+        {!completedSteps.tournamentCategories && !!completedSteps.tournamentFormat && (
+          <AddCategories tournamentRef={tournament?.ref} />
+        )}
       </Center>
     </Flex>
   )

@@ -9,8 +9,8 @@ export const SelectTournamentFormat = ({ onSelect }) => {
         Selecione o formato do seu torneio
       </Heading>
       <Text color="gray.500">
-        <strong>Importante</strong>: Uma vez definido o formato do torneio, não
-        será possível alterá-lo!
+        <strong>Importante</strong>: Uma vez definido o formato do torneio, não será possível
+        alterá-lo!
       </Text>
       <Stack spacing={4} mt={8}>
         <Card px={8} py={4} opacity={0.5} pointerEvents="none">

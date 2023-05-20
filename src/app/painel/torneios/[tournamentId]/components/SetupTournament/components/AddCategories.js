@@ -43,8 +43,7 @@ export const SelectTournamentFormat = ({ tournamentRef }) => {
 
   const handleSubcategoryChange = (categoryIndex, subcategoryIndex, event) => {
     const newCategories = [...categories]
-    newCategories[categoryIndex].subcategories[subcategoryIndex].name =
-      event.target.value
+    newCategories[categoryIndex].subcategories[subcategoryIndex].name = event.target.value
     setCategories(newCategories)
   }
 
@@ -57,11 +56,9 @@ export const SelectTournamentFormat = ({ tournamentRef }) => {
   const saveCategories = async () => {
     const categoriesRef = collection(tournamentRef, 'categories')
     categories.forEach(async (category) => {
-      const savedCategory = await pushDoc(categoriesRef, category).then(
-        (savedCategoryDocRef) => {
-          updateDoc(savedCategoryDocRef, { id: savedCategoryDocRef.id })
-        }
-      )
+      const savedCategory = await pushDoc(categoriesRef, category).then((savedCategoryDocRef) => {
+        updateDoc(savedCategoryDocRef, { id: savedCategoryDocRef.id })
+      })
 
       return savedCategory
     })
@@ -73,17 +70,11 @@ export const SelectTournamentFormat = ({ tournamentRef }) => {
         Configure as categorias
       </Heading>
       <Text color="gray.500">
-        Adicione as categorias e sub-categorias que serão utilizadas no seu
-        torneio.
+        Adicione as categorias e sub-categorias que serão utilizadas no seu torneio.
       </Text>
       <Stack spacing={4} mt={8}>
         {categories.map((category, categoryIndex) => (
-          <Card
-            px={8}
-            py={4}
-            key={`category-field-${categoryIndex}`}
-            position="relative"
-          >
+          <Card px={8} py={4} key={`category-field-${categoryIndex}`} position="relative">
             <IconButton
               icon={<BiTrash />}
               colorScheme="red"
@@ -140,11 +131,7 @@ export const SelectTournamentFormat = ({ tournamentRef }) => {
                     value={subcategory.name}
                     key={`subcategory-field-${subcategoryIndex}`}
                     onChange={(event) => {
-                      handleSubcategoryChange(
-                        categoryIndex,
-                        subcategoryIndex,
-                        event
-                      )
+                      handleSubcategoryChange(categoryIndex, subcategoryIndex, event)
                     }}
                   />
                 </Flex>
