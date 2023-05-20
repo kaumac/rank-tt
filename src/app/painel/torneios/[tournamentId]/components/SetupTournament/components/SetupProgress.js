@@ -1,19 +1,8 @@
 import { Box, Heading, Text, Center, Flex, Icon } from '@chakra-ui/react'
-import {
-  BiBullseye,
-  BiCheck,
-  BiGroup,
-  BiSitemap,
-  BiTrophy
-} from 'react-icons/bi'
+import { BiBullseye, BiCheck, BiGroup, BiSitemap, BiTrophy } from 'react-icons/bi'
 import { MdOutlineTableRestaurant } from 'react-icons/md'
 
-const ProgressItem = ({
-  progressTitle,
-  progressIcon,
-  isActive,
-  isCompleted
-}) => {
+const ProgressItem = ({ progressTitle, progressIcon, isActive, isCompleted }) => {
   return (
     <Flex
       py={{ sm: 0, md: 2, xl: 3 }}
@@ -35,10 +24,7 @@ const ProgressItem = ({
           color={isCompleted ? '#71CE99' : isActive ? '#FFFFFF' : '#8B96A9'}
         />
       </Center>
-      <Text
-        fontWeight={500}
-        color={isActive && !isCompleted ? 'gray.700' : 'gray.500'}
-      >
+      <Text fontWeight={500} color={isActive && !isCompleted ? 'gray.700' : 'gray.500'}>
         {progressTitle}
       </Text>
     </Flex>
@@ -47,13 +33,7 @@ const ProgressItem = ({
 
 export const SetupStatus = ({ completedSteps }) => {
   return (
-    <Flex
-      width="25vw"
-      bg="gray.100"
-      p={8}
-      flexDirection="column"
-      position="sticky"
-    >
+    <Flex width="25vw" bg="gray.100" p={8} flexDirection="column" position="sticky">
       <Box position="sticky">
         <Heading mb={4} size="md">
           Configurar torneio
@@ -73,13 +53,7 @@ export const SetupStatus = ({ completedSteps }) => {
             xl: '68px'
           }}
         />
-        <Flex
-          flex="1"
-          ml="-1px"
-          zIndex={10}
-          flexDirection="column"
-          justifyContent="space-between"
-        >
+        <Flex flex="1" ml="-1px" zIndex={10} flexDirection="column" justifyContent="space-between">
           <ProgressItem
             progressTitle="Torneio"
             progressIcon={BiTrophy}
