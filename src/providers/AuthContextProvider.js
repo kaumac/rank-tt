@@ -21,9 +21,6 @@ export const AuthContextProvider = ({ children }) => {
       } else {
         setUser(null)
       }
-      window.setTimeout(() => {
-        setLoading(false)
-      }, 1500)
     })
 
     return () => unsubscribe()
