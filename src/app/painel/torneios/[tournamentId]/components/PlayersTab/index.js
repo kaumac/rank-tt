@@ -365,8 +365,12 @@ export const PlayersTab = ({ tournament }) => {
         onClose={handlePlayerPanelClose}
         size="sm"
       >
-        <DrawerOverlay />
-        <DrawerContent>
+        <DrawerOverlay backdropFilter="blur(6px)" bg="rgba(255,255,255,0.5)" />
+        <DrawerContent
+          boxShadow="0 0 140px 0 rgba(0,0,0,0.1), 0 0 20px 0 rgba(0,0,0,0.05)"
+          borderLeft="1px solid"
+          borderColor="gray.200"
+        >
           <DrawerHeader borderBottomWidth="1px">
             <Flex justifyContent="space-between" alignItems="center">
               <Flex alignItems="center">
@@ -401,13 +405,13 @@ export const PlayersTab = ({ tournament }) => {
         </DrawerContent>
       </Drawer>
 
-      <Drawer placement="right" isOpen={isGroupPanelOpen} onClose={handleGroupPanelClose} size="sm">
-        <EditGroupPanel
-          tournamentId={tournament?.id}
-          groupId={selectedGroupId}
-          group={(categoryGroups?.docs || []).find((doc) => doc.id === selectedGroupId)}
-        />
-      </Drawer>
+      <EditGroupPanel
+        isOpen={isGroupPanelOpen}
+        onClose={handleGroupPanelClose}
+        tournamentId={tournament?.id}
+        groupId={selectedGroupId}
+        group={(categoryGroups?.docs || []).find((doc) => doc.id === selectedGroupId)}
+      />
     </>
   )
 }

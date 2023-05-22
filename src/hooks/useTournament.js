@@ -2,7 +2,7 @@ import {
   useFirestoreDocumentDeletion,
   useFirestoreCollectionMutation
 } from '@react-query-firebase/firestore'
-import { doc, collection, query, where, orderBy } from 'firebase/firestore'
+import { doc, collection, query, where, orderBy, onSnapshot } from 'firebase/firestore'
 import { useState } from 'react'
 import { useDocument, useCollection } from 'react-firebase-hooks/firestore'
 
@@ -132,38 +132,24 @@ export const useQueueTournamentGroupDeletion = (tournamentId, groupId) => {
   const [error, setError] = useState(null)
 
   const queueRef = collection(db, 'queues', 'tournamentGroupDeletion', 'processing')
-  const result = new Promise(() => {})
 
   const useMutation = useFirestoreCollectionMutation(queueRef, {
     onMutate: async (groupId) => {
       setIsLoading(true)
-
-      // const groupRef = doc(db, 'tournaments', tournamentId, 'groups', groupId)
-
-      // const groupSnapshot = await getDoc(groupRef)
-
-      // if (!groupSnapshot.exists()) {
-      //   setError('Group does not exist')
-      //   setIsLoading(false)
-      //   return
-      // }
-
-      // const groupData = groupSnapshot.data()
-
-      // const queueData = {
-      //   tournamentId: tournamentId,
-      //   groupId: groupId,
-      //   groupData: groupData
-      // }
     },
     onSuccess: (queueRef) => {
-      console.log(queueRef)
-      result.resolve(queueRef)
+      const unsubscribe = onSnapshot(queueRef, (updatedQueueRef) => {
+        const updatedQueueData = updatedQueueRef.data()
+        if (updatedQueueData === undefined) {
+          setIsLoading(false)
+          setIsDone(true)
+          unsubscribe()
+        }
+      })
     }
   })
 
   const mutate = async () => {
-    console.log('running mutate')
     useMutation.mutate({
       groupId: groupId,
       tournamentId: tournamentId
