@@ -199,8 +199,10 @@ export const EditGroupPanel = ({ onClose, tournamentId, groupId, group }) => {
   )
 }
 
-export default (props) => (
+const Component = (props) => (
   <Drawer placement="right" size="sm" isOpen={props.isOpen} onClose={props.onClose}>
     <EditGroupPanel {...props} />
   </Drawer>
 )
+
+export default Component
