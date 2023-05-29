@@ -1,28 +1,28 @@
 import {
-  Heading,
-  Text,
-  Flex,
-  Button,
+  Avatar,
   Box,
-  TableContainer,
-  Table,
-  Thead,
-  Tr,
-  Icon,
-  Th,
-  Tbody,
-  Td,
-  Tag,
-  TagLabel,
+  Button,
+  Card,
+  Center,
+  Divider,
+  Flex,
   Grid,
   GridItem,
-  Card,
-  Spacer,
-  Divider,
-  Center,
-  Avatar,
+  Heading,
+  Icon,
   IconButton,
-  Stack
+  Spacer,
+  Stack,
+  Table,
+  TableContainer,
+  Tag,
+  TagLabel,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { BiArrowFromLeft, BiPlus } from 'react-icons/bi'
@@ -30,10 +30,10 @@ import { BiArrowFromLeft, BiPlus } from 'react-icons/bi'
 import { indexCollectionDocsById } from '@/firebase'
 import { groupCollectionDocsByField } from '@/firebase/utils'
 import {
-  useTournamentPlayers,
   useTournamentCategories,
   useTournamentCategoryGroups,
-  useTournamentCategoryPlayers
+  useTournamentCategoryPlayers,
+  useTournamentPlayers
 } from '@/hooks/useTournament'
 
 import CreateGroupWrapper from './components/CreateGroupWrapper'

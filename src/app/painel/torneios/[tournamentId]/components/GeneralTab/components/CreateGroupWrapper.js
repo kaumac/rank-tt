@@ -1,29 +1,30 @@
+import { collection, doc, updateDoc } from 'firebase/firestore'
+
 import {
-  useDisclosure,
+  Box,
   Button,
+  Card,
+  Center,
+  Flex,
+  Heading,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
   ModalBody,
+  ModalCloseButton,
+  ModalContent,
   ModalFooter,
-  TableContainer,
+  ModalHeader,
+  ModalOverlay,
   Table,
-  Tr,
+  TableContainer,
+  Tag,
   Tbody,
   Td,
-  Box,
-  Flex,
-  Center,
-  Card,
-  Heading,
   Text,
-  Tag
+  Tr,
+  useDisclosure
 } from '@chakra-ui/react'
-import { collection, doc, updateDoc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
-import { BiTrash, BiPlus } from 'react-icons/bi'
+import { BiPlus, BiTrash } from 'react-icons/bi'
 
 import { pushDoc } from '@/firebase'
 import { groupCollectionDocsByField } from '@/firebase/utils'

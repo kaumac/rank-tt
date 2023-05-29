@@ -1,30 +1,31 @@
+import { collection } from 'firebase/firestore'
+
 import {
-  Text,
-  useDisclosure,
+  Box,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
   FormControl,
   FormLabel,
-  Select,
-  Textarea,
+  Icon,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
   ModalFooter,
-  TableContainer,
+  ModalHeader,
+  ModalOverlay,
+  Select,
   Table,
+  TableContainer,
+  Tag,
+  Tbody,
+  Td,
+  Text,
+  Textarea,
+  Th,
   Thead,
   Tr,
-  Th,
-  Tbody,
-  Box,
-  Td,
-  Icon,
-  Tag
+  useDisclosure
 } from '@chakra-ui/react'
-import { collection } from 'firebase/firestore'
 import { useState } from 'react'
 import { BiCheck, BiError } from 'react-icons/bi'
 import { format } from 'telefone'

@@ -18,14 +18,14 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 import {
-  BiHomeAlt,
-  BiTrophy,
-  BiStoreAlt,
-  BiCog,
-  BiLogOut,
   BiCast,
+  BiCog,
+  BiExitFullscreen,
   BiFullscreen,
-  BiExitFullscreen
+  BiHomeAlt,
+  BiLogOut,
+  BiStoreAlt,
+  BiTrophy
 } from 'react-icons/bi'
 import screenfull from 'screenfull'
 
