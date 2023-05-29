@@ -5,5 +5,8 @@
   "singleQuote": true,
   "endOfLine": "auto",
   "importOrderSeparation": true,
-  "importOrder": ["<THIRD_PARTY_MODULES>", "^@/(.*)$", "^[./]"]
+  "importOrderSortSpecifiers": true,
+  "importOrderCaseInsensitive": false,
+  "importOrderGroupNamespaceSpecifiers": true,
+  "importOrder": ["^firebase/firestore", "<THIRD_PARTY_MODULES>", "^@/(.*)$", "^[./]"]
 }

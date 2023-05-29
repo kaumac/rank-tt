@@ -1,21 +1,21 @@
+import { collection, doc, onSnapshot, orderBy, query, where } from 'firebase/firestore'
+
 import {
+  useFirestoreCollectionMutation,
+  useFirestoreDocument,
   useFirestoreDocumentDeletion,
-  useFirestoreCollectionMutation
+  useFirestoreQuery
 } from '@react-query-firebase/firestore'
-import { doc, collection, query, where, orderBy, onSnapshot } from 'firebase/firestore'
 import { useState } from 'react'
-import { useDocument, useCollection } from 'react-firebase-hooks/firestore'
+import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 
 import { db } from '@/firebase'
 
 function useTournament(tournamentId) {
-  const [value, loading, error] = useDocument(doc(db, 'tournaments', tournamentId || 'undefined'), {
-    snapshotListenOptions: { includeMetadataChanges: true }
-  })
+  const ref = doc(db, 'tournaments', tournamentId || 'undefined')
+  const query = useFirestoreDocument(['tournaments', tournamentId], ref)
 
-  if (error) console.warn(error)
-
-  return [value, loading, error]
+  return query
 }
 
 /**

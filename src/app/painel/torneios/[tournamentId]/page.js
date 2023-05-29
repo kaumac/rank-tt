@@ -2,22 +2,22 @@
 
 import {
   Box,
-  Tooltip,
   Button,
-  Icon,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
-  Text,
+  Icon,
+  Switch,
+  TabIndicator,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  TabIndicator,
-  FormControl,
-  FormLabel,
-  Switch,
   Tag,
   TagLabel,
+  Text,
+  Tooltip,
   useMultiStyleConfig,
   useTab
 } from '@chakra-ui/react'
@@ -28,8 +28,8 @@ import { MdOutlineTableRestaurant } from 'react-icons/md'
 import useTournament from '@/hooks/useTournament'
 
 import GamesTab from './components/GamesTab'
+import GeneralTab from './components/GeneralTab'
 import PlayersTab from './components/PlayersTab'
-import SetupTournament from './components/SetupTournament'
 
 const CustomTab = React.forwardRef((props, ref) => {
   const tabProps = useTab({ ...props, ref })
@@ -50,7 +50,11 @@ const CustomTab = React.forwardRef((props, ref) => {
 CustomTab.displayName = 'CustomTab'
 
 function Page({ params }) {
-  const [tournament, loading, error] = useTournament(params?.tournamentId)
+  const {
+    data: tournament,
+    isLoading: tournamentIsLoading,
+    isError: tournamentIsError
+  } = useTournament(params?.tournamentId)
 
   const tournamentData = tournament?.data()
 
@@ -84,7 +88,7 @@ function Page({ params }) {
           </Box>
         </Tooltip>
       </Flex>
-      <Tabs>
+      <Tabs isLazy>
         <TabList
           position="sticky"
           top="0"
@@ -109,7 +113,7 @@ function Page({ params }) {
         <TabIndicator height="3px" />
         <TabPanels display="flex" flex="1">
           <TabPanel display="flex" flex="1" padding="0">
-            <SetupTournament tournament={tournament} />
+            <GeneralTab tournamentId={params?.tournamentId} />
           </TabPanel>
           <TabPanel display="flex" flex="1" p={0}>
             <PlayersTab tournament={tournament} />

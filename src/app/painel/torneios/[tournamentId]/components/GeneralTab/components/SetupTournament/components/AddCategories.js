@@ -1,16 +1,17 @@
-import {
-  Heading,
-  Text,
-  Flex,
-  Stack,
-  Card,
-  Radio,
-  Input,
-  Button,
-  IconButton,
-  Box
-} from '@chakra-ui/react'
 import { collection } from 'firebase/firestore'
+
+import {
+  Box,
+  Button,
+  Card,
+  Flex,
+  Heading,
+  IconButton,
+  Input,
+  Radio,
+  Stack,
+  Text
+} from '@chakra-ui/react'
 import { useState } from 'react'
 import { BiTrash } from 'react-icons/bi'
 

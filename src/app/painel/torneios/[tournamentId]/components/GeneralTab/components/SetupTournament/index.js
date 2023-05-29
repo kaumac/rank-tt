@@ -1,5 +1,6 @@
-import { Heading, Text, Center, Flex, Stack, Card, Radio } from '@chakra-ui/react'
 import { doc } from 'firebase/firestore'
+
+import { Card, Center, Flex, Heading, Radio, Stack, Text } from '@chakra-ui/react'
 
 import { TOURNAMENT_FORMAT } from '@/constants'
 import { db, updateDoc } from '@/firebase'
