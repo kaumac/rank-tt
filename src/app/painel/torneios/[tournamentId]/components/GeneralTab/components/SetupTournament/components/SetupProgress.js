@@ -1,4 +1,4 @@
-import { Box, Heading, Text, Center, Flex, Icon } from '@chakra-ui/react'
+import { Box, Center, Flex, Heading, Icon, Text } from '@chakra-ui/react'
 import { BiBullseye, BiCheck, BiGroup, BiSitemap, BiTrophy } from 'react-icons/bi'
 import { MdOutlineTableRestaurant } from 'react-icons/md'
 
