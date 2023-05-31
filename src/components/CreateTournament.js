@@ -1,19 +1,20 @@
+import * as yup from 'yup'
 import {
+  Box,
+  Button,
   Flex,
+  FormControl,
   FormErrorMessage,
   FormLabel,
-  FormControl,
-  Input,
-  Button,
-  Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Heading,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text
 } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -21,7 +22,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 import ConfettiExplosion from 'react-confetti-explosion'
 import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
 
 import useCreateTournament from '@/hooks/useCreateTournament'
 

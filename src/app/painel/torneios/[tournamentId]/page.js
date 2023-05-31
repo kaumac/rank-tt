@@ -56,7 +56,7 @@ function Page({ params }) {
     isError: tournamentIsError
   } = useTournament(params?.tournamentId)
 
-  const tournamentData = tournament?.data()
+  console.log('mountunmount')
 
   return (
     <>
@@ -70,7 +70,7 @@ function Page({ params }) {
       >
         <Box flex="none" maxWidth="75%">
           <Heading noOfLines={1} size={{ lg: 'md', xl: 'lg' }} as={Text}>
-            {tournamentData?.name}
+            {tournament?.name}
           </Heading>
         </Box>
         <Tooltip hasArrow label="Clique para iniciar o torneio" placement="auto">
@@ -113,7 +113,7 @@ function Page({ params }) {
         <TabIndicator height="3px" />
         <TabPanels display="flex" flex="1">
           <TabPanel display="flex" flex="1" padding="0">
-            <GeneralTab tournamentId={params?.tournamentId} />
+            {/* <GeneralTab tournamentId={params?.tournamentId} /> */}
           </TabPanel>
           <TabPanel display="flex" flex="1" p={0}>
             <PlayersTab tournament={tournament} />

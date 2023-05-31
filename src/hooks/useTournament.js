@@ -3,6 +3,7 @@ import { collection, doc, onSnapshot, orderBy, query, where } from 'firebase/fir
 import {
   useFirestoreCollectionMutation,
   useFirestoreDocument,
+  useFirestoreDocumentData,
   useFirestoreDocumentDeletion,
   useFirestoreQuery
 } from '@react-query-firebase/firestore'
@@ -13,7 +14,9 @@ import { db } from '@/firebase'
 
 function useTournament(tournamentId) {
   const ref = doc(db, 'tournaments', tournamentId || 'undefined')
-  const query = useFirestoreDocument(['tournaments', tournamentId], ref)
+  const query = useFirestoreDocumentData(['tournaments', tournamentId], ref, {
+    subscribe: true
+  })
 
   return query
 }

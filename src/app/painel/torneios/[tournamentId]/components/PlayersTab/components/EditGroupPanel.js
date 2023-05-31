@@ -25,7 +25,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { BiTrash } from 'react-icons/bi'
 
-import { useTournamentPlayer, useQueueTournamentGroupDeletion } from '@/hooks/useTournament'
+import { useQueueTournamentGroupDeletion, useTournamentPlayer } from '@/hooks/useTournament'
 
 const PlayerListItem = ({ playerId }) => {
   const [player, loading, error] = useTournamentPlayer(playerId)

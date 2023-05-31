@@ -5,12 +5,12 @@ import {
   Box,
   Center,
   Container,
-  Wrap,
-  WrapItem,
-  Text,
   Image,
+  SimpleGrid,
+  Text,
   VStack,
-  SimpleGrid
+  Wrap,
+  WrapItem
 } from '@chakra-ui/react'
 
 import { HeroSection } from '@/components/LandingHeroSection'

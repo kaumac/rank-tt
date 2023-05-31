@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 
 import auth from '@/firebase/auth'
 

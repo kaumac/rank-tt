@@ -1,5 +1,6 @@
 import { Center, Flex, Heading } from '@chakra-ui/react'
-import { onAuthStateChanged, getAuth } from 'firebase/auth'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import firebase_app from '@/firebase/config'
@@ -13,6 +14,7 @@ export const useAuthContext = () => React.useContext(AuthContext)
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = React.useState(null)
   const [loading, setLoading] = React.useState(true)
+  const router = useRouter()
 
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -20,6 +22,7 @@ export const AuthContextProvider = ({ children }) => {
         setUser(user)
       } else {
         setUser(null)
+        router.push('/login')
       }
     })
     setLoading(false)

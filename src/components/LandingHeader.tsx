@@ -1,6 +1,5 @@
 import {
   Box,
-  chakra,
   Container,
   Drawer,
   DrawerBody,
@@ -9,7 +8,6 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  Heading,
   IconButton,
   Image,
   Link,
@@ -17,6 +15,7 @@ import {
   LinkOverlay,
   Spacer,
   Stack,
+  chakra,
   useDisclosure
 } from '@chakra-ui/react'
 import { BiMenu } from 'react-icons/bi'

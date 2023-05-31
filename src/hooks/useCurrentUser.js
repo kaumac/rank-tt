@@ -1,4 +1,5 @@
 import { doc } from 'firebase/firestore'
+
 import { useDocument } from 'react-firebase-hooks/firestore'
 
 import { auth, db } from '@/firebase'

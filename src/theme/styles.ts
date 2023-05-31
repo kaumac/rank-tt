@@ -1,5 +1,5 @@
 import { mode } from '@chakra-ui/theme-tools'
-import { Roboto_Flex, Lexend } from 'next/font/google'
+import { Lexend, Roboto_Flex } from 'next/font/google'
 
 const bodyFont = Roboto_Flex({
   subsets: ['latin'],

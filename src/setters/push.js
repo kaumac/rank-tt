@@ -1,4 +1,4 @@
-import { collection, addDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, updateDoc } from 'firebase/firestore'
 
 import { db } from '@/firebase'
 
