@@ -134,8 +134,7 @@ export const CreateGroupWrapper = ({
                     <Heading color="gray.700" size="md">
                       Grupo {newGroup.number}{' '}
                       <strong color="#AAA" fontWeight="100">
-                        ({newGroup.hasBye ? newGroup.players.length + 1 : newGroup.players.length}{' '}
-                        de {tournament?.data?.settings?.groups?.size} jogadores)
+                        ({newGroup.players.length} jogadores)
                       </strong>
                     </Heading>
                     {newGroup.hasBye && (
@@ -163,6 +162,7 @@ export const CreateGroupWrapper = ({
                                   position="relative"
                                   data-group
                                   borderBottom={
+                                    !newGroup.hasBye &&
                                     newGroupPlayerIndex + 1 === newGroup.players.length
                                       ? 'none'
                                       : null
@@ -194,6 +194,32 @@ export const CreateGroupWrapper = ({
                               </Tr>
                             )
                           })}
+                          {newGroup.hasBye && (
+                            <Tr>
+                              <Td position="relative" data-group borderBottom="none">
+                                Bye
+                                <Center
+                                  width="100%"
+                                  height="100%"
+                                  position="absolute"
+                                  top="0"
+                                  left="0"
+                                  cursor="pointer"
+                                  opacity="0"
+                                  transition="opacity 0.2s ease-in-out"
+                                  _groupHover={{
+                                    bg: 'rgba(201, 41, 31, 0.04)',
+                                    opacity: 1
+                                  }}
+                                  onClick={handleToggleBye}
+                                >
+                                  <Button colorScheme="red" leftIcon={<BiTrash />}>
+                                    Remover bye
+                                  </Button>
+                                </Center>
+                              </Td>
+                            </Tr>
+                          )}
                         </Tbody>
                       </Table>
                     </TableContainer>
