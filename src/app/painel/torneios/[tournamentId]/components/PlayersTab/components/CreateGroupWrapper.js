@@ -132,7 +132,11 @@ export const CreateGroupWrapper = ({
                 <Card p={4}>
                   <Flex alignItems="center" mb={8}>
                     <Heading color="gray.700" size="md">
-                      Grupo {newGroup.number}
+                      Grupo {newGroup.number}{' '}
+                      <strong color="#AAA" fontWeight="100">
+                        ({newGroup.hasBye ? newGroup.players.length + 1 : newGroup.players.length}{' '}
+                        de {tournament?.settings?.groups?.size} jogadores)
+                      </strong>
                     </Heading>
                     {newGroup.hasBye && (
                       <Tag ml={4} colorScheme="brand">
@@ -213,25 +217,29 @@ export const CreateGroupWrapper = ({
                           <Tr key={player.id}>
                             <Td position="relative" data-group>
                               {playerData.name}
-                              <Center
-                                width="100%"
-                                height="100%"
-                                position="absolute"
-                                top="0"
-                                left="0"
-                                cursor="pointer"
-                                opacity="0"
-                                transition="opacity 0.2s ease-in-out"
-                                _groupHover={{
-                                  bg: 'rgba(85, 31, 201, 0.04)',
-                                  opacity: 1
-                                }}
-                                onClick={() => {
-                                  handleAddPlayer(player.id)
-                                }}
-                              >
-                                <Button leftIcon={<BiPlus />}>Adicionar ao grupo</Button>
-                              </Center>
+                              {(newGroup.hasBye
+                                ? newGroup.players.length + 1
+                                : newGroup.players.length) < tournament?.settings?.groups?.size && (
+                                <Center
+                                  width="100%"
+                                  height="100%"
+                                  position="absolute"
+                                  top="0"
+                                  left="0"
+                                  cursor="pointer"
+                                  opacity="0"
+                                  transition="opacity 0.2s ease-in-out"
+                                  _groupHover={{
+                                    bg: 'rgba(85, 31, 201, 0.04)',
+                                    opacity: 1
+                                  }}
+                                  onClick={() => {
+                                    handleAddPlayer(player.id)
+                                  }}
+                                >
+                                  <Button leftIcon={<BiPlus />}>Adicionar ao grupo</Button>
+                                </Center>
+                              )}
                             </Td>
                           </Tr>
                         )

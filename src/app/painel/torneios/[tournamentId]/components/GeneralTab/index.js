@@ -3,17 +3,16 @@ import useTournament from '@/hooks/useTournament'
 import SetupTournament from './components/SetupTournament'
 
 export const GamesTab = ({ tournamentId }) => {
+  console.log(tournamentId)
   const {
     data: tournament,
     isLoading: tournamentIsLoading,
     isError: tournamentIsError
   } = useTournament(tournamentId)
 
-  const tournamentData = tournament?.data()
-
   return (
     <>
-      <SetupTournament tournament={tournament} />
+      <SetupTournament tournament={tournament} tournamentId={tournamentId} />
     </>
   )
 }

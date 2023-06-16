@@ -18,4 +18,6 @@ let firebase_app = getApps().length === 0 ? initializeApp(firebaseConfig) : getA
 
 export const db = getFirestore(firebase_app)
 
-export default firebase_app
+export const app = firebase_app
+
+export const config = firebaseConfig

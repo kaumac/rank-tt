@@ -9,16 +9,15 @@ import {
 } from '@react-query-firebase/firestore'
 import { useState } from 'react'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
+import { useFirestoreDocData } from 'reactfire'
 
 import { db } from '@/firebase'
 
 function useTournament(tournamentId) {
-  const ref = doc(db, 'tournaments', tournamentId || 'undefined')
-  const query = useFirestoreDocumentData(['tournaments', tournamentId], ref, {
-    subscribe: true
-  })
+  const tournamentRef = doc(db, 'tournaments', tournamentId || 'undefined')
+  const tournament = useFirestoreDocData(tournamentRef)
 
-  return query
+  return tournament
 }
 
 /**

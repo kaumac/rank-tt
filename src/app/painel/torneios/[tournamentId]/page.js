@@ -50,13 +50,9 @@ const CustomTab = React.forwardRef((props, ref) => {
 CustomTab.displayName = 'CustomTab'
 
 function Page({ params }) {
-  const {
-    data: tournament,
-    isLoading: tournamentIsLoading,
-    isError: tournamentIsError
-  } = useTournament(params?.tournamentId)
+  const { data: tournament, status: tournamentStatus } = useTournament(params?.tournamentId)
 
-  console.log('mountunmount')
+  console.log(tournament, tournamentStatus)
 
   return (
     <>
@@ -88,7 +84,7 @@ function Page({ params }) {
           </Box>
         </Tooltip>
       </Flex>
-      <Tabs isLazy>
+      <Tabs>
         <TabList
           position="sticky"
           top="0"
@@ -113,7 +109,7 @@ function Page({ params }) {
         <TabIndicator height="3px" />
         <TabPanels display="flex" flex="1">
           <TabPanel display="flex" flex="1" padding="0">
-            {/* <GeneralTab tournamentId={params?.tournamentId} /> */}
+            <GeneralTab tournamentId={params?.tournamentId} />
           </TabPanel>
           <TabPanel display="flex" flex="1" p={0}>
             <PlayersTab tournament={tournament} />
