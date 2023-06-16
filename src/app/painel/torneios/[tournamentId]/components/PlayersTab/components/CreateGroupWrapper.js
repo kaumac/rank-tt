@@ -135,7 +135,7 @@ export const CreateGroupWrapper = ({
                       Grupo {newGroup.number}{' '}
                       <strong color="#AAA" fontWeight="100">
                         ({newGroup.hasBye ? newGroup.players.length + 1 : newGroup.players.length}{' '}
-                        de {tournament?.settings?.groups?.size} jogadores)
+                        de {tournament?.data?.settings?.groups?.size} jogadores)
                       </strong>
                     </Heading>
                     {newGroup.hasBye && (
@@ -219,7 +219,8 @@ export const CreateGroupWrapper = ({
                               {playerData.name}
                               {(newGroup.hasBye
                                 ? newGroup.players.length + 1
-                                : newGroup.players.length) < tournament?.settings?.groups?.size && (
+                                : newGroup.players.length) <
+                                tournament?.data?.settings?.groups?.size && (
                                 <Center
                                   width="100%"
                                   height="100%"
@@ -255,10 +256,20 @@ export const CreateGroupWrapper = ({
             <Button variant="ghost" onClick={handleOnClose} color="red">
               Cancelar
             </Button>
-            <Button variant="ghost" onClick={handleToggleBye}>
-              {!newGroup.hasBye ? 'Adicionar bye' : 'Remover bye'}
-            </Button>
-            <Button ml={3} onClick={onCreateGroup} colorScheme="black">
+            {newGroup.players.length < tournament?.data?.settings?.groups?.size && (
+              <Button variant="ghost" onClick={handleToggleBye}>
+                {!newGroup.hasBye ? 'Adicionar bye' : 'Remover bye'}
+              </Button>
+            )}
+            <Button
+              ml={3}
+              onClick={onCreateGroup}
+              colorScheme="black"
+              isDisabled={
+                (newGroup.hasBye ? newGroup.players.length + 1 : newGroup.players.length) !==
+                tournament?.data?.settings?.groups?.size
+              }
+            >
               Criar grupo
             </Button>
           </ModalFooter>

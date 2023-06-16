@@ -68,14 +68,16 @@ export const PlayersTab = ({ tournament }) => {
   } = useDisclosure()
 
   const [tournamentPlayers, tournamentPlayersLoading, tournamentPlayersError] =
-    useTournamentPlayers(tournament?.id)
-  const [categories, categoriesLoading, categoriesError] = useTournamentCategories(tournament?.id)
+    useTournamentPlayers(tournament?.data?.id)
+  const [categories, categoriesLoading, categoriesError] = useTournamentCategories(
+    tournament?.data?.id
+  )
   const [categoryGroups, categoryGroupsLoading, categoryGroupsError] = useTournamentCategoryGroups(
-    tournament?.id,
+    tournament?.data?.id,
     categoryFilter
   )
   const [categoryPlayers, categoryPlayersLoading, categoryPlayersError] =
-    useTournamentCategoryPlayers(tournament?.id, categoryFilter)
+    useTournamentCategoryPlayers(tournament?.data?.id, categoryFilter)
 
   const indexedCategories = indexCollectionDocsById(categories)
   const indexedCategoryPlayers = indexCollectionDocsById(categoryPlayers)
@@ -400,7 +402,7 @@ export const PlayersTab = ({ tournament }) => {
       <EditGroupPanel
         isOpen={isGroupPanelOpen}
         onClose={handleGroupPanelClose}
-        tournamentId={tournament?.id}
+        tournamentId={tournament?.data?.id}
         groupId={selectedGroupId}
         group={(categoryGroups?.docs || []).find((doc) => doc.id === selectedGroupId)}
       />

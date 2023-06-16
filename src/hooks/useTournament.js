@@ -17,7 +17,7 @@ function useTournament(tournamentId) {
   const tournamentRef = doc(db, 'tournaments', tournamentId || 'undefined')
   const tournament = useFirestoreDocData(tournamentRef)
 
-  return tournament
+  return { ...tournament, ref: tournamentRef }
 }
 
 /**

@@ -36,7 +36,6 @@ import {
   useTournamentPlayers
 } from '@/hooks/useTournament'
 
-import CreateGroupWrapper from './components/CreateGroupWrapper'
 import ImportPlayersButton from './components/ImportPlayersButton'
 
 export const GamesTab = ({ tournament }) => {

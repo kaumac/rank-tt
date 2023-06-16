@@ -50,9 +50,7 @@ const CustomTab = React.forwardRef((props, ref) => {
 CustomTab.displayName = 'CustomTab'
 
 function Page({ params }) {
-  const { data: tournament, status: tournamentStatus } = useTournament(params?.tournamentId)
-
-  console.log(tournament, tournamentStatus)
+  const tournament = useTournament(params?.tournamentId)
 
   return (
     <>
@@ -66,7 +64,7 @@ function Page({ params }) {
       >
         <Box flex="none" maxWidth="75%">
           <Heading noOfLines={1} size={{ lg: 'md', xl: 'lg' }} as={Text}>
-            {tournament?.name}
+            {tournament?.data?.name}
           </Heading>
         </Box>
         <Tooltip hasArrow label="Clique para iniciar o torneio" placement="auto">
