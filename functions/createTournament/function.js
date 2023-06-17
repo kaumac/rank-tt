@@ -8,11 +8,7 @@ const createTournament = functions.firestore
     const data = snap.data()
     const db = admin.firestore()
 
-    functions.logger.log(
-      'Creating the tournament ',
-      context.params.tournamentId,
-      data
-    )
+    functions.logger.log('Creating the tournament ', context.params.tournamentId, data)
     functions.logger.log(data)
     functions.logger.log(context.params)
 
@@ -20,14 +16,10 @@ const createTournament = functions.firestore
       .collection('organizations')
       .doc(data.organizationId)
       .update({
-        tournaments: admin.firestore.FieldValue.arrayUnion(
-          context.params.tournamentId
-        )
+        tournaments: admin.firestore.FieldValue.arrayUnion(context.params.tournamentId)
       })
 
-    const newTournamentRef = db
-      .collection('tournaments')
-      .doc(context.params.tournamentId)
+    const newTournamentRef = db.collection('tournaments').doc(context.params.tournamentId)
 
     await newTournamentRef.set({
       name: data.name,
@@ -35,7 +27,8 @@ const createTournament = functions.firestore
       organizationId: data.organizationId,
       id: context.params.tournamentId,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      createdBy: data.createdBy
+      createdBy: data.createdBy,
+      status: 'created'
     })
 
     // Deletes the queue object

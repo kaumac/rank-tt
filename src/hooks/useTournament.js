@@ -9,7 +9,7 @@ import {
 } from '@react-query-firebase/firestore'
 import { useState } from 'react'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
-import { useFirestoreDocData } from 'reactfire'
+import { useFirestoreCollectionData, useFirestoreDocData } from 'reactfire'
 
 import { db } from '@/firebase'
 
@@ -35,6 +35,13 @@ export const useTournamentCategories = (tournamentId) => {
   if (error) console.warn(error)
 
   return [snapshot, loading, error]
+}
+
+export const useTournamentGames = (tournamentId) => {
+  const tournamentGamesRef = collection(db, 'tournaments', tournamentId || 'undefined', 'games')
+  const tournamentGames = useFirestoreCollectionData(tournamentGamesRef)
+
+  return { ...tournamentGames, ref: tournamentGamesRef }
 }
 
 /**
@@ -78,6 +85,64 @@ export const useTournamentCategoryPlayers = (tournamentId = 'null', categoryId =
   const playersQuery = query(playersRef, where('category', '==', categoryId))
 
   const [snapshot, loading, error] = useCollection(playersQuery, {
+    snapshotListenOptions: { includeMetadataChanges: true }
+  })
+
+  if (error) console.warn(error)
+
+  return [snapshot, loading, error]
+}
+
+// Tournament games by category
+
+export const useTournamentCategoryGames = (tournamentId = 'null', categoryId = 'null') => {
+  const gamesRef = doc(db, 'tournaments', tournamentId, 'games', categoryId)
+
+  const [snapshot, loading, error] = useDocument(gamesRef, {
+    snapshotListenOptions: { includeMetadataChanges: true }
+  })
+
+  if (error) console.warn(error)
+
+  return [snapshot, loading, error]
+}
+
+export const useTournamentCategoryStageGames = (
+  tournamentId = 'null',
+  categoryId = 'null',
+  stage = 'null'
+) => {
+  const gamesRef = collection(db, 'tournaments', tournamentId, 'games', categoryId, stage)
+
+  const [snapshot, loading, error] = useDocument(gamesRef, {
+    snapshotListenOptions: { includeMetadataChanges: true }
+  })
+
+  if (error) console.warn(error)
+
+  return [snapshot, loading, error]
+}
+
+export const useTournamentCategoryStageGamesGroupMatches = (
+  tournamentId = 'null',
+  categoryId = 'null',
+  stage = 'null',
+  gameGroup = 'null'
+) => {
+  const gamesRef = collection(
+    db,
+    'tournaments',
+    tournamentId,
+    'games',
+    categoryId,
+    stage,
+    gameGroup,
+    'matches'
+  )
+
+  console.log(tournamentId, categoryId, stage, gameGroup)
+
+  const [snapshot, loading, error] = useDocument(gamesRef, {
     snapshotListenOptions: { includeMetadataChanges: true }
   })
 
@@ -154,6 +219,38 @@ export const useQueueTournamentGroupDeletion = (tournamentId, groupId) => {
   const mutate = async () => {
     useMutation.mutate({
       groupId: groupId,
+      tournamentId: tournamentId
+    })
+  }
+
+  return { mutate, isDone, isLoading, error }
+}
+
+export const useQueueTournamentStart = (tournamentId) => {
+  const [isDone, setIsDone] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  const queueRef = collection(db, 'queues', 'tournamentStart', 'processing')
+
+  const useMutation = useFirestoreCollectionMutation(queueRef, {
+    onMutate: async (tournamentId) => {
+      setIsLoading(true)
+    },
+    onSuccess: (queueRef) => {
+      const unsubscribe = onSnapshot(queueRef, (updatedQueueRef) => {
+        const updatedQueueData = updatedQueueRef.data()
+        if (updatedQueueData === undefined) {
+          setIsLoading(false)
+          setIsDone(true)
+          unsubscribe()
+        }
+      })
+    }
+  })
+
+  const mutate = async () => {
+    useMutation.mutate({
       tournamentId: tournamentId
     })
   }

@@ -30,6 +30,7 @@ import useTournament from '@/hooks/useTournament'
 import GamesTab from './components/GamesTab'
 import GeneralTab from './components/GeneralTab'
 import PlayersTab from './components/PlayersTab'
+import StartTournamentWrapper from './components/StartTournamentWrapper'
 
 const CustomTab = React.forwardRef((props, ref) => {
   const tabProps = useTab({ ...props, ref })
@@ -67,22 +68,43 @@ function Page({ params }) {
             {tournament?.data?.name}
           </Heading>
         </Box>
-        <Tooltip hasArrow label="Clique para iniciar o torneio" placement="auto">
-          <Box>
-            <FormControl display="flex" alignItems="center" ml={4}>
-              <Tag size="lg" colorScheme="orange" borderRadius="full">
-                <Icon boxSize={4} as={BiTrophy} size="50px" mr={1} />
+        <Tooltip
+          hasArrow
+          label={
+            tournament?.data?.status === 'created'
+              ? 'Clique para iniciar o torneio'
+              : 'Este torneio está em andamento'
+          }
+          placement="auto"
+        >
+          <Box pointerEvents={tournament?.data?.status === 'created' ? null : 'none'}>
+            <StartTournamentWrapper>
+              <FormControl display="flex" alignItems="center" ml={4}>
+                <Tag
+                  size="lg"
+                  colorScheme={tournament?.data?.status !== 'created' ? 'green' : 'gray'}
+                  borderRadius="full"
+                >
+                  <Icon boxSize={4} as={BiTrophy} size="50px" mr={1} />
 
-                <FormLabel htmlFor="email-alerts" mb="0">
-                  <TagLabel>Não iniciado</TagLabel>
-                </FormLabel>
-                <Switch id="email-alerts" />
-              </Tag>
-            </FormControl>
+                  <FormLabel htmlFor="email-alerts" mb="0">
+                    <TagLabel>
+                      {tournament?.data?.status === 'created' ? 'Não iniciado' : 'Torneio iniciado'}
+                    </TagLabel>
+                  </FormLabel>
+                  <Switch
+                    id="email-alerts"
+                    colorScheme="black"
+                    isChecked={tournament?.data?.status !== 'created'}
+                    isDisabled={tournament?.data?.status !== 'created'}
+                  />
+                </Tag>
+              </FormControl>
+            </StartTournamentWrapper>
           </Box>
         </Tooltip>
       </Flex>
-      <Tabs>
+      <Tabs display="flex" flex="1" flexDirection="column">
         <TabList
           position="sticky"
           top="0"

@@ -3,9 +3,9 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import firebase_app from '@/firebase/config'
+import { app } from '@/firebase'
 
-const auth = getAuth(firebase_app)
+const auth = getAuth(app)
 
 export const AuthContext = React.createContext({})
 
