@@ -231,6 +231,7 @@ export const GamesTab = ({ tournament }) => {
                       stage={stageFilter}
                       gameGroup={gameGroupData.groupId}
                       players={indexedCategoryPlayers}
+                      key={`group-matches-card-${gameGroupData.groupId}`}
                     />
                   )
                 })}
