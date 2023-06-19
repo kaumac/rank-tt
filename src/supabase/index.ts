@@ -1,3 +1,3 @@
-import { browserClient, serverClient } from './client'
+import { browserClient } from './client'
 
-export { browserClient, serverClient }
+export { browserClient }
