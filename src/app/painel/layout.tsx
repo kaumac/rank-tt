@@ -34,9 +34,33 @@ const ContentCard = chakra(Flex, {
   }
 })
 
+const SidebarWrapper = chakra(Flex, {
+  baseStyle: {
+    pt: {
+      xl: '7.5rem'
+    },
+    pb: {
+      xl: '14.5rem'
+    },
+    px: {
+      xl: '1.0rem'
+    },
+    flexDirection: 'column',
+    width: {
+      xl: '20rem'
+    },
+    zIndex: 20,
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    bottom: 0
+  }
+})
+
 const PainelLayout = (props: PropsWithChildren) => {
   return (
     <ContentWrapper>
+      <SidebarWrapper>sodfsdkok</SidebarWrapper>
       <ContentCardWrapper>
         <ContentCard>{props.children}</ContentCard>
       </ContentCardWrapper>
