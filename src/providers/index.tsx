@@ -9,10 +9,10 @@ import AuthContextProvider from './AuthContextProvider'
 
 export function ProvidersWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <AuthContextProvider>
-      <CacheProvider>
-        <ChakraProvider theme={theme}>{children}</ChakraProvider>
-      </CacheProvider>
-    </AuthContextProvider>
+    <CacheProvider>
+      <ChakraProvider theme={theme}>
+        <AuthContextProvider>{children}</AuthContextProvider>
+      </ChakraProvider>
+    </CacheProvider>
   )
 }
