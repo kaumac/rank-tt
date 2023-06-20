@@ -114,11 +114,10 @@ const LoginModalContent = ({ onSuccess }) => {
 const LoginModal = ({ isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
-      <ModalOverlay backdropFilter="blur(8px)" bg="rgba(255,255,255,0.5)" />
+      <ModalOverlay backdropFilter="blur(6px)" bg="rgba(255,255,255,0.5)" />
       <ModalContent
         borderRadius="xl"
-        background="linear-gradient(115deg, #000000 0%, #00C508 55%, #000000 100%), linear-gradient(115deg, #0057FF 0%, #020077 100%), conic-gradient(from 110deg at -5% 35%, #000000 0deg, #FAFF00 360deg), conic-gradient(from 220deg at 30% 30%, #FF0000 0deg, #0000FF 220deg, #240060 360deg), conic-gradient(from 235deg at 60% 35%, #0089D7 0deg, #0000FF 180deg, #240060 360deg);
-background-blend-mode: soft-light, soft-light, overlay, screen, normal;"
+        background="linear-gradient(125deg, #ECFCFF 0%, #ECFCFF 20%, #B2FCFF calc(40% + 1px), #B2FCFF 30%, #5EDFFF calc(60% + 1px), #5EDFFF 36%, #3E64FF calc(72% + 1px), #3E64FF 50%);"
       >
         <Flex width="100%">
           <Box>sodkfkods</Box>
@@ -132,14 +131,15 @@ background-blend-mode: soft-light, soft-light, overlay, screen, normal;"
         </Flex>
       </ModalContent>
       <Box
-        background="linear-gradient(125deg, #ECFCFF 0%, #ECFCFF 40%, #B2FCFF calc(40% + 1px), #B2FCFF 60%, #5EDFFF calc(60% + 1px), #5EDFFF 72%, #3E64FF calc(72% + 1px), #3E64FF 100%);"
+        background="linear-gradient(115deg, #000000 0%, #00C508 55%, #000000 100%), linear-gradient(115deg, #0057FF 0%, #020077 100%), conic-gradient(from 110deg at -5% 35%, #000000 0deg, #FAFF00 360deg), conic-gradient(from 220deg at 30% 30%, #FF0000 0deg, #0000FF 220deg, #240060 360deg), conic-gradient(from 235deg at 60% 35%, #0089D7 0deg, #0000FF 180deg, #240060 360deg);
+background-blend-mode: soft-light, soft-light, overlay, screen, normal;"
         width="100vw"
         height="100vh"
         display="block"
         position="fixed"
         top="0"
         left="0"
-        opacity={0.25}
+        opacity={0.5}
       />
     </Modal>
   )

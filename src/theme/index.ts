@@ -1,5 +1,6 @@
 import { extendTheme, withDefaultColorScheme } from '@chakra-ui/react'
 
+import breakpoints from './breakpoints'
 import colors from './colors'
 
 // import { ButtonComponent } from './additions/button/button'
@@ -17,6 +18,7 @@ import colors from './colors'
 
 export default extendTheme(
   {
+    breakpoints,
     colors
   }, // Breakpoints
   // badgeStyles, // badge styles
