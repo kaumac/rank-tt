@@ -1,8 +1,9 @@
-'use client'
+'use client';
 
-import { Box, Flex, IconButton, chakra } from '@chakra-ui/react'
-import { PropsWithChildren } from 'react'
-import { VscLayoutSidebarLeft } from 'react-icons/vsc'
+import { Box, Flex, IconButton, chakra } from '@chakra-ui/react';
+import { PropsWithChildren } from 'react';
+import { VscLayoutSidebarLeft } from 'react-icons/vsc';
+
 
 const LayoutWrapper = chakra(Box, {
   baseStyle: {
@@ -76,6 +77,40 @@ const SidebarHeader = chakra(Flex, {
   }
 })
 
+const SidebarNavWrapper = chakra(Box, {
+  baseStyle: {
+    flex: 1,
+    scrollbarWidth: 'none',
+    scrollBehavior: 'smooth',
+    overflowY: 'auto'
+  }
+})
+
+const SidebarNavItem = ({ route: string, title: string, icon: string }) => {
+  const pathname = usePathname()
+  const isRouteActive =
+    route.split('/').length === 2
+      ? pathname === route
+      : pathname.split('/').includes(route.split('/').slice(-1)[0])
+
+  return (
+    <Tooltip hasArrow label={title} placement="auto">
+      <Flex
+        as={Link}
+        href={route}
+        bg={isRouteActive ? '#000' : 'transparent'}
+        width="48px"
+        height="48px"
+        alignItems="center"
+        justifyContent="center"
+        borderRadius="20%"
+      >
+        <Icon as={icon} w="24px" h="24px" color={isRouteActive ? '#FFF' : '#AAAAAA'} />
+      </Flex>
+    </Tooltip>
+  )
+}
+
 const PainelLayout = (props: PropsWithChildren) => {
   return (
     <LayoutWrapper>
@@ -90,6 +125,9 @@ const PainelLayout = (props: PropsWithChildren) => {
             icon={<VscLayoutSidebarLeft size="1.5rem" />}
           />
         </SidebarHeader>
+        <SidebarNavWrapper>
+          <SidebarNavItem title="Painel" route="/painel" icon={BiHomeAlt} />
+        </SidebarNavWrapper>
       </LayoutSidebar>
       <ContentCardWrapper>
         <ContentCard>{props.children}</ContentCard>
