@@ -1,9 +1,12 @@
-'use client';
+'use client'
 
-import { Box, Flex, IconButton, chakra } from '@chakra-ui/react';
-import { PropsWithChildren } from 'react';
-import { VscLayoutSidebarLeft } from 'react-icons/vsc';
-
+import { Box, Flex, Icon, IconButton, Tooltip, chakra } from '@chakra-ui/react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { PropsWithChildren, ReactNode } from 'react'
+import { IconType } from 'react-icons'
+import { BiHomeAlt } from 'react-icons/bi'
+import { VscLayoutSidebarLeft } from 'react-icons/vsc'
 
 const LayoutWrapper = chakra(Box, {
   baseStyle: {
@@ -86,7 +89,13 @@ const SidebarNavWrapper = chakra(Box, {
   }
 })
 
-const SidebarNavItem = ({ route: string, title: string, icon: string }) => {
+interface SidebarNavItemProps {
+  route: string
+  title: string
+  icon: IconType
+}
+
+const SidebarNavItem = ({ route, title, icon }: SidebarNavItemProps) => {
   const pathname = usePathname()
   const isRouteActive =
     route.split('/').length === 2
