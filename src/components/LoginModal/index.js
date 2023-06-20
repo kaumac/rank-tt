@@ -13,7 +13,8 @@ import {
   Modal,
   ModalContent,
   ModalOverlay,
-  Stack
+  Stack,
+  useToast
 } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react'
@@ -21,8 +22,10 @@ import { useForm } from 'react-hook-form'
 
 import { browserClient } from '@/supabase'
 
-const LoginModalContent = () => {
+const LoginModalContent = ({ onSuccess }) => {
   const [errorMsg, setErrorMsg] = useState(null)
+  const [isLoginSubmitting, setIsLoginSubmitting] = useState(false)
+  const toast = useToast()
 
   const schema = yup.object().shape({
     email: yup.string().required('O campo "email" é obrigatório'),
@@ -39,15 +42,26 @@ const LoginModalContent = () => {
   } = useForm({ resolver: yupResolver(schema) })
 
   async function signIn(formData) {
-    console.log('rodou signin')
+    setIsLoginSubmitting(true)
     const { error } = await browserClient.auth.signInWithPassword({
       email: formData.email,
       password: formData.password
     })
 
     if (error) {
-      setErrorMsg(error.message)
+      toast({
+        title: 'Usuário ou senha inválidos',
+        description: 'Sua senha está inválida ou não existe um usuário com esse e-mail.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      })
+    } else {
+      setErrorMsg(null)
+      onSuccess()
     }
+
+    setIsLoginSubmitting(false)
   }
 
   return (
@@ -83,12 +97,16 @@ const LoginModalContent = () => {
 
       <Flex justifyContent="space-between" alignItems="center" mt={4}>
         <Button variant="link">Esqueceu sua senha?</Button>
-        <Button colorScheme="black" type="submit" size="lg">
+        <Button
+          colorScheme="black"
+          type="submit"
+          size="lg"
+          isLoading={isLoginSubmitting}
+          loadingText="Entrando..."
+        >
           Entrar
         </Button>
       </Flex>
-
-      {errorMsg && <div className="text-red-600">{errorMsg}</div>}
     </Box>
   )
 }
@@ -105,7 +123,11 @@ background-blend-mode: soft-light, soft-light, overlay, screen, normal;"
         <Flex width="100%">
           <Box>sodkfkods</Box>
           <Box p={10} bg="white" borderRadius="xl" flex="1">
-            <LoginModalContent />
+            <LoginModalContent
+              onSuccess={() => {
+                onClose()
+              }}
+            />
           </Box>
         </Flex>
       </ModalContent>

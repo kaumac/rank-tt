@@ -25,11 +25,9 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       const { data } = await browserClient.auth.getSession()
 
       if (data.session) {
-        console.log('Session found', 'ismodal open', isAuthModalOpen)
         setSession(data.session)
         setIsSessionLoading(false)
       } else {
-        console.log('No session found', 'ismodal open', isAuthModalOpen)
         setSession(null)
         setIsSessionLoading(false)
         onAuthModalOpen()
