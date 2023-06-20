@@ -3,13 +3,32 @@
 import { Box, Flex, Icon, IconButton, Stack, Text, Tooltip, chakra } from '@chakra-ui/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { PropsWithChildren, ReactNode } from 'react'
+import { PropsWithChildren, useEffect, useState } from 'react'
 import { IconType } from 'react-icons'
-import { BiHomeAlt } from 'react-icons/bi'
+import { BiHomeAlt, BiTrophy } from 'react-icons/bi'
 import { VscLayoutSidebarLeft } from 'react-icons/vsc'
 
+import { colors } from '@/theme'
+
 const navItemHeight = 48
-const navItemSpacing = 8
+const navItemSpacing = 2
+
+const navItemsList = [
+  {
+    title: 'Painel',
+    route: '/painel',
+    icon: BiHomeAlt,
+    color: colors.blue[500],
+    bgColor: 'red'
+  },
+  {
+    title: 'Torneios',
+    route: '/painel/torneios',
+    icon: BiTrophy,
+    color: colors.magenta[500],
+    bgColor: 'red'
+  }
+]
 
 const LayoutWrapper = chakra(Box, {
   baseStyle: {
@@ -96,18 +115,13 @@ const SidebarNavWrapper = chakra(Box, {
 interface SidebarNavItemProps {
   route: string
   title: string
+  color: string
   icon: IconType
 }
 
-const SidebarNavItem = ({ route, title, icon }: SidebarNavItemProps) => {
-  const pathname = usePathname()
-  const isRouteActive =
-    route.split('/').length === 2
-      ? pathname === route
-      : pathname.split('/').includes(route.split('/').slice(-1)[0])
-
+const SidebarNavItem = ({ route, title, color, icon }: SidebarNavItemProps) => {
   return (
-    <Tooltip hasArrow label={title} placement="auto" zIndex={10}>
+    <Tooltip hasArrow label={title} placement="auto" zIndex={10} isDisabled>
       <Flex
         zIndex={10}
         as={Link}
@@ -117,9 +131,9 @@ const SidebarNavItem = ({ route, title, icon }: SidebarNavItemProps) => {
         alignItems="center"
         px={5}
       >
-        <Icon as={icon} fontSize="20px" color="blue.500" />
-        <Text fontSize="sm" fontWeight={500} color="white" ml={3}>
-          Home
+        <Icon as={icon} fontSize="22px" color={color} />
+        <Text fontSize="sm" fontWeight={500} color="white" ml={4}>
+          {title}
         </Text>
       </Flex>
     </Tooltip>
@@ -147,6 +161,16 @@ const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }
 }
 
 const PainelLayout = (props: PropsWithChildren) => {
+  const [activeNavItemIndex, setActiveNavItemIndex] = useState(0)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    const activeNavItem = navItemsList.findIndex((navItem) => navItem.route === pathname)
+    setActiveNavItemIndex(activeNavItem)
+  }, [pathname])
+
+  console.log(activeNavItemIndex)
+
   return (
     <LayoutWrapper>
       <LayoutSidebar>
@@ -162,10 +186,18 @@ const PainelLayout = (props: PropsWithChildren) => {
         </SidebarHeader>
         <SidebarNavWrapper>
           <Stack spacing={navItemSpacing}>
-            <SidebarNavItem title="Painel" route="/painel" icon={BiHomeAlt} />
+            {navItemsList.map((navItem, index) => (
+              <SidebarNavItem
+                key={navItem.route}
+                route={navItem.route}
+                title={navItem.title}
+                icon={navItem.icon}
+                color={navItem.color}
+              />
+            ))}
           </Stack>
 
-          <ActiveSidebarNavItemBg activeItemIndex={0} />
+          <ActiveSidebarNavItemBg activeItemIndex={activeNavItemIndex} />
         </SidebarNavWrapper>
       </LayoutSidebar>
       <ContentCardWrapper>

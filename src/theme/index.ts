@@ -16,6 +16,8 @@ import colors from './colors'
 // import { breakpoints } from './foundations/breakpoints'
 // import { globalStyles } from './styles'
 
+export { colors }
+
 export default extendTheme(
   {
     breakpoints,
