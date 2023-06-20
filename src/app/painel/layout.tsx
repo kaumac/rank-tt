@@ -5,13 +5,13 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { IconType } from 'react-icons'
-import { BiHomeAlt, BiTrophy } from 'react-icons/bi'
+import { BiHomeAlt, BiSearch, BiTrophy } from 'react-icons/bi'
 import { VscLayoutSidebarLeft } from 'react-icons/vsc'
 
 import { colors } from '@/theme'
 
 const navItemHeight = 48
-const navItemSpacing = 2
+const navItemSpacing = 8
 
 const navItemsList = [
   {
@@ -19,14 +19,20 @@ const navItemsList = [
     route: '/painel',
     icon: BiHomeAlt,
     color: colors.blue[500],
-    bgColor: 'red'
+    bgColor: 'rgba(45, 59, 111, 0.4)'
   },
   {
     title: 'Torneios',
     route: '/painel/torneios',
     icon: BiTrophy,
     color: colors.magenta[500],
-    bgColor: 'red'
+    bgColor: 'rgba(87, 55, 114, 0.4)'
+  },
+  {
+    title: 'Busca',
+    icon: BiSearch,
+    color: colors.green[500],
+    bgColor: '#5A446C'
   }
 ]
 
@@ -113,26 +119,32 @@ const SidebarNavWrapper = chakra(Box, {
 })
 
 interface SidebarNavItemProps {
-  route: string
+  route: string | undefined
   title: string
   color: string
   icon: IconType
+  isActive: boolean
 }
 
-const SidebarNavItem = ({ route, title, color, icon }: SidebarNavItemProps) => {
+const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemProps) => {
   return (
     <Tooltip hasArrow label={title} placement="auto" zIndex={10} isDisabled>
       <Flex
         zIndex={10}
-        as={Link}
-        href={route}
+        as={route ? Link : undefined}
+        href={route ? route : undefined}
         width="100%"
         height={`${navItemHeight}px`}
         alignItems="center"
         px={5}
       >
         <Icon as={icon} fontSize="22px" color={color} />
-        <Text fontSize="sm" fontWeight={500} color="white" ml={4}>
+        <Text
+          fontSize="sm"
+          fontWeight={500}
+          color={isActive ? 'white' : 'rgba(255,255,255,0.75)'}
+          ml={4}
+        >
           {title}
         </Text>
       </Flex>
@@ -143,14 +155,17 @@ const SidebarNavItem = ({ route, title, color, icon }: SidebarNavItemProps) => {
 const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }) => {
   return (
     <Box
-      backgroundImage="linear-gradient(to left, rgb(50, 51, 55), rgba(70, 79, 111, 0.3))"
+      backgroundImage={`linear-gradient(to left, rgb(50, 51, 55), ${navItemsList[activeItemIndex].bgColor})`}
       width="100%"
       height={`${navItemHeight}px`}
       position="absolute"
-      top={`${navItemHeight * activeItemIndex + navItemSpacing * activeItemIndex}px`}
+      transform={`translateY(${
+        navItemHeight * activeItemIndex + navItemSpacing * activeItemIndex
+      }px)`}
+      top="0"
       left="0"
       borderRadius="lg"
-      transitionProperty="color,background-color,border-color,text-decoration-color,fill,stroke"
+      transitionProperty="background-image, transform"
       transitionTimingFunction="cubic-bezier(0.4,0,0.2,1)"
       transitionDuration="200ms"
       borderBottomColor="rgb(229, 231, 235)"
@@ -185,14 +200,15 @@ const PainelLayout = (props: PropsWithChildren) => {
           />
         </SidebarHeader>
         <SidebarNavWrapper>
-          <Stack spacing={navItemSpacing}>
-            {navItemsList.map((navItem, index) => (
+          <Stack spacing={`${navItemSpacing}px`}>
+            {navItemsList.map((navItem, navItemIndex) => (
               <SidebarNavItem
                 key={navItem.route}
                 route={navItem.route}
                 title={navItem.title}
                 icon={navItem.icon}
                 color={navItem.color}
+                isActive={navItemIndex === activeNavItemIndex}
               />
             ))}
           </Stack>
