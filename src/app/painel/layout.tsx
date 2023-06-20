@@ -1,12 +1,15 @@
 'use client'
 
-import { Box, Flex, Icon, IconButton, Tooltip, chakra } from '@chakra-ui/react'
+import { Box, Flex, Icon, IconButton, Stack, Text, Tooltip, chakra } from '@chakra-ui/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PropsWithChildren, ReactNode } from 'react'
 import { IconType } from 'react-icons'
 import { BiHomeAlt } from 'react-icons/bi'
 import { VscLayoutSidebarLeft } from 'react-icons/vsc'
+
+const navItemHeight = 48
+const navItemSpacing = 8
 
 const LayoutWrapper = chakra(Box, {
   baseStyle: {
@@ -82,6 +85,7 @@ const SidebarHeader = chakra(Flex, {
 
 const SidebarNavWrapper = chakra(Box, {
   baseStyle: {
+    position: 'relative',
     flex: 1,
     scrollbarWidth: 'none',
     scrollBehavior: 'smooth',
@@ -103,20 +107,42 @@ const SidebarNavItem = ({ route, title, icon }: SidebarNavItemProps) => {
       : pathname.split('/').includes(route.split('/').slice(-1)[0])
 
   return (
-    <Tooltip hasArrow label={title} placement="auto">
+    <Tooltip hasArrow label={title} placement="auto" zIndex={10}>
       <Flex
+        zIndex={10}
         as={Link}
         href={route}
-        bg={isRouteActive ? '#000' : 'transparent'}
-        width="48px"
-        height="48px"
+        width="100%"
+        height={`${navItemHeight}px`}
         alignItems="center"
-        justifyContent="center"
-        borderRadius="20%"
+        px={5}
       >
-        <Icon as={icon} w="24px" h="24px" color={isRouteActive ? '#FFF' : '#AAAAAA'} />
+        <Icon as={icon} fontSize="20px" color="blue.500" />
+        <Text fontSize="sm" fontWeight={500} color="white" ml={3}>
+          Home
+        </Text>
       </Flex>
     </Tooltip>
+  )
+}
+
+const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }) => {
+  return (
+    <Box
+      backgroundImage="linear-gradient(to left, rgb(50, 51, 55), rgba(70, 79, 111, 0.3))"
+      width="100%"
+      height={`${navItemHeight}px`}
+      position="absolute"
+      top={`${navItemHeight * activeItemIndex + navItemSpacing * activeItemIndex}px`}
+      left="0"
+      borderRadius="lg"
+      transitionProperty="color,background-color,border-color,text-decoration-color,fill,stroke"
+      transitionTimingFunction="cubic-bezier(0.4,0,0.2,1)"
+      transitionDuration="200ms"
+      borderBottomColor="rgb(229, 231, 235)"
+      borderBottomStyle="solid"
+      zIndex={-1}
+    />
   )
 }
 
@@ -135,7 +161,11 @@ const PainelLayout = (props: PropsWithChildren) => {
           />
         </SidebarHeader>
         <SidebarNavWrapper>
-          <SidebarNavItem title="Painel" route="/painel" icon={BiHomeAlt} />
+          <Stack spacing={navItemSpacing}>
+            <SidebarNavItem title="Painel" route="/painel" icon={BiHomeAlt} />
+          </Stack>
+
+          <ActiveSidebarNavItemBg activeItemIndex={0} />
         </SidebarNavWrapper>
       </LayoutSidebar>
       <ContentCardWrapper>
