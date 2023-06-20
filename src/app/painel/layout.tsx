@@ -1,9 +1,10 @@
 'use client'
 
-import { Box, Flex, chakra } from '@chakra-ui/react'
+import { Box, Flex, IconButton, chakra } from '@chakra-ui/react'
 import { PropsWithChildren } from 'react'
+import { VscLayoutSidebarLeft } from 'react-icons/vsc'
 
-const ContentWrapper = chakra(Box, {
+const LayoutWrapper = chakra(Box, {
   baseStyle: {
     pr: {
       xl: '1.5rem'
@@ -29,12 +30,12 @@ const ContentCardWrapper = chakra(Flex, {
 const ContentCard = chakra(Flex, {
   baseStyle: {
     bg: 'rgb(254, 254, 254)',
-    borderRadius: '1.5rem',
+    borderRadius: '1.2rem',
     flex: 1
   }
 })
 
-const SidebarWrapper = chakra(Flex, {
+const LayoutSidebar = chakra(Flex, {
   baseStyle: {
     pt: {
       xl: '7.5rem'
@@ -57,14 +58,43 @@ const SidebarWrapper = chakra(Flex, {
   }
 })
 
+const SidebarHeader = chakra(Flex, {
+  baseStyle: {
+    pr: {
+      xl: '1.5rem'
+    },
+    pl: {
+      xl: '1.75rem'
+    },
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: '7.5rem',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0
+  }
+})
+
 const PainelLayout = (props: PropsWithChildren) => {
   return (
-    <ContentWrapper>
-      <SidebarWrapper>sodfsdkok</SidebarWrapper>
+    <LayoutWrapper>
+      <LayoutSidebar>
+        <SidebarHeader>
+          <img src="/ranktt-new-logo.svg" width={150} />
+          <IconButton
+            color="gray"
+            colorScheme="black"
+            bg="transparent"
+            aria-label="Search database"
+            icon={<VscLayoutSidebarLeft size="1.5rem" />}
+          />
+        </SidebarHeader>
+      </LayoutSidebar>
       <ContentCardWrapper>
         <ContentCard>{props.children}</ContentCard>
       </ContentCardWrapper>
-    </ContentWrapper>
+    </LayoutWrapper>
   )
 }
 
