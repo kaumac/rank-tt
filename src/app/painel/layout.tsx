@@ -130,6 +130,7 @@ const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemP
   return (
     <Tooltip hasArrow label={title} placement="auto" zIndex={10} isDisabled>
       <Flex
+        data-group
         zIndex={10}
         as={route ? Link : undefined}
         href={route ? route : undefined}
@@ -144,6 +145,10 @@ const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemP
           fontWeight={500}
           color={isActive ? 'white' : 'rgba(255,255,255,0.75)'}
           ml={4}
+          transition="color 200ms ease-in-out"
+          _groupHover={{
+            color: 'white'
+          }}
         >
           {title}
         </Text>
