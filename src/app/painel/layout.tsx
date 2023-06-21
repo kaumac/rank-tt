@@ -1,11 +1,28 @@
 'use client'
 
-import { Box, Flex, Icon, IconButton, Stack, Text, Tooltip, chakra } from '@chakra-ui/react'
+import {
+  Avatar,
+  AvatarBadge,
+  Box,
+  Button,
+  Flex,
+  Icon,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuGroup,
+  MenuItem,
+  MenuList,
+  Stack,
+  Text,
+  Tooltip,
+  chakra
+} from '@chakra-ui/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { IconType } from 'react-icons'
-import { BiHomeAlt, BiSearch, BiTrophy } from 'react-icons/bi'
+import { BiCog, BiDotsVerticalRounded, BiHomeAlt, BiSearch, BiTrophy } from 'react-icons/bi'
 import { VscLayoutSidebarLeft } from 'react-icons/vsc'
 
 import { colors } from '@/theme'
@@ -180,6 +197,33 @@ const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }
   )
 }
 
+const SidebarUserInfoWrapper = chakra(Box, {
+  baseStyle: {
+    px: {
+      xl: 4
+    },
+    pb: {
+      xl: '1.5rem'
+    },
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0
+  }
+})
+
+const SidebarUserInfo = chakra(Box, {
+  baseStyle: {
+    borderRadius: '0.8rem',
+    bg: 'rgb(35, 38, 39)',
+    boxShadow:
+      'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.5) 0px 20px 24px 0px',
+    p: {
+      xl: '4'
+    }
+  }
+})
+
 const PainelLayout = (props: PropsWithChildren) => {
   const [activeNavItemIndex, setActiveNavItemIndex] = useState(0)
   const pathname = usePathname()
@@ -188,8 +232,6 @@ const PainelLayout = (props: PropsWithChildren) => {
     const activeNavItem = navItemsList.findIndex((navItem) => navItem.route === pathname)
     setActiveNavItemIndex(activeNavItem)
   }, [pathname])
-
-  console.log(activeNavItemIndex)
 
   return (
     <LayoutWrapper>
@@ -220,6 +262,103 @@ const PainelLayout = (props: PropsWithChildren) => {
 
           <ActiveSidebarNavItemBg activeItemIndex={activeNavItemIndex} />
         </SidebarNavWrapper>
+
+        <SidebarUserInfoWrapper>
+          <SidebarUserInfo>
+            <Menu isLazy>
+              <MenuButton width="100%">
+                <Flex
+                  alignItems="center"
+                  justifyContent="space-between"
+                  py={2}
+                  px={3}
+                  pr={0}
+                  width="100%"
+                >
+                  <Avatar size="sm" width="40px" height="40px">
+                    <AvatarBadge borderColor="rgb(35, 38, 39)" bg="green.500" boxSize="0.9rem" />
+                  </Avatar>
+                  <Box flex="1" ml={5}>
+                    <Text textAlign="left" fontSize="sm" fontWeight={500} color="white">
+                      Kaue Machado
+                    </Text>
+                    <Text
+                      textAlign="left"
+                      fontSize="xs"
+                      fontWeight={500}
+                      color="rgba(232,236,239,.5)"
+                    >
+                      Conta pessoal
+                    </Text>
+                  </Box>
+                  <IconButton
+                    color="gray"
+                    colorScheme="black"
+                    bg="transparent"
+                    aria-label="Search database"
+                    icon={<BiCog size="1.5rem" />}
+                  />
+                </Flex>
+              </MenuButton>
+              <MenuList>
+                <MenuItem icon={<BiCog />} onClick={() => {}}>
+                  Criar organização
+                </MenuItem>
+                <MenuItem icon={<BiCog />} onClick={() => {}}>
+                  Criar organização
+                </MenuItem>
+                <MenuItem icon={<BiCog />} onClick={() => {}}>
+                  Criar organização
+                </MenuItem>
+                <MenuItem icon={<BiCog />} onClick={() => {}}>
+                  Criar organização
+                </MenuItem>
+                {/* <MenuItem
+                icon={isFullscreen ? <BiExitFullscreen /> : <BiFullscreen />}
+                onClick={() => {
+                  screenfull.toggle()
+                }}
+              >
+                {isFullscreen ? 'Desativar tela cheia' : 'Modo tela cheia'}
+              </MenuItem>
+              <MenuGroup title="Organizações">
+                {currentUser?.organizations.map((organizationId) => (
+                  <OrganizationSwitchLink key={organizationId} organizationId={organizationId} />
+                ))}
+                <MenuItem icon={<BiStoreAlt />} onClick={onOpen}>
+                  Criar organização
+                </MenuItem>
+              </MenuGroup>
+              <MenuGroup title="Meu perfil">
+                <MenuItem icon={<BiCog />} onClick={onOpen}>
+                  Configurações
+                </MenuItem>
+                <MenuItem icon={<BiLogOut />} onClick={onOpen}>
+                  Encerrar sessão
+                </MenuItem>
+              </MenuGroup> */}
+              </MenuList>
+            </Menu>
+            <Button
+              mt={6}
+              py={5}
+              width="100%"
+              variant="outline"
+              borderWidth="2px"
+              colorScheme="gray"
+              borderColor="rgb(52, 56, 57)"
+              color="rgba(255,255,255,0.75)"
+              fontSize="sm"
+              borderRadius="xl"
+              _hover={{
+                background: 'rgb(52, 56, 57)',
+                color: 'white'
+              }}
+            >
+              Trocar conta
+            </Button>
+          </SidebarUserInfo>
+        </SidebarUserInfoWrapper>
       </LayoutSidebar>
       <ContentCardWrapper>
         <ContentCard>{props.children}</ContentCard>
