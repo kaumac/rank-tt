@@ -16,7 +16,8 @@ import {
   Stack,
   Text,
   Tooltip,
-  chakra
+  chakra,
+  useDisclosure
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -25,6 +26,8 @@ import { IconType } from 'react-icons'
 import { BiCog, BiDotsVerticalRounded, BiHomeAlt, BiSearch, BiTrophy } from 'react-icons/bi'
 import { VscLayoutSidebarLeft } from 'react-icons/vsc'
 
+import AccountModal from '@/components/AccountModal'
+import useCurrentUser from '@/hooks/useCurrentUser'
 import { colors } from '@/theme'
 
 const navItemHeight = 48
@@ -87,7 +90,7 @@ const ContentCard = chakra(Flex, {
 const LayoutSidebar = chakra(Flex, {
   baseStyle: {
     pt: {
-      xl: '7.5rem'
+      xl: '7rem'
     },
     pb: {
       xl: '14.5rem'
@@ -117,7 +120,7 @@ const SidebarHeader = chakra(Flex, {
     },
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: '7.5rem',
+    height: '7rem',
     position: 'absolute',
     top: 0,
     left: 0,
@@ -226,6 +229,12 @@ const SidebarUserInfo = chakra(Box, {
 
 const PainelLayout = (props: PropsWithChildren) => {
   const [activeNavItemIndex, setActiveNavItemIndex] = useState(0)
+  const [user, isUserLoading, userError] = useCurrentUser()
+  const {
+    isOpen: isAccountModalOpen,
+    onClose: onAccountModalClose,
+    onOpen: onAccountModalOpen
+  } = useDisclosure()
   const pathname = usePathname()
 
   useEffect(() => {
@@ -234,136 +243,99 @@ const PainelLayout = (props: PropsWithChildren) => {
   }, [pathname])
 
   return (
-    <LayoutWrapper>
-      <LayoutSidebar>
-        <SidebarHeader>
-          <img src="/ranktt-new-logo.svg" width={150} />
-          <IconButton
-            color="gray"
-            colorScheme="black"
-            bg="transparent"
-            aria-label="Search database"
-            icon={<VscLayoutSidebarLeft size="1.5rem" />}
-          />
-        </SidebarHeader>
-        <SidebarNavWrapper>
-          <Stack spacing={`${navItemSpacing}px`}>
-            {navItemsList.map((navItem, navItemIndex) => (
-              <SidebarNavItem
-                key={navItem.route}
-                route={navItem.route}
-                title={navItem.title}
-                icon={navItem.icon}
-                color={navItem.color}
-                isActive={navItemIndex === activeNavItemIndex}
-              />
-            ))}
-          </Stack>
+    <>
+      <LayoutWrapper>
+        <LayoutSidebar>
+          <SidebarHeader>
+            <img src="/ranktt-new-logo.svg" width={150} />
+            <IconButton
+              color="gray"
+              colorScheme="black"
+              bg="transparent"
+              aria-label="Search database"
+              icon={<VscLayoutSidebarLeft size="1.5rem" />}
+            />
+          </SidebarHeader>
+          <SidebarNavWrapper>
+            <Stack spacing={`${navItemSpacing}px`}>
+              {navItemsList.map((navItem, navItemIndex) => (
+                <SidebarNavItem
+                  key={`nav-item-${navItemIndex}-${navItem.route}`}
+                  route={navItem.route}
+                  title={navItem.title}
+                  icon={navItem.icon}
+                  color={navItem.color}
+                  isActive={navItemIndex === activeNavItemIndex}
+                />
+              ))}
+            </Stack>
 
-          <ActiveSidebarNavItemBg activeItemIndex={activeNavItemIndex} />
-        </SidebarNavWrapper>
+            <ActiveSidebarNavItemBg activeItemIndex={activeNavItemIndex} />
+          </SidebarNavWrapper>
 
-        <SidebarUserInfoWrapper>
-          <SidebarUserInfo>
-            <Menu isLazy>
-              <MenuButton width="100%">
-                <Flex
-                  alignItems="center"
-                  justifyContent="space-between"
-                  py={2}
-                  px={3}
-                  pr={0}
-                  width="100%"
-                >
-                  <Avatar size="sm" width="40px" height="40px">
-                    <AvatarBadge borderColor="rgb(35, 38, 39)" bg="green.500" boxSize="0.9rem" />
-                  </Avatar>
-                  <Box flex="1" ml={5}>
-                    <Text textAlign="left" fontSize="sm" fontWeight={500} color="white">
-                      Kaue Machado
-                    </Text>
-                    <Text
-                      textAlign="left"
-                      fontSize="xs"
-                      fontWeight={500}
-                      color="rgba(232,236,239,.5)"
-                    >
-                      Conta pessoal
-                    </Text>
-                  </Box>
-                  <IconButton
-                    color="gray"
-                    colorScheme="black"
-                    bg="transparent"
-                    aria-label="Search database"
-                    icon={<BiCog size="1.5rem" />}
-                  />
-                </Flex>
-              </MenuButton>
-              <MenuList>
-                <MenuItem icon={<BiCog />} onClick={() => {}}>
-                  Criar organização
-                </MenuItem>
-                <MenuItem icon={<BiCog />} onClick={() => {}}>
-                  Criar organização
-                </MenuItem>
-                <MenuItem icon={<BiCog />} onClick={() => {}}>
-                  Criar organização
-                </MenuItem>
-                <MenuItem icon={<BiCog />} onClick={() => {}}>
-                  Criar organização
-                </MenuItem>
-                {/* <MenuItem
-                icon={isFullscreen ? <BiExitFullscreen /> : <BiFullscreen />}
-                onClick={() => {
-                  screenfull.toggle()
+          <SidebarUserInfoWrapper>
+            <SidebarUserInfo>
+              <Flex
+                alignItems="center"
+                justifyContent="space-between"
+                py={2}
+                px={3}
+                pr={0}
+                width="100%"
+              >
+                <Avatar size="sm" width="40px" height="40px">
+                  <AvatarBadge borderColor="rgb(35, 38, 39)" bg="green.500" boxSize="0.9rem" />
+                </Avatar>
+                <Box flex="1" ml={5}>
+                  <Text textAlign="left" fontSize="sm" fontWeight={500} color="white">
+                    Kaue Machado
+                  </Text>
+                  <Text
+                    textAlign="left"
+                    fontSize="xs"
+                    fontWeight={500}
+                    color="rgba(232,236,239,.5)"
+                  >
+                    Conta pessoal
+                  </Text>
+                </Box>
+                <IconButton
+                  color="gray"
+                  colorScheme="black"
+                  bg="transparent"
+                  aria-label="Search database"
+                  icon={<BiCog size="1.5rem" />}
+                  onClick={onAccountModalOpen}
+                />
+              </Flex>
+
+              <Button
+                mt={6}
+                py={5}
+                width="100%"
+                variant="outline"
+                borderWidth="2px"
+                colorScheme="gray"
+                borderColor="rgb(52, 56, 57)"
+                color="rgba(255,255,255,0.75)"
+                fontSize="sm"
+                borderRadius="xl"
+                _hover={{
+                  background: 'rgb(52, 56, 57)',
+                  color: 'white'
                 }}
               >
-                {isFullscreen ? 'Desativar tela cheia' : 'Modo tela cheia'}
-              </MenuItem>
-              <MenuGroup title="Organizações">
-                {currentUser?.organizations.map((organizationId) => (
-                  <OrganizationSwitchLink key={organizationId} organizationId={organizationId} />
-                ))}
-                <MenuItem icon={<BiStoreAlt />} onClick={onOpen}>
-                  Criar organização
-                </MenuItem>
-              </MenuGroup>
-              <MenuGroup title="Meu perfil">
-                <MenuItem icon={<BiCog />} onClick={onOpen}>
-                  Configurações
-                </MenuItem>
-                <MenuItem icon={<BiLogOut />} onClick={onOpen}>
-                  Encerrar sessão
-                </MenuItem>
-              </MenuGroup> */}
-              </MenuList>
-            </Menu>
-            <Button
-              mt={6}
-              py={5}
-              width="100%"
-              variant="outline"
-              borderWidth="2px"
-              colorScheme="gray"
-              borderColor="rgb(52, 56, 57)"
-              color="rgba(255,255,255,0.75)"
-              fontSize="sm"
-              borderRadius="xl"
-              _hover={{
-                background: 'rgb(52, 56, 57)',
-                color: 'white'
-              }}
-            >
-              Trocar conta
-            </Button>
-          </SidebarUserInfo>
-        </SidebarUserInfoWrapper>
-      </LayoutSidebar>
-      <ContentCardWrapper>
-        <ContentCard>{props.children}</ContentCard>
-      </ContentCardWrapper>
-    </LayoutWrapper>
+                Trocar conta
+              </Button>
+            </SidebarUserInfo>
+          </SidebarUserInfoWrapper>
+        </LayoutSidebar>
+        <ContentCardWrapper>
+          <ContentCard>{props.children}</ContentCard>
+        </ContentCardWrapper>
+      </LayoutWrapper>
+      <AccountModal isOpen={isAccountModalOpen} onClose={onAccountModalClose} />
+    </>
   )
 }
 
