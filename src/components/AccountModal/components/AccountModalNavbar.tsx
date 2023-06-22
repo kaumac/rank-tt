@@ -1,8 +1,8 @@
 'use client'
 
-import { Box, Flex, Stack, Text } from '@chakra-ui/react'
+import { Box, Flex, Icon, Stack, Text } from '@chakra-ui/react'
 import { IconType } from 'react-icons'
-import { BsBuildingFill } from 'react-icons/bs'
+import { BsBuildingFill, BsPersonFill } from 'react-icons/bs'
 
 interface AccountModalNavbarProps {
   activeItem: number
@@ -14,8 +14,8 @@ const navItemSpacing = 8
 
 const navItemsList = [
   {
-    title: 'Perfil',
-    icon: BsBuildingFill
+    title: 'Minha conta',
+    icon: BsPersonFill
   },
   {
     title: 'Organizações',
@@ -43,6 +43,14 @@ const NavBarItem = ({ title, icon, isActive, onClick }: NavBarItem) => {
         backgroundColor: 'gray.100'
       }}
     >
+      <Icon
+        as={icon}
+        mr={2}
+        color={isActive ? 'black' : 'gray.600'}
+        transitionProperty="color"
+        transitionTimingFunction="cubic-bezier(0.4,0,0.2,1)"
+        transitionDuration="200ms"
+      />
       <Text
         fontWeight={600}
         color={isActive ? 'black' : 'gray.600'}
