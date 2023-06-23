@@ -1,27 +1,15 @@
 'use client'
 
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  Input,
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  Stack,
-  useToast
-} from '@chakra-ui/react'
+import { Box, Flex, Modal, ModalContent, ModalOverlay, useToast } from '@chakra-ui/react'
 import { useState } from 'react'
-import { BiHomeAlt, BiUser } from 'react-icons/bi'
-import { BsBuildingFill } from 'react-icons/bs'
 
 import { useCurrentUser } from '@/hooks'
 
 import AccountModalNavbar from './components/AccountModalNavbar'
+import AccountTab from './components/AccountTab'
+import OrganizationsTab from './components/OrganizationsTab'
+
+const accountModalSections = [AccountTab, OrganizationsTab]
 
 const AccountModalContent = ({ onSuccess }) => {
   const [user, isUserLoading, userError] = useCurrentUser()
@@ -32,8 +20,8 @@ const AccountModalContent = ({ onSuccess }) => {
     <Flex>
       <AccountModalNavbar activeItem={activeNavItem} onNavItemClick={setActiveNavItem} />
       <Box flex="1" pl={12}>
-        <Heading>Meu perfil</Heading>
-        Account modal cojntent
+        {activeNavItem === 0 && <AccountTab />}
+        {activeNavItem === 1 && <OrganizationsTab />}
       </Box>
     </Flex>
   )
@@ -43,7 +31,7 @@ const AccountModal = ({ isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
       <ModalOverlay backdropFilter="blur(6px)" bg="rgba(22,22,22,0.66)" />
-      <ModalContent borderRadius="xxl" maxWidth="780px" p={16}>
+      <ModalContent borderRadius="xxl" maxWidth="780px" p={12}>
         <AccountModalContent
           onSuccess={() => {
             onClose()
