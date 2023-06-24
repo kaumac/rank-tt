@@ -134,7 +134,7 @@ const SidebarNavWrapper = chakra(Box, {
     flex: 1,
     scrollbarWidth: 'none',
     scrollBehavior: 'smooth',
-    overflowY: 'auto'
+    overflow: 'visible'
   }
 })
 
@@ -158,6 +158,7 @@ const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemP
         height={`${navItemHeight}px`}
         alignItems="center"
         px={5}
+        borderRadius="md"
       >
         <Icon as={icon} fontSize="22px" color={color} />
         <Text
@@ -179,9 +180,10 @@ const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemP
 
 const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }) => {
   return (
-    <Box
-      backgroundImage={`linear-gradient(to left, rgb(50, 51, 55), ${navItemsList[activeItemIndex].bgColor})`}
+    <Flex
       width="100%"
+      alignItems="center"
+      justifyContent="center"
       height={`${navItemHeight}px`}
       position="absolute"
       transform={`translateY(${
@@ -189,14 +191,33 @@ const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }
       }px)`}
       top="0"
       left="0"
-      borderRadius="lg"
-      transitionProperty="background-image, transform"
+      borderRadius="md"
+      zIndex={-1}
+      overflow="hidden"
+      transitionProperty="transform"
       transitionTimingFunction="cubic-bezier(0.4,0,0.2,1)"
       transitionDuration="200ms"
-      borderBottomColor="rgb(229, 231, 235)"
-      borderBottomStyle="solid"
-      zIndex={-1}
-    />
+      boxShadow="inset 0 1px 1px 0 rgba(255,255,255,0.15), inset -1px -1px 2px 0 rgba(0,0,0,0.2), 0 10px 10px 2px rgba(0,0,0,0.2)"
+    >
+      {navItemsList.map((navItemListItem, navItemIndex) => {
+        const isBgActive = activeItemIndex === navItemIndex
+
+        return (
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            width="100%"
+            height="100%"
+            backgroundImage={`linear-gradient(to left, rgb(50, 51, 55), ${navItemsList[activeItemIndex].bgColor})`}
+            transitionProperty="opacity"
+            transitionTimingFunction="cubic-bezier(0.4,0,0.2,1)"
+            transitionDuration="500ms"
+            opacity={isBgActive ? 1 : 0}
+          />
+        )
+      })}
+    </Flex>
   )
 }
 
@@ -217,7 +238,7 @@ const SidebarUserInfoWrapper = chakra(Box, {
 
 const SidebarUserInfo = chakra(Box, {
   baseStyle: {
-    borderRadius: '0.8rem',
+    borderRadius: 'md',
     bg: 'rgb(35, 38, 39)',
     boxShadow:
       'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.5) 0px 20px 24px 0px',
@@ -319,7 +340,6 @@ const PainelLayout = (props: PropsWithChildren) => {
                 borderColor="rgb(52, 56, 57)"
                 color="rgba(255,255,255,0.75)"
                 fontSize="sm"
-                borderRadius="xl"
                 _hover={{
                   background: 'rgb(52, 56, 57)',
                   color: 'white'
