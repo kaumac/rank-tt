@@ -39,14 +39,14 @@ const navItemsList = [
     route: '/painel',
     icon: BiHomeAlt,
     color: colors.blue[500],
-    bgColor: 'rgba(45, 59, 111, 0.4)'
+    bgColor: 'rgba(45, 59, 111, 0.3)'
   },
   {
     title: 'Torneios',
     route: '/painel/torneios',
     icon: BiTrophy,
     color: colors.magenta[500],
-    bgColor: 'rgba(87, 55, 114, 0.4)'
+    bgColor: 'rgba(87, 55, 114, 0.3)'
   },
   {
     title: 'Busca',
@@ -204,6 +204,7 @@ const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }
 
         return (
           <Box
+            key={`navbarItemBg-${navItemIndex}`}
             position="absolute"
             top="0"
             left="0"
