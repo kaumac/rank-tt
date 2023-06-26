@@ -251,7 +251,7 @@ const SidebarUserInfo = chakra(Box, {
 
 const PainelLayout = (props: PropsWithChildren) => {
   const [activeNavItemIndex, setActiveNavItemIndex] = useState(0)
-  const [user, isUserLoading, userError] = useCurrentUser()
+  const { currentUser, isCurrentUserLoading, currentUserError } = useCurrentUser()
   const {
     isOpen: isAccountModalOpen,
     onClose: onAccountModalClose,
