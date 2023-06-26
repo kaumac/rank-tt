@@ -7,7 +7,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { LoginModal } from '@/components'
 import { browserClient } from '@/supabase'
 
-export const AuthContext = createContext({})
+export const AuthContext = createContext<{ session?: Session }>({})
 
 export const useAuthContext = () => useContext(AuthContext)
 

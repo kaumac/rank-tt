@@ -1,9 +1,7 @@
 'use client'
 
-import { Box, Flex, Modal, ModalContent, ModalOverlay, useToast } from '@chakra-ui/react'
+import { Box, Flex, Modal, ModalContent, ModalOverlay } from '@chakra-ui/react'
 import { useState } from 'react'
-
-import { useCurrentUser } from '@/hooks'
 
 import AccountModalNavbar from './components/AccountModalNavbar'
 import AccountTab from './components/AccountTab'
@@ -12,9 +10,7 @@ import OrganizationsTab from './components/OrganizationsTab'
 const accountModalSections = [AccountTab, OrganizationsTab]
 
 const AccountModalContent = ({ onSuccess }) => {
-  const [user, isUserLoading, userError] = useCurrentUser()
   const [activeNavItem, setActiveNavItem] = useState(0)
-  const toast = useToast()
 
   return (
     <Flex>

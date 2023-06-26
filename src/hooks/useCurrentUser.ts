@@ -6,47 +6,44 @@ import { User } from '@/types'
 import { useAuthContext } from './useAuthContext'
 
 export const useCurrentUser = () => {
-  const [user, setUser] = useState<User | null>(null)
-  const [isUserLoading, setIsUserLoading] = useState(true)
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [isCurrentUserLoading, setIsCurrentUserLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
   const { session } = useAuthContext()
 
   const sessionUser = session?.user
 
-  const getProfile = useCallback(async () => {
+  const getUser = useCallback(async () => {
     try {
       let { data, error, status } = await browserClient
         .from('users')
         .select()
-        // .eq('id', sessionUser?.id)
+        .eq('id', sessionUser?.id)
         .maybeSingle()
 
       if (data) {
-        setUser({
+        setCurrentUser({
           ...data
         } as User)
       }
 
-      console.log(user)
-
       if (error && status !== 406) {
         throw error
       }
-    } catch (error) {
+    } catch (error: any) {
       setError(error)
-      console.log(error)
     } finally {
-      setIsUserLoading(false)
+      setIsCurrentUserLoading(false)
     }
   }, [sessionUser, browserClient])
 
   useEffect(() => {
     if (sessionUser) {
-      getProfile()
+      getUser()
     }
-  }, [sessionUser, getProfile])
+  }, [sessionUser, getUser])
 
-  return [user, isUserLoading, error]
+  return { currentUser, isCurrentUserLoading, currentUserError: error }
 }
 
 export default useCurrentUser

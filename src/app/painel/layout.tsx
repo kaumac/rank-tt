@@ -24,6 +24,7 @@ import { usePathname } from 'next/navigation'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { IconType } from 'react-icons'
 import { BiCog, BiDotsVerticalRounded, BiHomeAlt, BiSearch, BiTrophy } from 'react-icons/bi'
+import { BsTerminal } from 'react-icons/bs'
 import { VscLayoutSidebarLeft } from 'react-icons/vsc'
 
 import AccountModal from '@/components/AccountModal'
@@ -49,8 +50,8 @@ const navItemsList = [
     bgColor: 'rgba(87, 55, 114, 0.3)'
   },
   {
-    title: 'Busca',
-    icon: BiSearch,
+    title: 'Super painel',
+    icon: BsTerminal,
     color: colors.green[500],
     bgColor: '#5A446C'
   }
@@ -58,9 +59,6 @@ const navItemsList = [
 
 const LayoutWrapper = chakra(Box, {
   baseStyle: {
-    pr: {
-      xl: '1.5rem'
-    },
     pl: {
       xl: '20rem'
     },
@@ -71,7 +69,7 @@ const LayoutWrapper = chakra(Box, {
 
 const ContentCardWrapper = chakra(Flex, {
   baseStyle: {
-    py: {
+    pt: {
       xl: '1.5rem'
     },
     minHeight: '100vh',
@@ -82,7 +80,8 @@ const ContentCardWrapper = chakra(Flex, {
 const ContentCard = chakra(Flex, {
   baseStyle: {
     bg: 'rgb(254, 254, 254)',
-    borderRadius: '1.2rem',
+    borderTopLeftRadius: '1.2rem',
+    borderBottom: '1px solid #FFF',
     flex: 1
   }
 })
@@ -153,6 +152,7 @@ const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemP
         data-group
         zIndex={10}
         as={route ? Link : undefined}
+        cursor="pointer"
         href={route ? route : undefined}
         width="100%"
         height={`${navItemHeight}px`}
