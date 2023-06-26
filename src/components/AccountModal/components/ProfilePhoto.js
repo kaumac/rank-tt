@@ -1,15 +1,15 @@
 'use client'
 
 import { Box, Input } from '@chakra-ui/react'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
+
+import { browserClient } from '@/supabase'
 
 // const uploadButtonStyles = useMultiStyleConfig('Button', { variant: 'outline' })
 const uploadButtonStyles = {}
 
 export default function ProfilePhoto({ uid, url, size, onUpload }) {
-  const supabase = createClientComponentClient()
   const [profilePhotoUrl, setProfilePhotoUrl] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
 
@@ -18,7 +18,7 @@ export default function ProfilePhoto({ uid, url, size, onUpload }) {
       console.log('download image')
 
       try {
-        const { data, error } = await supabase.storage.from('user_photos').download(path)
+        const { data, error } = await browserClient.storage.from('user_photos').download(path)
         if (error) {
           throw error
         }
@@ -36,7 +36,7 @@ export default function ProfilePhoto({ uid, url, size, onUpload }) {
     console.log(url)
 
     if (url) downloadImage(url)
-  }, [url, supabase])
+  }, [url, browserClient])
 
   const uploadProfilePhoto = async (event) => {
     try {
@@ -50,7 +50,9 @@ export default function ProfilePhoto({ uid, url, size, onUpload }) {
       const fileExt = file.name.split('.').pop()
       const filePath = `${uid}-${Math.random()}.${fileExt}`
 
-      let { error: uploadError } = await supabase.storage.from('user_photos').upload(filePath, file)
+      let { error: uploadError } = await browserClient.storage
+        .from('user_photos')
+        .upload(filePath, file)
 
       if (uploadError) {
         throw uploadError

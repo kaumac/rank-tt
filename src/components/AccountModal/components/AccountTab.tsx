@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useCurrentUser } from '@/hooks'
+import { browserClient } from '@/supabase'
 
 import ProfilePhoto from './ProfilePhoto'
 
@@ -46,7 +47,7 @@ const AccountTab = () => {
     try {
       setIsProfileUpdating(true)
 
-      let { error } = await supabase.from('profiles').upsert({
+      let { error } = await browserClient.from('users').upsert({
         id: currentUser?.id,
         username,
         website,
@@ -62,7 +63,23 @@ const AccountTab = () => {
     }
   }
 
-  console.log(currentUser)
+  async function updateProfilePhoto(photoUrl: string) {
+    try {
+      setIsProfileUpdating(true)
+
+      let { error } = await browserClient.from('users').upsert({
+        id: currentUser?.id,
+        photo_url: photoUrl,
+        updated_at: new Date().toISOString()
+      })
+      if (error) throw error
+      alert('Profile updated!')
+    } catch (error) {
+      alert('Error updating the data!')
+    } finally {
+      setIsProfileUpdating(false)
+    }
+  }
 
   return (
     <Box>
@@ -72,8 +89,7 @@ const AccountTab = () => {
         url={currentUser?.photo_url}
         size={150}
         onUpload={(url: string) => {
-          // setAvatarUrl(url)
-          // updateProfile({ fullname, username, website, avatar_url: url })
+          updateProfilePhoto(url)
         }}
       />
       Account modal cojntent
