@@ -1,19 +1,23 @@
-import { Lexend, Roboto_Flex } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 
-const bodyFont = Roboto_Flex({
-  subsets: ['latin'],
-  variable: '--font-roboto',
-  display: 'swap'
+const globalFont = Poppins({
+  weight: ['500', '700']
 })
-const headingFont = Lexend({
-  subsets: ['latin'],
-  variable: '--font-syne',
-  display: 'swap'
-})
+
+// const bodyFont = Roboto_Flex({
+//   subsets: ['latin'],
+//   variable: '--font-roboto',
+//   display: 'swap'
+// })
+// const headingFont = Lexend({
+//   subsets: ['latin'],
+//   variable: '--font-syne',
+//   display: 'swap'
+// })
 
 export const fonts = {
-  heading: headingFont.style.fontFamily,
-  body: bodyFont.style.fontFamily
+  heading: globalFont.style.fontFamily,
+  body: globalFont.style.fontFamily
 }
 
 export default fonts

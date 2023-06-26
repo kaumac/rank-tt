@@ -1,7 +1,7 @@
 'use client'
 
 import * as yup from 'yup'
-import { Box, Heading, useToast } from '@chakra-ui/react'
+import { Box, Heading, Text, useToast } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -43,15 +43,15 @@ const AccountTab = () => {
     }
   }, [currentUser])
 
-  async function updateProfile({ username, website, avatar_url }) {
+  async function updateProfile() {
     try {
       setIsProfileUpdating(true)
 
       let { error } = await browserClient.from('users').upsert({
         id: currentUser?.id,
-        username,
-        website,
-        avatar_url,
+        // username,
+        // website,
+        // avatar_url,
         updated_at: new Date().toISOString()
       })
       if (error) throw error
@@ -84,14 +84,23 @@ const AccountTab = () => {
   return (
     <Box>
       <Heading size="lg">Meu perfil</Heading>
-      <ProfilePhoto
-        uid={currentUser?.id}
-        url={currentUser?.photo_url}
-        size={150}
-        onUpload={(url: string) => {
-          updateProfilePhoto(url)
-        }}
-      />
+      <Text color="gray.500" my={8}>
+        Configure os seu perfil. Essas informações são públicas e utlizadas nas incrições e durante
+        os torneios.
+      </Text>
+      <Box mt={8}>
+        <Heading fontWeight={500} size="xs">
+          Foto de perfil
+        </Heading>
+        <ProfilePhoto
+          uid={currentUser?.id}
+          url={currentUser?.photo_url}
+          size={150}
+          onUpload={(url: string) => {
+            updateProfilePhoto(url)
+          }}
+        />
+      </Box>
       Account modal cojntent
     </Box>
   )
