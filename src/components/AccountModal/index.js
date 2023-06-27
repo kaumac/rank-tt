@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Flex, Modal, ModalContent, ModalOverlay } from '@chakra-ui/react'
+import { Box, Flex, Modal, ModalCloseButton, ModalContent, ModalOverlay } from '@chakra-ui/react'
 import { useState } from 'react'
 
 import AccountModalNavbar from './components/AccountModalNavbar'
@@ -28,6 +28,12 @@ const AccountModal = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
       <ModalOverlay backdropFilter="blur(6px)" bg="rgba(22,22,22,0.66)" />
       <ModalContent borderRadius="xxl" maxWidth="780px" p={12}>
+        <ModalCloseButton
+          borderRadius="full"
+          border="2px solid #EAEAEA"
+          width="36px"
+          height="36px"
+        />
         <AccountModalContent
           onSuccess={() => {
             onClose()

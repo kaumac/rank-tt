@@ -29,6 +29,7 @@ import { VscLayoutSidebarLeft } from 'react-icons/vsc'
 
 import AccountModal from '@/components/AccountModal'
 import useCurrentUser from '@/hooks/useCurrentUser'
+import { browserClient } from '@/supabase'
 import { colors } from '@/theme'
 
 const navItemHeight = 48
@@ -252,6 +253,7 @@ const SidebarUserInfo = chakra(Box, {
 const PainelLayout = (props: PropsWithChildren) => {
   const [activeNavItemIndex, setActiveNavItemIndex] = useState(0)
   const { currentUser, isCurrentUserLoading, currentUserError } = useCurrentUser()
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState(currentUser?.photo_url)
   const {
     isOpen: isAccountModalOpen,
     onClose: onAccountModalClose,
@@ -263,6 +265,25 @@ const PainelLayout = (props: PropsWithChildren) => {
     const activeNavItem = navItemsList.findIndex((navItem) => navItem.route === pathname)
     setActiveNavItemIndex(activeNavItem)
   }, [pathname])
+
+  useEffect(() => {
+    async function downloadImage(path: string) {
+      try {
+        const { data, error } = await browserClient.storage.from('user_photos').download(path)
+        if (error) {
+          throw error
+        }
+
+        const url = URL.createObjectURL(data)
+
+        setProfilePhotoUrl(url)
+      } catch (error) {
+        console.log('Error downloading image: ', error)
+      }
+    }
+
+    if (currentUser?.photo_url) downloadImage(currentUser?.photo_url)
+  }, [currentUser?.photo_url, browserClient])
 
   return (
     <>
@@ -305,12 +326,19 @@ const PainelLayout = (props: PropsWithChildren) => {
                 pr={0}
                 width="100%"
               >
-                <Avatar size="sm" width="40px" height="40px">
+                <Avatar
+                  size="sm"
+                  width="40px"
+                  height="40px"
+                  name={`${currentUser?.first_name} ${currentUser?.last_name}`}
+                  backgroundColor="gray.400"
+                  src={profilePhotoUrl}
+                >
                   <AvatarBadge borderColor="rgb(35, 38, 39)" bg="green.500" boxSize="0.9rem" />
                 </Avatar>
                 <Box flex="1" ml={5}>
                   <Text textAlign="left" fontSize="sm" fontWeight={500} color="white">
-                    Kaue Machado
+                    {currentUser?.first_name} {currentUser?.last_name}
                   </Text>
                   <Text
                     textAlign="left"

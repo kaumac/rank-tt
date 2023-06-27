@@ -1,7 +1,7 @@
 import { Poppins } from 'next/font/google'
 
 const globalFont = Poppins({
-  weight: ['500', '700']
+  weight: ['400', '600']
 })
 
 // const bodyFont = Roboto_Flex({
