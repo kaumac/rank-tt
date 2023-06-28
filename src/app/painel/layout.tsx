@@ -252,8 +252,12 @@ const SidebarUserInfo = chakra(Box, {
 
 const PainelLayout = (props: PropsWithChildren) => {
   const [activeNavItemIndex, setActiveNavItemIndex] = useState(0)
-  const { currentUser, isCurrentUserLoading, currentUserError } = useCurrentUser()
-  const [profilePhotoUrl, setProfilePhotoUrl] = useState(currentUser?.photo_url)
+  const {
+    data: currentUserData,
+    isLoading: isCurrentUserLoading,
+    error: currentUserError
+  } = useCurrentUser()
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState(currentUserData?.photo_url)
   const {
     isOpen: isAccountModalOpen,
     onClose: onAccountModalClose,
@@ -282,8 +286,8 @@ const PainelLayout = (props: PropsWithChildren) => {
       }
     }
 
-    if (currentUser?.photo_url) downloadImage(currentUser?.photo_url)
-  }, [currentUser?.photo_url, browserClient])
+    if (currentUserData?.photo_url) downloadImage(currentUserData?.photo_url)
+  }, [currentUserData?.photo_url, browserClient])
 
   return (
     <>
@@ -330,7 +334,7 @@ const PainelLayout = (props: PropsWithChildren) => {
                   size="sm"
                   width="40px"
                   height="40px"
-                  name={`${currentUser?.first_name} ${currentUser?.last_name}`}
+                  name={`${currentUserData?.first_name} ${currentUserData?.last_name}`}
                   backgroundColor="gray.400"
                   src={profilePhotoUrl}
                 >
@@ -338,7 +342,7 @@ const PainelLayout = (props: PropsWithChildren) => {
                 </Avatar>
                 <Box flex="1" ml={5}>
                   <Text textAlign="left" fontSize="sm" fontWeight={500} color="white">
-                    {currentUser?.first_name} {currentUser?.last_name}
+                    {currentUserData?.first_name} {currentUserData?.last_name}
                   </Text>
                   <Text
                     textAlign="left"

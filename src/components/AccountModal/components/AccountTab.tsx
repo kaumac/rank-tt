@@ -16,6 +16,7 @@ import {
   useToast
 } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -26,9 +27,14 @@ import { User } from '@/types'
 import ProfilePhoto from './ProfilePhoto'
 
 const AccountTab = () => {
-  const { currentUser, isCurrentUserLoading, currentUserError } = useCurrentUser()
+  const {
+    data: currentUserData,
+    isLoading: isCurrentUserLoading,
+    error: currentUserError
+  } = useCurrentUser()
   const [isProfileUpdating, setIsProfileUpdating] = useState(false)
   const toast = useToast()
+  const queryClient = useQueryClient()
 
   const schema = yup.object().shape({
     first_name: yup.string().required('O campo "Nome" é obrigatório'),
@@ -46,24 +52,24 @@ const AccountTab = () => {
   } = useForm({ resolver: yupResolver(schema) })
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUserData) {
       reset({
-        first_name: currentUser.first_name,
-        last_name: currentUser.last_name,
-        // last_name: currentUser.last_name,
-        // email: currentUser.email,
-        // username: currentUser.username,
-        photo_url: currentUser.photo_url
+        first_name: currentUserData.first_name,
+        last_name: currentUserData.last_name,
+        // last_name: currentUserData.last_name,
+        // email: currentUserData.email,
+        // username: currentUserData.username,
+        photo_url: currentUserData.photo_url
       })
     }
-  }, [currentUser])
+  }, [currentUserData])
 
   async function updateProfile(formData: User) {
     try {
       setIsProfileUpdating(true)
 
       let { error } = await browserClient.from('users').upsert({
-        id: currentUser?.id,
+        id: currentUserData?.id,
         first_name: formData?.first_name,
         last_name: formData?.last_name,
         // username,
@@ -72,7 +78,7 @@ const AccountTab = () => {
         updated_at: new Date().toISOString()
       })
       if (error) throw error
-      alert('Profile updated!')
+      queryClient.invalidateQueries({ queryKey: ['current-user'] })
     } catch (error) {
       alert('Error updating the data!')
     } finally {
@@ -85,12 +91,12 @@ const AccountTab = () => {
       setIsProfileUpdating(true)
 
       let { error } = await browserClient.from('users').upsert({
-        id: currentUser?.id,
+        id: currentUserData?.id,
         photo_url: photoUrl,
         updated_at: new Date().toISOString()
       })
       if (error) throw error
-      alert('Profile updated!')
+      queryClient.invalidateQueries({ queryKey: ['current-user'] })
     } catch (error) {
       alert('Error updating the data!')
     } finally {
@@ -111,8 +117,8 @@ const AccountTab = () => {
         </Heading>
         <Divider my={4} />
         <ProfilePhoto
-          uid={currentUser?.id}
-          url={currentUser?.photo_url}
+          uid={currentUserData?.id}
+          url={currentUserData?.photo_url}
           onUpload={(url: string) => {
             updateProfilePhoto(url)
           }}

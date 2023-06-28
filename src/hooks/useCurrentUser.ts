@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 import { browserClient } from '@/supabase'
 import { User } from '@/types'
@@ -6,44 +6,23 @@ import { User } from '@/types'
 import { useAuthContext } from './useAuthContext'
 
 export const useCurrentUser = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null)
-  const [isCurrentUserLoading, setIsCurrentUserLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
   const { session } = useAuthContext()
 
-  const sessionUser = session?.user
+  const currentUserId = session?.user?.id
 
-  const getUser = useCallback(async () => {
-    try {
-      let { data, error, status } = await browserClient
+  return useQuery({
+    enabled: !!currentUserId,
+    queryKey: ['current-user', currentUserId],
+    queryFn: async (): Promise<User> => {
+      const { data: currentUserData } = await browserClient
         .from('users')
         .select()
-        .eq('id', sessionUser?.id)
-        .maybeSingle()
+        .eq('id', currentUserId)
+        .single()
 
-      if (data) {
-        setCurrentUser({
-          ...data
-        } as User)
-      }
-
-      if (error && status !== 406) {
-        throw error
-      }
-    } catch (error: any) {
-      setError(error)
-    } finally {
-      setIsCurrentUserLoading(false)
+      return currentUserData
     }
-  }, [sessionUser, browserClient])
-
-  useEffect(() => {
-    if (sessionUser) {
-      getUser()
-    }
-  }, [sessionUser, getUser])
-
-  return { currentUser, isCurrentUserLoading, currentUserError: error }
+  })
 }
 
 export default useCurrentUser
