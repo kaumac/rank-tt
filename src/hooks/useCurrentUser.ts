@@ -12,7 +12,7 @@ export const useCurrentUser = () => {
 
   return useQuery({
     enabled: !!currentUserId,
-    queryKey: ['current-user', currentUserId],
+    queryKey: ['users', currentUserId],
     queryFn: async (): Promise<User> => {
       const { data: currentUserData } = await browserClient
         .from('users')

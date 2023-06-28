@@ -1,7 +1,6 @@
-import { Poppins } from 'next/font/google'
+import { Roboto_Flex } from 'next/font/google'
 
-const globalFont = Poppins({
-  weight: ['400', '600'],
+const globalFont = Roboto_Flex({
   subsets: ['latin']
 })
 

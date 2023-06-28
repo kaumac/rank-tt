@@ -10,17 +10,17 @@ import {
   FormLabel,
   Heading,
   Input,
-  Spacer,
   Stack,
   Text,
   useToast
 } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useCurrentUser } from '@/hooks'
+import { useUpdateUser } from '@/mutations'
 import { browserClient } from '@/supabase'
 import { User } from '@/types'
 
@@ -35,6 +35,7 @@ const AccountTab = () => {
   const [isProfileUpdating, setIsProfileUpdating] = useState(false)
   const toast = useToast()
   const queryClient = useQueryClient()
+  const updateUser = useUpdateUser()
 
   const schema = yup.object().shape({
     first_name: yup.string().required('O campo "Nome" é obrigatório'),
@@ -65,25 +66,7 @@ const AccountTab = () => {
   }, [currentUserData])
 
   async function updateProfile(formData: User) {
-    try {
-      setIsProfileUpdating(true)
-
-      let { error } = await browserClient.from('users').upsert({
-        id: currentUserData?.id,
-        first_name: formData?.first_name,
-        last_name: formData?.last_name,
-        // username,
-        // website,
-        // avatar_url,
-        updated_at: new Date().toISOString()
-      })
-      if (error) throw error
-      queryClient.invalidateQueries({ queryKey: ['current-user'] })
-    } catch (error) {
-      alert('Error updating the data!')
-    } finally {
-      setIsProfileUpdating(false)
-    }
+    updateUser.mutate({ ...formData, id: currentUserData?.id })
   }
 
   async function updateProfilePhoto(photoUrl: string) {
@@ -106,13 +89,15 @@ const AccountTab = () => {
 
   return (
     <Box>
-      <Heading size="lg">Meu perfil</Heading>
+      <Heading fontWeight={900} size="lg">
+        Meu perfil
+      </Heading>
       <Text color="gray.500" my={8}>
         Configure seu perfil. Essas informações são públicas e utlizadas nas incrições e durante os
         torneios.
       </Text>
       <Box mt={8}>
-        <Heading fontWeight={500} fontSize="sm">
+        <Heading fontWeight={600} fontSize="sm">
           Foto de perfil
         </Heading>
         <Divider my={4} />
@@ -124,7 +109,7 @@ const AccountTab = () => {
           }}
         />
       </Box>
-      <Heading fontWeight={500} fontSize="sm" mt={8}>
+      <Heading fontWeight={600} fontSize="sm" mt={8}>
         Informações básicas
       </Heading>
       <Divider my={4} />
