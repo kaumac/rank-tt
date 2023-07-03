@@ -1,6 +1,6 @@
-import { Roboto_Flex } from 'next/font/google'
+import { Manrope } from 'next/font/google'
 
-const globalFont = Roboto_Flex({
+const globalFont = Manrope({
   subsets: ['latin']
 })
 
