@@ -2,7 +2,7 @@
 
 import { useDisclosure } from '@chakra-ui/react'
 import { Session } from '@supabase/supabase-js'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 
 import { LoginModal } from '@/components'
 import { browserClient } from '@/supabase'
@@ -22,8 +22,6 @@ export const AuthContext = createContext<AuthContextProps>({
   onAuthModalOpen: () => {},
   onAuthModalClose: () => {}
 })
-
-export const useAuthContext = () => useContext(AuthContext)
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | undefined>(undefined)
