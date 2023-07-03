@@ -27,7 +27,7 @@ const AccountModal = ({ isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
       <ModalOverlay backdropFilter="blur(6px)" bg="rgba(22,22,22,0.66)" />
-      <ModalContent borderRadius="xxl" maxWidth="780px" p={12}>
+      <ModalContent borderRadius="xxl" maxWidth="780px" p={12} minHeight="90vh">
         <ModalCloseButton
           borderRadius="full"
           border="2px solid #EAEAEA"

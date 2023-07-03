@@ -8,12 +8,12 @@ import {
   Flex,
   Icon,
   IconButton,
-  Menu,
-  MenuButton,
-  MenuGroup,
-  MenuItem,
-  MenuList,
+  Modal,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
   Stack,
+  Switch,
   Text,
   Tooltip,
   chakra,
@@ -23,10 +23,11 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { IconType } from 'react-icons'
-import { BiCog, BiDotsVerticalRounded, BiHomeAlt, BiSearch, BiTrophy } from 'react-icons/bi'
+import { BiCog, BiHomeAlt, BiTrophy } from 'react-icons/bi'
 import { BsTerminal } from 'react-icons/bs'
 import { VscLayoutSidebarLeft } from 'react-icons/vsc'
 
+import { SwitchAccountModal } from '@/components'
 import AccountModal from '@/components/AccountModal'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import { browserClient } from '@/supabase'
@@ -253,6 +254,11 @@ const SidebarUserInfo = chakra(Box, {
 const PainelLayout = (props: PropsWithChildren) => {
   const [activeNavItemIndex, setActiveNavItemIndex] = useState(0)
   const {
+    isOpen: isSwitchAccountModalOpen,
+    onOpen: onSwitchAccountModalOpen,
+    onClose: onSwitchAccountModalClose
+  } = useDisclosure()
+  const {
     data: currentUserData,
     isLoading: isCurrentUserLoading,
     error: currentUserError
@@ -377,6 +383,7 @@ const PainelLayout = (props: PropsWithChildren) => {
                   background: 'rgb(52, 56, 57)',
                   color: 'white'
                 }}
+                onClick={onSwitchAccountModalOpen}
               >
                 Trocar conta
               </Button>
@@ -388,6 +395,7 @@ const PainelLayout = (props: PropsWithChildren) => {
         </ContentCardWrapper>
       </LayoutWrapper>
       <AccountModal isOpen={isAccountModalOpen} onClose={onAccountModalClose} />
+      <SwitchAccountModal isOpen={isSwitchAccountModalOpen} onClose={onSwitchAccountModalClose} />
     </>
   )
 }
