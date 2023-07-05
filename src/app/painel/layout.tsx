@@ -37,14 +37,14 @@ const navItemsList = [
     route: '/painel',
     icon: BiHomeAlt,
     color: colors.blue[500],
-    bgColor: 'rgba(45, 59, 111, 0.3)'
+    bgColor: 'rgba(32, 110, 241, 0.1)'
   },
   {
     title: 'Torneios',
     route: '/painel/torneios',
     icon: BiTrophy,
     color: colors.magenta[500],
-    bgColor: 'rgba(87, 55, 114, 0.3)'
+    bgColor: 'rgba(167, 75, 246, 0.1)'
   },
   {
     title: 'Super painel',
@@ -60,7 +60,7 @@ const LayoutWrapper = chakra(Box, {
       xl: '20rem'
     },
     minHeight: '100vh',
-    bg: 'rgb(20, 23, 24)'
+    bg: '#F9FBFC'
   }
 })
 
@@ -79,6 +79,7 @@ const ContentCard = chakra(Flex, {
     bg: 'rgb(254, 254, 254)',
     borderTopLeftRadius: '1.2rem',
     borderBottom: '1px solid #FFF',
+    boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.05)',
     flex: 1
   }
 })
@@ -156,17 +157,22 @@ const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemP
         alignItems="center"
         px={5}
         borderRadius="md"
+        pointerEvents={isActive ? 'none' : undefined}
       >
         <Icon as={icon} fontSize="22px" color={color} />
         <Text
           fontSize="sm"
-          fontWeight={500}
-          color={isActive ? 'white' : 'rgba(255,255,255,0.75)'}
+          fontWeight={600}
+          color={isActive ? color : '#73716E'}
           ml={4}
           transition="color 200ms ease-in-out"
-          _groupHover={{
-            color: 'white'
-          }}
+          _groupHover={
+            !isActive
+              ? {
+                  color: '#4C4B4D'
+                }
+              : undefined
+          }
         >
           {title}
         </Text>
@@ -194,7 +200,7 @@ const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }
       transitionProperty="transform"
       transitionTimingFunction="cubic-bezier(0.4,0,0.2,1)"
       transitionDuration="200ms"
-      boxShadow="inset 0 1px 1px 0 rgba(255,255,255,0.15), inset -1px -1px 2px 0 rgba(0,0,0,0.2), 0 10px 10px 2px rgba(0,0,0,0.2)"
+      boxShadow={`inset 0 0 4px 4px ${navItemsList[activeItemIndex].color}, inset 1px -1px 0px 0px ${navItemsList[activeItemIndex].bgColor}, 0 2px 24px 0 rgba(0,0,0,0.05), 0 2px 6px 1px rgba(0,0,0,0.1), 1px 1px 0 0 #FFF`}
     >
       {navItemsList.map((navItemListItem, navItemIndex) => {
         const isBgActive = activeItemIndex === navItemIndex
@@ -207,7 +213,9 @@ const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }
             left="0"
             width="100%"
             height="100%"
-            backgroundImage={`linear-gradient(to left, rgb(50, 51, 55), ${navItemsList[activeItemIndex].bgColor})`}
+            backgroundColor="#FFF"
+            backgroundImage={`radial-gradient(farthest-corner at 0px 0px, ${navItemsList[activeItemIndex].bgColor} 0%, #FFFFFF 50%)`}
+            backgroundSize="300px 300px"
             transitionProperty="opacity"
             transitionTimingFunction="cubic-bezier(0.4,0,0.2,1)"
             transitionDuration="500ms"
@@ -295,7 +303,7 @@ const PainelLayout = (props: PropsWithChildren) => {
       <LayoutWrapper>
         <LayoutSidebar>
           <SidebarHeader>
-            <img src="/ranktt-new-logo.svg" width={150} />
+            <img src="/new-ranktt-logo-light.svg" width={150} />
             <IconButton
               color="gray"
               colorScheme="black"
