@@ -156,7 +156,7 @@ const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemP
         height={`${navItemHeight}px`}
         alignItems="center"
         px={5}
-        borderRadius="md"
+        borderRadius="sm"
         pointerEvents={isActive ? 'none' : undefined}
       >
         <Icon as={icon} fontSize="22px" color={color} />
@@ -194,13 +194,13 @@ const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }
       }px)`}
       top="0"
       left="0"
-      borderRadius="md"
+      borderRadius="sm"
       zIndex={-1}
       overflow="hidden"
       transitionProperty="transform"
-      transitionTimingFunction="cubic-bezier(0.4,0,0.2,1)"
+      transitionTimingFunction="ease-out"
       transitionDuration="200ms"
-      boxShadow={`inset 0 0 4px 4px ${navItemsList[activeItemIndex].color}, inset 1px -1px 0px 0px ${navItemsList[activeItemIndex].bgColor}, 0 2px 24px 0 rgba(0,0,0,0.05), 0 2px 6px 1px rgba(0,0,0,0.1), 1px 1px 0 0 #FFF`}
+      boxShadow={`inset 0 0 12px 0 ${navItemsList[activeItemIndex].color}, inset 1px -1px 0px 0px ${navItemsList[activeItemIndex].bgColor}, 0 2px 24px 0 rgba(0,0,0,0.05), 0 2px 6px 1px rgba(0,0,0,0.1), 1px 1px 0 0 #FFF`}
     >
       {navItemsList.map((navItemListItem, navItemIndex) => {
         const isBgActive = activeItemIndex === navItemIndex
@@ -244,7 +244,7 @@ const SidebarUserInfoWrapper = chakra(Box, {
 
 const SidebarUserInfo = chakra(Box, {
   baseStyle: {
-    borderRadius: 'md',
+    borderRadius: 'sm',
     bg: 'rgb(35, 38, 39)',
     boxShadow:
       'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.5) 0px 20px 24px 0px',
