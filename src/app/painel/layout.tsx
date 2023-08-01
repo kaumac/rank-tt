@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Flex,
+  HStack,
   Icon,
   IconButton,
   Stack,
@@ -18,7 +19,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { IconType } from 'react-icons'
-import { BiCog, BiHomeAlt, BiTrophy } from 'react-icons/bi'
+import { BiChevronDown, BiCog, BiHomeAlt, BiTrophy } from 'react-icons/bi'
 import { BsTerminal } from 'react-icons/bs'
 import { VscLayoutSidebarLeft } from 'react-icons/vsc'
 
@@ -56,9 +57,6 @@ const navItemsList = [
 
 const ContentCardWrapper = chakra(Flex, {
   baseStyle: {
-    pt: {
-      xl: '1.5rem'
-    },
     minHeight: '100vh',
     flex: 1
   }
@@ -67,58 +65,32 @@ const ContentCardWrapper = chakra(Flex, {
 const ContentCard = chakra(Flex, {
   baseStyle: {
     bg: 'rgb(254, 254, 254)',
-    borderTopLeftRadius: '1.2rem',
+    borderRadius: 'xxl',
     borderBottom: '1px solid #FFF',
     boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.05)',
     flex: 1
   }
 })
 
-const LayoutSidebar = chakra(Flex, {
+const LayoutHeader = chakra(Flex, {
   baseStyle: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    px: {
+      xl: '0.4rem'
+    },
     pt: {
-      xl: '7rem'
+      xl: '0.4rem'
     },
     pb: {
-      xl: '14.5rem'
-    },
-    px: {
-      xl: '1.0rem'
-    },
-    flexDirection: 'column',
-    width: {
-      xl: '20rem'
-    },
-    zIndex: 20,
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    bottom: 0
-  }
-})
-
-const SidebarHeader = chakra(Flex, {
-  baseStyle: {
-    pr: {
-      xl: '1.5rem'
-    },
-    pl: {
-      xl: '1.75rem'
-    },
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: '7rem',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0
+      xl: '0.6rem'
+    }
   }
 })
 
 const SidebarNavWrapper = chakra(Box, {
   baseStyle: {
     position: 'relative',
-    flex: 1,
     scrollbarWidth: 'none',
     scrollBehavior: 'smooth',
     overflow: 'visible'
@@ -138,7 +110,7 @@ const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemP
     <Tooltip hasArrow label={title} placement="auto" zIndex={10} isDisabled>
       <Flex
         data-group
-        zIndex={10}
+        whiteSpace="nowrap"
         as={route ? Link : undefined}
         cursor="pointer"
         href={route ? route : undefined}
@@ -198,56 +170,23 @@ const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }
       transitionDuration="200ms"
       bgColor="#FFF"
     >
-      {/* {navItemsList.map((navItemListItem, navItemIndex) => {
-        const isBgActive = activeItemIndex === navItemIndex
-
-        return (
-          <Box
-            key={`navbarItemBg-${navItemIndex}`}
-            position="absolute"
-            top="0"
-            left="0"
-            width="100%"
-            height="100%"
-            backgroundColor="#FFF"
-            backgroundImage={`radial-gradient(farthest-corner at 0px 0px, ${navItemsList[activeItemIndex].bgColor} 0%, #FFFFFF 50%)`}
-            backgroundSize="300px 300px"
-            transitionProperty="opacity"
-            transitionTimingFunction="cubic-bezier(0.4,0,0.2,1)"
-            transitionDuration="500ms"
-            opacity={isBgActive ? 1 : 0}
-          />
-        )
-      })} */}
     </Flex>
   )
 }
 
-const SidebarUserInfoWrapper = chakra(Box, {
+const SidebarUserInfo = chakra(Flex, {
   baseStyle: {
-    px: {
-      xl: 4
-    },
-    pb: {
-      xl: '1.5rem'
-    },
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0
-  }
-})
-
-const SidebarUserInfo = chakra(Box, {
-  baseStyle: {
-    borderRadius: 'sm',
-    bg: 'rgb(35, 38, 39)',
-    boxShadow:
-      'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.5) 0px 20px 24px 0px',
+    alignItems: "center",
+    justifyContent: "space-between",
+    cursor: 'pointer',
+    borderRadius: 'xxl',
     p: {
-      xl: '4'
+      xl: '0.2rem'
+    },
+    _hover: {
+      bg: 'rgb(35, 38, 39)',
     }
-  }
+  },
 })
 
 const PainelLayout = (props: PropsWithChildren) => {
@@ -296,20 +235,18 @@ const PainelLayout = (props: PropsWithChildren) => {
 
   return (
     <>
-      <Box pl={{ sm: '0', lg: '4rem', xxl: '20rem'  }} minHeight='100vh' bgColor='#161819'>
-        <LayoutSidebar>
-          <SidebarHeader>
-            <img src="/new-ranktt-logo-light.svg" width={150} />
-            <IconButton
-              color="gray"
-              colorScheme="black"
-              bg="transparent"
-              aria-label="Search database"
-              icon={<VscLayoutSidebarLeft size="1.5rem" />}
-            />
-          </SidebarHeader>
+      <Box minHeight='100vh' bgColor='#161819' borderRadius="xxl" p={{ xl: 1}}>
+        <LayoutHeader>
+          {/* <IconButton
+            color="gray"
+            colorScheme="black"
+            bg="transparent"
+            aria-label="Search database"
+            icon={<VscLayoutSidebarLeft size="1.5rem" />}
+          /> */}
+          <img src="/new-ranktt-logo-light.svg" width={120} />
           <SidebarNavWrapper>
-            <Stack spacing={`${navItemSpacing}px`}>
+            <HStack spacing={`${navItemSpacing}px`}>
               {navItemsList.map((navItem, navItemIndex) => (
                 <SidebarNavItem
                   key={`nav-item-${navItemIndex}-${navItem.route}`}
@@ -320,75 +257,66 @@ const PainelLayout = (props: PropsWithChildren) => {
                   isActive={navItemIndex === activeNavItemIndex}
                 />
               ))}
-            </Stack>
+            </HStack>
 
             <ActiveSidebarNavItemBg activeItemIndex={activeNavItemIndex} />
           </SidebarNavWrapper>
 
-          <SidebarUserInfoWrapper>
-            <SidebarUserInfo>
-              <Flex
-                alignItems="center"
-                justifyContent="space-between"
-                py={2}
-                px={3}
-                pr={0}
-                width="100%"
-              >
-                <Avatar
-                  size="sm"
-                  width="40px"
-                  height="40px"
-                  name={`${currentUserData?.first_name} ${currentUserData?.last_name}`}
-                  backgroundColor="gray.400"
-                  src={profilePhotoUrl}
+          <SidebarUserInfo>
+            
+            <Avatar
+              size="sm"
+              width="36px"
+              height="36px"
+              name={`${currentUserData?.first_name} ${currentUserData?.last_name}`}
+              backgroundColor="gray.400"
+              src={profilePhotoUrl}
+            >
+              <AvatarBadge borderColor="rgb(35, 38, 39)" bg="green.500" boxSize="0.9rem" />
+            </Avatar>
+            <Box flex="1" ml={5}>
+              <Text textAlign="left" fontSize="sm" fontWeight={500} color="white">
+                {currentUserData?.first_name} {currentUserData?.last_name}
+              </Text>
+              <Text
+                textAlign="left"
+                fontSize="xs"
+                fontWeight={500}
+                color="rgba(232,236,239,.5)"
+                mt={{ base: '-0.2rem' }}
                 >
-                  <AvatarBadge borderColor="rgb(35, 38, 39)" bg="green.500" boxSize="0.9rem" />
-                </Avatar>
-                <Box flex="1" ml={5}>
-                  <Text textAlign="left" fontSize="sm" fontWeight={500} color="white">
-                    {currentUserData?.first_name} {currentUserData?.last_name}
-                  </Text>
-                  <Text
-                    textAlign="left"
-                    fontSize="xs"
-                    fontWeight={500}
-                    color="rgba(232,236,239,.5)"
-                  >
-                    Conta pessoal
-                  </Text>
-                </Box>
-                <IconButton
-                  color="gray"
-                  colorScheme="black"
-                  bg="transparent"
-                  aria-label="Search database"
-                  icon={<BiCog size="1.5rem" />}
-                  onClick={onAccountModalOpen}
-                />
-              </Flex>
+                Conta pessoal
+              </Text>
+            </Box>
+            <IconButton
+              color="gray"
+              variant="ghost"
+              bg="transparent"
+              aria-label="Search database"
+              icon={<BiChevronDown size="1.5rem" />}
+              onClick={onAccountModalOpen}
+            />
 
-              <Button
-                mt={6}
-                py={5}
-                width="100%"
-                variant="outline"
-                borderWidth="2px"
-                colorScheme="gray"
-                borderColor="rgb(52, 56, 57)"
-                color="rgba(255,255,255,0.75)"
-                fontSize="sm"
-                _hover={{
-                  background: 'rgb(52, 56, 57)',
-                  color: 'white'
-                }}
-                onClick={onSwitchAccountModalOpen}
-              >
-                Trocar conta
-              </Button>
-            </SidebarUserInfo>
-          </SidebarUserInfoWrapper>
-        </LayoutSidebar>
+            {/* <Button
+              mt={6}
+              py={5}
+              width="100%"
+              variant="outline"
+              borderWidth="2px"
+              colorScheme="gray"
+              borderColor="rgb(52, 56, 57)"
+              color="rgba(255,255,255,0.75)"
+              fontSize="sm"
+              _hover={{
+                background: 'rgb(52, 56, 57)',
+                color: 'white'
+              }}
+              onClick={onSwitchAccountModalOpen}
+            >
+              Trocar conta
+            </Button> */}
+          </SidebarUserInfo>
+        </LayoutHeader>
         <ContentCardWrapper>
           <ContentCard>{props.children}</ContentCard>
         </ContentCardWrapper>

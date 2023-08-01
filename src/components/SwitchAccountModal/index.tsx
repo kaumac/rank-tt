@@ -78,7 +78,7 @@ export const SwitchAccountModal = ({ isOpen, onClose }: SwitchAccountModalProps)
           height="48px"
           transform="translate(30px, -30px)"
           background="white"
-          boxShadow="-18px 22px 10px 0 #FFF, 3px -3px 6px 3px rgba(0,0,0,0.05)"
+          boxShadow="-18px 22px 10px 0 #FFF, 2px -2px 4px 2px rgba(0,0,0,0.03)"
         />
 
           <Box p={6}>

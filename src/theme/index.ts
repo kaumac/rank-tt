@@ -25,8 +25,19 @@ export default extendTheme(
     breakpoints,
     colors,
     radii,
-    fonts
-  }, // Breakpoints
+    fonts,
+    styles: {
+      global: {
+        'html, body': {
+          background: 'gray.200',
+          lineHeight: 'tall',
+        },
+        a: {
+          color: 'teal.500',
+        },
+      },
+    },
+  },
   // badgeStyles, // badge styles
   // buttonStyles, // button styles
   // linkStyles, // link styles
