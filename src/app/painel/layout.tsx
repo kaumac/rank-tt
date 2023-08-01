@@ -54,16 +54,6 @@ const navItemsList = [
   }
 ]
 
-const LayoutWrapper = chakra(Box, {
-  baseStyle: {
-    pl: {
-      xl: '20rem'
-    },
-    minHeight: '100vh',
-    bg: '#F9FBFC'
-  }
-})
-
 const ContentCardWrapper = chakra(Flex, {
   baseStyle: {
     pt: {
@@ -159,17 +149,23 @@ const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemP
         borderRadius="sm"
         pointerEvents={isActive ? 'none' : undefined}
       >
-        <Icon as={icon} fontSize="22px" color={color} />
+        <Icon as={icon} fontSize="22px" color={isActive ? color : '#FFFFFF'} _groupHover={
+            !isActive
+              ? {
+                  color: '#CCCCCC'
+                }
+              : undefined
+          }/>
         <Text
           fontSize="sm"
           fontWeight={600}
-          color={isActive ? color : '#73716E'}
+          color={isActive ? color : '#FFFFFF'}
           ml={4}
           transition="color 200ms ease-in-out"
           _groupHover={
             !isActive
               ? {
-                  color: '#4C4B4D'
+                  color: '#CCCCCC'
                 }
               : undefined
           }
@@ -200,9 +196,9 @@ const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }
       transitionProperty="transform"
       transitionTimingFunction="ease-out"
       transitionDuration="200ms"
-      boxShadow={`inset 0 0 12px 0 ${navItemsList[activeItemIndex].color}, inset 1px -1px 0px 0px ${navItemsList[activeItemIndex].bgColor}, 0 2px 24px 0 rgba(0,0,0,0.05), 0 2px 6px 1px rgba(0,0,0,0.1), 1px 1px 0 0 #FFF`}
+      bgColor="#FFF"
     >
-      {navItemsList.map((navItemListItem, navItemIndex) => {
+      {/* {navItemsList.map((navItemListItem, navItemIndex) => {
         const isBgActive = activeItemIndex === navItemIndex
 
         return (
@@ -222,7 +218,7 @@ const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }
             opacity={isBgActive ? 1 : 0}
           />
         )
-      })}
+      })} */}
     </Flex>
   )
 }
@@ -300,7 +296,7 @@ const PainelLayout = (props: PropsWithChildren) => {
 
   return (
     <>
-      <LayoutWrapper>
+      <Box pl={{ sm: '0', lg: '4rem', xxl: '20rem'  }} minHeight='100vh' bgColor='#161819'>
         <LayoutSidebar>
           <SidebarHeader>
             <img src="/new-ranktt-logo-light.svg" width={150} />
@@ -396,7 +392,7 @@ const PainelLayout = (props: PropsWithChildren) => {
         <ContentCardWrapper>
           <ContentCard>{props.children}</ContentCard>
         </ContentCardWrapper>
-      </LayoutWrapper>
+      </Box>
       <AccountModal isOpen={isAccountModalOpen} onClose={onAccountModalClose} />
       <SwitchAccountModal isOpen={isSwitchAccountModalOpen} onClose={onSwitchAccountModalClose} />
     </>
