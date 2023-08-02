@@ -9,18 +9,39 @@ import {
   HStack,
   Icon,
   IconButton,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuGroup,
+  MenuItem,
+  MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
   Stack,
   Text,
   Tooltip,
   chakra,
   useDisclosure
 } from '@chakra-ui/react'
+import screenfull from 'screenfull'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { IconType } from 'react-icons'
-import { BiChevronDown, BiCog, BiHomeAlt, BiTrophy } from 'react-icons/bi'
-import { BsTerminal } from 'react-icons/bs'
+import {
+  BiChevronDown,
+  BiCog,
+  BiHomeAlt,
+  BiTrophy,
+  BiSearch,
+  BiExitFullscreen,
+  BiFullscreen,
+  BiRadioCircleMarked,
+  BiRadioCircle,
+  BiTransferAlt,
+  BiUser,
+  BiLogOut
+} from 'react-icons/bi'
 import { VscLayoutSidebarLeft } from 'react-icons/vsc'
 
 import { SwitchAccountModal } from '@/components'
@@ -34,7 +55,7 @@ const navItemSpacing = 8
 
 const navItemsList = [
   {
-    title: 'Painel',
+    title: 'Home',
     route: '/painel',
     icon: BiHomeAlt,
     color: colors.blue[500],
@@ -48,8 +69,8 @@ const navItemsList = [
     bgColor: 'rgba(167, 75, 246, 0.1)'
   },
   {
-    title: 'Super painel',
-    icon: BsTerminal,
+    title: 'Busca',
+    icon: BiSearch,
     color: colors.green[500],
     bgColor: '#5A446C'
   }
@@ -77,13 +98,13 @@ const LayoutHeader = chakra(Flex, {
     alignItems: 'center',
     justifyContent: 'space-between',
     px: {
-      xl: '0.4rem'
+      lg: '0.6rem'
     },
     pt: {
-      xl: '0.4rem'
+      lg: '0.4rem'
     },
     pb: {
-      xl: '0.6rem'
+      lg: '0.6rem'
     }
   }
 })
@@ -109,88 +130,91 @@ const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemP
   return (
     <Tooltip hasArrow label={title} placement="auto" zIndex={10} isDisabled>
       <Flex
+        bg={
+          isActive
+            ? 'linear-gradient(140deg, rgba(255,255,255,0.03) 10%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 90%)'
+            : 'undefined'
+        }
+        borderRadius="full"
         data-group
         whiteSpace="nowrap"
         as={route ? Link : undefined}
         cursor="pointer"
         href={route ? route : undefined}
         width="100%"
-        height={`${navItemHeight}px`}
         alignItems="center"
-        px={5}
-        borderRadius="sm"
+        px={{ base: 3, xl: 4 }}
+        height="32px"
+        justifyContent="center"
         pointerEvents={isActive ? 'none' : undefined}
+        position="relative"
       >
-        <Icon as={icon} fontSize="22px" color={isActive ? color : '#FFFFFF'} _groupHover={
-            !isActive
-              ? {
-                  color: '#CCCCCC'
-                }
-              : undefined
-          }/>
-        <Text
-          fontSize="sm"
-          fontWeight={600}
-          color={isActive ? color : '#FFFFFF'}
-          ml={4}
-          transition="color 200ms ease-in-out"
-          _groupHover={
-            !isActive
-              ? {
-                  color: '#CCCCCC'
-                }
-              : undefined
-          }
-        >
-          {title}
-        </Text>
+        <Flex alignItems="center" justifyContent="center" zIndex={10}>
+          <Icon
+            as={icon}
+            fontSize="18px"
+            color={isActive ? '#FFFFFF' : '#FAFAFA'}
+            _groupHover={
+              !isActive
+                ? {
+                    color: '#CCCCCC'
+                  }
+                : undefined
+            }
+          />
+          <Text
+            fontSize="sm"
+            fontWeight={600}
+            color={isActive ? '#FFFFFF' : '#FAFAFA'}
+            transform="translateY(-1px)"
+            ml={2}
+            transition="color 200ms ease-in-out"
+            _groupHover={
+              !isActive
+                ? {
+                    color: '#CCCCCC'
+                  }
+                : undefined
+            }
+          >
+            {title}
+          </Text>
+        </Flex>
+        {isActive && (
+          <Box
+            borderRadius="full"
+            bg="#2c2c2c"
+            width={{ lg: 'calc(100% - 1px)', xl: 'calc(100% - 2px)' }}
+            height={{ lg: 'calc(100% - 1px)', xl: 'calc(100% - 2px)' }}
+            display="block"
+            position="absolute"
+            top={{ lg: '', xl: '1px' }}
+            left={{ lg: '', xl: '1px' }}
+          />
+        )}
       </Flex>
     </Tooltip>
   )
 }
 
-const ActiveSidebarNavItemBg = ({ activeItemIndex }: { activeItemIndex: number }) => {
-  return (
-    <Flex
-      width="100%"
-      alignItems="center"
-      justifyContent="center"
-      height={`${navItemHeight}px`}
-      position="absolute"
-      transform={`translateY(${
-        navItemHeight * activeItemIndex + navItemSpacing * activeItemIndex
-      }px)`}
-      top="0"
-      left="0"
-      borderRadius="sm"
-      zIndex={-1}
-      overflow="hidden"
-      transitionProperty="transform"
-      transitionTimingFunction="ease-out"
-      transitionDuration="200ms"
-      bgColor="#FFF"
-    >
-    </Flex>
-  )
-}
-
 const SidebarUserInfo = chakra(Flex, {
   baseStyle: {
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    justifyContent: 'space-between',
     cursor: 'pointer',
     borderRadius: 'xxl',
     p: {
       xl: '0.2rem'
     },
     _hover: {
-      bg: 'rgb(35, 38, 39)',
+      bg: 'rgb(35, 38, 39)'
     }
-  },
+  }
 })
 
 const PainelLayout = (props: PropsWithChildren) => {
   const [activeNavItemIndex, setActiveNavItemIndex] = useState(0)
+  const [isFullscreen, setIsFullscreen] = useState(false)
   const {
     isOpen: isSwitchAccountModalOpen,
     onOpen: onSwitchAccountModalOpen,
@@ -208,6 +232,12 @@ const PainelLayout = (props: PropsWithChildren) => {
     onOpen: onAccountModalOpen
   } = useDisclosure()
   const pathname = usePathname()
+
+  if (typeof window !== 'undefined' && screenfull.isEnabled) {
+    screenfull.on('change', () => {
+      setIsFullscreen(screenfull.isFullscreen)
+    })
+  }
 
   useEffect(() => {
     const activeNavItem = navItemsList.findIndex((navItem) => navItem.route === pathname)
@@ -235,7 +265,13 @@ const PainelLayout = (props: PropsWithChildren) => {
 
   return (
     <>
-      <Box minHeight='100vh' bgColor='#161819' borderRadius="xxl" p={{ xl: 1}}>
+      <Box
+        minHeight="100vh"
+        bg="linear-gradient(140deg, rgba(105,95,78,0.5) 0%, rgba(105,95,78,1) 54%, rgba(105,95,78,0.1) 100%)"
+        borderRadius={{ lg: 'xl', xl: 'xxl' }}
+        p={{ lg: 1 }}
+        mb={1}
+      >
         <LayoutHeader>
           {/* <IconButton
             color="gray"
@@ -244,7 +280,9 @@ const PainelLayout = (props: PropsWithChildren) => {
             aria-label="Search database"
             icon={<VscLayoutSidebarLeft size="1.5rem" />}
           /> */}
-          <img src="/new-ranktt-logo-light.svg" width={120} />
+          <Box pl={{ lg: 2, xl: 2 }}>
+            <img src="/rankttgold-logo.svg" width={120} />
+          </Box>
           <SidebarNavWrapper>
             <HStack spacing={`${navItemSpacing}px`}>
               {navItemsList.map((navItem, navItemIndex) => (
@@ -258,46 +296,42 @@ const PainelLayout = (props: PropsWithChildren) => {
                 />
               ))}
             </HStack>
-
-            <ActiveSidebarNavItemBg activeItemIndex={activeNavItemIndex} />
           </SidebarNavWrapper>
 
-          <SidebarUserInfo>
-            
-            <Avatar
-              size="sm"
-              width="36px"
-              height="36px"
-              name={`${currentUserData?.first_name} ${currentUserData?.last_name}`}
-              backgroundColor="gray.400"
-              src={profilePhotoUrl}
-            >
-              <AvatarBadge borderColor="rgb(35, 38, 39)" bg="green.500" boxSize="0.9rem" />
-            </Avatar>
-            <Box flex="1" ml={5}>
-              <Text textAlign="left" fontSize="sm" fontWeight={500} color="white">
-                {currentUserData?.first_name} {currentUserData?.last_name}
-              </Text>
-              <Text
-                textAlign="left"
-                fontSize="xs"
-                fontWeight={500}
-                color="rgba(232,236,239,.5)"
-                mt={{ base: '-0.2rem' }}
-                >
-                Conta pessoal
-              </Text>
-            </Box>
-            <IconButton
-              color="gray"
-              variant="ghost"
-              bg="transparent"
-              aria-label="Search database"
-              icon={<BiChevronDown size="1.5rem" />}
-              onClick={onAccountModalOpen}
-            />
+          <Menu closeOnSelect={false}>
+            {({ isOpen }) => (
+              <>
+                <MenuButton>
+                  <SidebarUserInfo bg={isOpen ? 'rgb(35, 38, 39, 0.5)' : undefined}>
+                    <Avatar
+                      size="sm"
+                      width="36px"
+                      height="36px"
+                      name={`${currentUserData?.first_name} ${currentUserData?.last_name}`}
+                      backgroundColor="gray.400"
+                      src={profilePhotoUrl}
+                    >
+                      <AvatarBadge borderColor="rgb(35, 38, 39)" bg="green.500" boxSize="0.9rem" />
+                    </Avatar>
+                    <Box flex="1" ml={5} display={{ base: 'none', xxl: 'block' }}>
+                      <Text textAlign="left" fontSize="sm" fontWeight={500} color="white">
+                        {currentUserData?.first_name} {currentUserData?.last_name}
+                      </Text>
+                      <Text
+                        textAlign="left"
+                        fontSize="xs"
+                        fontWeight={500}
+                        color="rgba(232,236,239,.5)"
+                        mt={{ base: '-0.2rem' }}
+                      >
+                        Conta pessoal
+                      </Text>
+                    </Box>
+                    <Icon as={BiChevronDown} fontSize="1.5rem" color="white" ml={2} />
+                  </SidebarUserInfo>
+                </MenuButton>
 
-            {/* <Button
+                {/* <Button
               mt={6}
               py={5}
               width="100%"
@@ -315,7 +349,44 @@ const PainelLayout = (props: PropsWithChildren) => {
             >
               Trocar conta
             </Button> */}
-          </SidebarUserInfo>
+
+                <MenuList border="4px solid #000" borderRadius="xl" p={0}>
+                  <MenuGroup title="Contas">
+                    <MenuItem icon={<Avatar size="sm" name="Hugo Calderano" />}>
+                      <Text>Hugo Calderano</Text>
+                    </MenuItem>
+                    <MenuItem
+                      icon={<Avatar size="sm" name="Associação Esportiva Recreativa Ateme" />}
+                    >
+                      <Text fontWeight={700}>Associação Esportiva Recreativa Ateme</Text>
+                    </MenuItem>
+                  </MenuGroup>
+                  <MenuDivider />
+
+                  <MenuGroup>
+                    <MenuItem
+                      icon={
+                        isFullscreen ? <BiExitFullscreen size={20} /> : <BiFullscreen size={20} />
+                      }
+                      onClick={() => {
+                        screenfull.toggle()
+                      }}
+                    >
+                      {isFullscreen ? 'Desativar tela cheia' : 'Modo tela cheia'}
+                    </MenuItem>
+                    <MenuItem icon={<BiCog size={20} />}>Preferências</MenuItem>
+                    <MenuItem
+                      icon={<BiLogOut size={20} />}
+                      borderBottomLeftRadius="lg"
+                      borderBottomRightRadius="lg"
+                    >
+                      Sair
+                    </MenuItem>
+                  </MenuGroup>
+                </MenuList>
+              </>
+            )}
+          </Menu>
         </LayoutHeader>
         <ContentCardWrapper>
           <ContentCard>{props.children}</ContentCard>
