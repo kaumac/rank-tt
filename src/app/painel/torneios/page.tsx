@@ -48,7 +48,7 @@ function Page() {
       >
         Parece que você não tem nenhum torneio cadastrado ainda...
         <br />
-        Vamos começar? É só clicar no botão abaixo!
+        Vamos começar? É só clicar no botão abaixo.
       </Text>
       <Button mt={8} colorScheme="black" borderRadius="full" size="lg" leftIcon={<BiPlus />}>
         Criar torneio

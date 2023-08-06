@@ -22,7 +22,7 @@ export const useCurrentOrganizationTournaments = () => {
         .select('name, id')
         .eq('organization', currentOrganizationData?.id)
 
-      return currentOrganizationTournamentsData
+      return currentOrganizationTournamentsData as Tournament[]
     }
   })
 }
