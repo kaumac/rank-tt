@@ -101,10 +101,9 @@ export const colors = {
     700: '#36393E',
     800: '#242A35',
     900: '#101725'
-
   },
   border: {
-    primary: '#D9DADC', // gray.200
+    primary: '#D9DADC' // gray.200
   },
   primary: {
     default: 'red.500',

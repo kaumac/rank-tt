@@ -16,10 +16,10 @@ import {
   SimpleGrid,
   Text
 } from '@chakra-ui/react'
+import { BiCheck } from 'react-icons/bi'
 
 import { useCurrentUser, useSwitchOrganization } from '@/hooks'
 import { useCurrentUserOrganizations } from '@/queries'
-import { BiCheck } from 'react-icons/bi'
 
 export interface SwitchAccountModalProps {
   isOpen: boolean
@@ -46,18 +46,30 @@ const AccountCard = ({ isActive, name, privilege, photoUrl, onClick }: AccountCa
       flexDirection="column"
       onClick={onClick}
       border="2px solid"
-      borderColor={isActive ? 'brand.500' : "border.primary"}
+      borderColor={isActive ? 'brand.500' : 'border.primary'}
       cursor="pointer"
       pointerEvents={isActive ? 'none' : undefined}
     >
-      <Center width="32px" height="32px" borderRadius="full" border="2px solid" borderColor={isActive ? 'brand.500' : "border.primary"} position="absolute" top="16px" right="16px" bg={isActive ? 'brand.500' : 'white'}>
-        <Icon as={BiCheck} opacity={isActive ? 1 : 0} color="white" fontSize="xl"/>
+      <Center
+        width="32px"
+        height="32px"
+        borderRadius="full"
+        border="2px solid"
+        borderColor={isActive ? 'brand.500' : 'border.primary'}
+        position="absolute"
+        top="16px"
+        right="16px"
+        bg={isActive ? 'brand.500' : 'white'}
+      >
+        <Icon as={BiCheck} opacity={isActive ? 1 : 0} color="white" fontSize="xl" />
       </Center>
-      <Avatar bg="gray.200" color="gray.600" name={name} src={photoUrl} borderRadius="md"/>
+      <Avatar bg="gray.200" color="gray.600" name={name} src={photoUrl} borderRadius="md" />
       <Heading size="sm" mt={4} color="gray.900">
         {name}
       </Heading>
-      <Text mt={1} fontWeight={500} fontSize="sm" color="gray.500">{privilege || 'Staff'}</Text>
+      <Text mt={1} fontWeight={500} fontSize="sm" color="gray.500">
+        {privilege || 'Staff'}
+      </Text>
     </Flex>
   )
 }
@@ -81,68 +93,63 @@ export const SwitchAccountModal = ({ isOpen, onClose }: SwitchAccountModalProps)
           boxShadow="-18px 22px 10px 0 #FFF, 2px -2px 4px 2px rgba(0,0,0,0.03)"
         />
 
-          <Box p={6}>
-            <Heading size="md" fontWeight={700}>
-              Selecione uma conta
-            </Heading>
-            <Text color="#5D5C62">
-              Selecione a conta que deseja utilizar
-            </Text>
-          </Box>
+        <Box p={6}>
+          <Heading size="md" fontWeight={700}>
+            Selecione uma conta
+          </Heading>
+          <Text color="#5D5C62">Selecione a conta que deseja utilizar</Text>
+        </Box>
 
-          <Divider borderColor="border.primary" />
+        <Divider borderColor="border.primary" />
 
-          <SimpleGrid columns={2} spacing={4} p={6}>
+        <SimpleGrid columns={2} spacing={4} p={6}>
+          <AccountCard
+            isActive
+            privilege="Proprietário"
+            name={`${currentUserData?.first_name} ${currentUserData?.last_name}`}
+            photoUrl={currentUserData?.photo_url}
+            onClick={() => {
+              switchOrganization(undefined)
+              onClose()
+            }}
+          />
+          {currentUserOrganizations?.map((organization) => (
             <AccountCard
-              isActive
-              privilege="Proprietário"
-              name={`${currentUserData?.first_name} ${currentUserData?.last_name}`}
-              photoUrl={currentUserData?.photo_url}
+              key={organization.id}
+              name={organization.name}
+              photoUrl={organization.photo_url}
               onClick={() => {
-                switchOrganization(undefined)
+                switchOrganization(organization.id)
                 onClose()
               }}
             />
-            {currentUserOrganizations?.map((organization) => (
-              <AccountCard
-                key={organization.id}
-                name={organization.name}
-                photoUrl={organization.photo_url}
-                onClick={() => {
-                  switchOrganization(organization.id)
-                  onClose()
-                }}
-              />
-            ))}
-          </SimpleGrid>
+          ))}
+        </SimpleGrid>
 
-          <Divider borderColor="border.primary" />
+        <Divider borderColor="border.primary" />
 
-          <Flex justifyContent="flex-end" p={6}>
-            <Button
-              variant="ghost"
-              color="gray.500"
-              fontWeight={500}
-              fontSize="sm"
-              mr={4}
-              onClick={onClose}
-              borderRadius="full"
-            >
-              Cancelar
-            </Button>
-            <Button
-              colorScheme="black"
-              fontWeight={600}
-              fontSize="sm"
-              borderRadius="full"
-              onClick={onClose}
-            >
-              Gerenciar conta selecionada
-            </Button>
-
-          </Flex>
-            
-        
+        <Flex justifyContent="flex-end" p={6}>
+          <Button
+            variant="ghost"
+            color="gray.500"
+            fontWeight={500}
+            fontSize="sm"
+            mr={4}
+            onClick={onClose}
+            borderRadius="full"
+          >
+            Cancelar
+          </Button>
+          <Button
+            colorScheme="black"
+            fontWeight={600}
+            fontSize="sm"
+            borderRadius="full"
+            onClick={onClose}
+          >
+            Gerenciar conta selecionada
+          </Button>
+        </Flex>
       </ModalContent>
     </Modal>
   )

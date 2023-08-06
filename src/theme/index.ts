@@ -30,13 +30,13 @@ export default extendTheme(
       global: {
         'html, body': {
           background: 'gray.200',
-          lineHeight: 'tall',
+          lineHeight: 'tall'
         },
         a: {
-          color: 'teal.500',
-        },
-      },
-    },
+          color: 'teal.500'
+        }
+      }
+    }
   },
   // badgeStyles, // badge styles
   // buttonStyles, // button styles
