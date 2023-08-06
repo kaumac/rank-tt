@@ -1,23 +1,21 @@
-import { Manrope } from 'next/font/google'
+import { Outfit, Roboto_Flex } from 'next/font/google'
 
-const globalFont = Manrope({
-  subsets: ['latin']
+// const globalFont = Manrope({
+//   subsets: ['latin']
+// })
+
+const bodyFont = Roboto_Flex({
+  subsets: ['latin'],
+  display: 'swap'
+})
+const headingFont = Outfit({
+  subsets: ['latin'],
+  display: 'swap'
 })
 
-// const bodyFont = Roboto_Flex({
-//   subsets: ['latin'],
-//   variable: '--font-roboto',
-//   display: 'swap'
-// })
-// const headingFont = Lexend({
-//   subsets: ['latin'],
-//   variable: '--font-syne',
-//   display: 'swap'
-// })
-
 export const fonts = {
-  heading: globalFont.style.fontFamily,
-  body: globalFont.style.fontFamily
+  heading: headingFont.style.fontFamily,
+  body: bodyFont.style.fontFamily
 }
 
 export default fonts

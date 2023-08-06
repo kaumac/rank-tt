@@ -4,26 +4,20 @@ import {
   Avatar,
   AvatarBadge,
   Box,
-  Button,
   Flex,
   HStack,
   Icon,
-  IconButton,
   Menu,
   MenuButton,
   MenuDivider,
   MenuGroup,
   MenuItem,
-  MenuItemOption,
   MenuList,
-  MenuOptionGroup,
-  Stack,
   Text,
   Tooltip,
   chakra,
   useDisclosure
 } from '@chakra-ui/react'
-import screenfull from 'screenfull'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PropsWithChildren, useEffect, useState } from 'react'
@@ -31,22 +25,20 @@ import { IconType } from 'react-icons'
 import {
   BiChevronDown,
   BiCog,
-  BiHomeAlt,
-  BiTrophy,
-  BiSearch,
   BiExitFullscreen,
   BiFullscreen,
-  BiRadioCircleMarked,
-  BiRadioCircle,
-  BiTransferAlt,
-  BiUser,
-  BiLogOut
+  BiHomeAlt,
+  BiLogOut,
+  BiSearch,
+  BiTrophy
 } from 'react-icons/bi'
-import { VscLayoutSidebarLeft } from 'react-icons/vsc'
+import screenfull from 'screenfull'
 
 import { SwitchAccountModal } from '@/components'
 import AccountModal from '@/components/AccountModal'
+import { useSwitchOrganization } from '@/hooks'
 import useCurrentUser from '@/hooks/useCurrentUser'
+import { useCurrentOrganization, useCurrentUserOrganizations } from '@/queries'
 import { browserClient } from '@/supabase'
 import { colors } from '@/theme'
 
@@ -78,7 +70,6 @@ const navItemsList = [
 
 const ContentCardWrapper = chakra(Flex, {
   baseStyle: {
-    minHeight: '100vh',
     flex: 1
   }
 })
@@ -184,12 +175,12 @@ const SidebarNavItem = ({ route, title, color, icon, isActive }: SidebarNavItemP
           <Box
             borderRadius="full"
             bg="#2c2c2c"
-            width={{ lg: 'calc(100% - 1px)', xl: 'calc(100% - 2px)' }}
-            height={{ lg: 'calc(100% - 1px)', xl: 'calc(100% - 2px)' }}
+            width="calc(100% - 2px)"
+            height="calc(100% - 2px)"
             display="block"
             position="absolute"
-            top={{ lg: '', xl: '1px' }}
-            left={{ lg: '', xl: '1px' }}
+            top="1px"
+            left="1px"
           />
         )}
       </Flex>
@@ -204,7 +195,8 @@ const SidebarUserInfo = chakra(Flex, {
     cursor: 'pointer',
     borderRadius: 'xxl',
     p: {
-      xl: '0.2rem'
+      lg: '0.3rem',
+      xl: '0.4rem'
     },
     _hover: {
       bg: 'rgb(35, 38, 39)'
@@ -215,6 +207,7 @@ const SidebarUserInfo = chakra(Flex, {
 const PainelLayout = (props: PropsWithChildren) => {
   const [activeNavItemIndex, setActiveNavItemIndex] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [switchOrganization] = useSwitchOrganization()
   const {
     isOpen: isSwitchAccountModalOpen,
     onOpen: onSwitchAccountModalOpen,
@@ -225,6 +218,16 @@ const PainelLayout = (props: PropsWithChildren) => {
     isLoading: isCurrentUserLoading,
     error: currentUserError
   } = useCurrentUser()
+  const {
+    data: currentOrganizationData,
+    isLoading: isCurrentOrganizationLoading,
+    error: currentOrganizationError
+  } = useCurrentOrganization()
+  const {
+    data: currentUserOrganizations,
+    isLoading: isCurrentUserOrganizationsLoading,
+    error: currentUserOrganizationsError
+  } = useCurrentUserOrganizations()
   const [profilePhotoUrl, setProfilePhotoUrl] = useState(currentUserData?.photo_url)
   const {
     isOpen: isAccountModalOpen,
@@ -265,21 +268,16 @@ const PainelLayout = (props: PropsWithChildren) => {
 
   return (
     <>
-      <Box
+      <Flex
+        flexDirection="column"
         minHeight="100vh"
-        bg="linear-gradient(140deg, rgba(105,95,78,0.5) 0%, rgba(105,95,78,1) 54%, rgba(105,95,78,0.1) 100%)"
-        borderRadius={{ lg: 'xl', xl: 'xxl' }}
+        bg="#000000"
+        // bg="linear-gradient(140deg, rgba(105,95,78,0.5) 0%, rgba(105,95,78,1) 54%, rgba(105,95,78,0.1) 100%)"
+        borderRadius="xxl"
         p={{ lg: 1 }}
         mb={1}
       >
         <LayoutHeader>
-          {/* <IconButton
-            color="gray"
-            colorScheme="black"
-            bg="transparent"
-            aria-label="Search database"
-            icon={<VscLayoutSidebarLeft size="1.5rem" />}
-          /> */}
           <Box pl={{ lg: 2, xl: 2 }}>
             <img src="/rankttgold-logo.svg" width={120} />
           </Box>
@@ -305,11 +303,12 @@ const PainelLayout = (props: PropsWithChildren) => {
                   <SidebarUserInfo bg={isOpen ? 'rgb(35, 38, 39, 0.5)' : undefined}>
                     <Avatar
                       size="sm"
-                      width="36px"
-                      height="36px"
+                      width="42px"
+                      height="42px"
                       name={`${currentUserData?.first_name} ${currentUserData?.last_name}`}
                       backgroundColor="gray.400"
                       src={profilePhotoUrl}
+                      boxShadow={!isOpen ? '0 0 0 4px rgba(70,62,48,0.8)' : undefined}
                     >
                       <AvatarBadge borderColor="rgb(35, 38, 39)" bg="green.500" boxSize="0.9rem" />
                     </Avatar>
@@ -350,23 +349,49 @@ const PainelLayout = (props: PropsWithChildren) => {
               Trocar conta
             </Button> */}
 
-                <MenuList border="4px solid #000" borderRadius="xl" p={0}>
-                  <MenuGroup title="Contas">
-                    <MenuItem icon={<Avatar size="sm" name="Hugo Calderano" />}>
-                      <Text>Hugo Calderano</Text>
-                    </MenuItem>
+                <MenuList>
+                  <MenuGroup title="Conta pessoal">
                     <MenuItem
-                      icon={<Avatar size="sm" name="Associação Esportiva Recreativa Ateme" />}
+                      icon={
+                        <Avatar
+                          size="xs"
+                          name={`${currentUserData?.first_name} ${currentUserData?.last_name}`}
+                        />
+                      }
                     >
-                      <Text fontWeight={700}>Associação Esportiva Recreativa Ateme</Text>
+                      <Text>
+                        {currentUserData?.first_name} {currentUserData?.last_name}
+                      </Text>
                     </MenuItem>
+                  </MenuGroup>
+                  <MenuDivider />
+                  <MenuGroup title="Organizações">
+                    {currentUserOrganizations &&
+                      currentUserOrganizations.length > 0 &&
+                      currentUserOrganizations.map((organization) => (
+                        <MenuItem
+                          key={organization.id}
+                          icon={<Avatar size="xs" name={organization.name} />}
+                          onClick={() => {
+                            switchOrganization(organization.id)
+                          }}
+                        >
+                          <Text
+                            fontWeight={
+                              currentOrganizationData?.id === organization.id ? 700 : undefined
+                            }
+                          >
+                            {organization.name}
+                          </Text>
+                        </MenuItem>
+                      ))}
                   </MenuGroup>
                   <MenuDivider />
 
                   <MenuGroup>
                     <MenuItem
                       icon={
-                        isFullscreen ? <BiExitFullscreen size={20} /> : <BiFullscreen size={20} />
+                        isFullscreen ? <BiExitFullscreen size={22} /> : <BiFullscreen size={22} />
                       }
                       onClick={() => {
                         screenfull.toggle()
@@ -374,14 +399,10 @@ const PainelLayout = (props: PropsWithChildren) => {
                     >
                       {isFullscreen ? 'Desativar tela cheia' : 'Modo tela cheia'}
                     </MenuItem>
-                    <MenuItem icon={<BiCog size={20} />}>Preferências</MenuItem>
-                    <MenuItem
-                      icon={<BiLogOut size={20} />}
-                      borderBottomLeftRadius="lg"
-                      borderBottomRightRadius="lg"
-                    >
-                      Sair
+                    <MenuItem onClick={onAccountModalOpen} icon={<BiCog size={22} />}>
+                      Preferências
                     </MenuItem>
+                    <MenuItem icon={<BiLogOut size={22} />}>Sair</MenuItem>
                   </MenuGroup>
                 </MenuList>
               </>
@@ -391,7 +412,7 @@ const PainelLayout = (props: PropsWithChildren) => {
         <ContentCardWrapper>
           <ContentCard>{props.children}</ContentCard>
         </ContentCardWrapper>
-      </Box>
+      </Flex>
       <AccountModal isOpen={isAccountModalOpen} onClose={onAccountModalClose} />
       <SwitchAccountModal isOpen={isSwitchAccountModalOpen} onClose={onSwitchAccountModalClose} />
     </>
