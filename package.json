@@ -41,7 +41,7 @@
     "@tanstack/react-query-devtools": "^5.0.0-alpha.91",
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
     "encoding": "^0.1.13",
-    "eslint-config-prettier": "^8.9.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
